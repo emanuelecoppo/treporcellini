@@ -1,0 +1,35 @@
+// Platforms
+platforms = game.add.group();
+platforms.enableBody = true;
+
+platforms.create(-150, 250, 'ground');
+platforms.create(400, 400, 'ground');
+platforms.create(800, 300, 'ground');
+platforms.create(1200, 400, 'ground');
+platforms.create(1600, 150, 'ground');
+platforms.create(2000, 350, 'ground');
+ground = platforms.create(0, game.world.height - 64, 'ground');
+ground.scale.setTo(10, 2);
+
+platforms.setAll('body.immovable', true);
+
+/////////////////////////////////////////////////////////////////////////////
+
+// Pause
+pauseText = game.add.text(400, 300, 'PAUSE', { font: '50px Arial', fill: '#fff' });
+pauseText.anchor.setTo(.5,.5);
+pauseText.fixedToCamera = true;
+pauseText.alpha = 0;
+game.paused = false;
+
+p.onDown.add(pause);
+function pause() {
+    if (game.paused == false) {
+        game.paused = true;
+        pauseText.alpha = 1;
+    }
+    else if (game.paused == true) {
+        game.paused = false;
+        pauseText.alpha = 0;
+    }
+};
