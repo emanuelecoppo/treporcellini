@@ -1,6 +1,7 @@
 function update() {
 
-    hitPlatform = game.physics.arcade.collide(player, [platforms, ground]);
+    // Collisions
+    hitPlatform = game.physics.arcade.collide(player, [ledge, ground, tronchi, rocks]);
     hitMud = game.physics.arcade.overlap(player, mud);
     hitWater = game.physics.arcade.overlap(player, water);
 
@@ -9,7 +10,7 @@ function update() {
     game.physics.arcade.collide([zattera, sasso], player);
     zattera.body.immovable = false;
     sasso.body.immovable = false;
-    game.physics.arcade.collide([zattera, sasso], [ground, platforms]);
+    game.physics.arcade.collide([zattera, sasso], [ground, ledge]);
 
     // Parallax
     parallax0.tilePosition.x = 0;
@@ -33,8 +34,8 @@ function update() {
     }
     else {
         walk = 250;
-        jump = 700;
-        player.body.gravity.y = 1200;
+        jump = 900;
+        player.body.gravity.y = 2000;
         player.body.maxVelocity.y = 1000;
     }
 
@@ -98,5 +99,27 @@ function update() {
     }
     else {
         soffio.kill();
+    }
+
+    // Tronchi
+    tronchi.children.forEach( function(tronco) {
+        tronco.anchor.setTo(.5, 0);
+        tronco.scale.setTo(100, 20);
+        tronco.body.immovable = true;
+        tronco.body.acceleration.y = 50 + 50*Math.random();
+        tronco.body.maxVelocity.y = 250;
+        if (tronco.y > game.world.height) {
+            tronco.destroy();
+        }
+    });
+
+    // Respawn
+    if (player.y > game.world.height + player.height) {
+        player.body.position.setTo(2100, game.world.height - 400);
+    }
+
+    // Vola (per test)
+    if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {
+        player.body.gravity.y = 0;
     }
 }
