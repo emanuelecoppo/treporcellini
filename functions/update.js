@@ -3,8 +3,13 @@ function update() {
     hitPlatform = game.physics.arcade.collide(player, [platforms, ground]);
     hitMud = game.physics.arcade.overlap(player, mud);
     hitWater = game.physics.arcade.overlap(player, water);
-    game.physics.arcade.collide(sasso, [ground, platforms, player]);
-    game.physics.arcade.collide(zattera, [ground, platforms, player, water]);
+
+    zattera.body.immovable = true;
+    sasso.body.immovable = true;
+    game.physics.arcade.collide([zattera, sasso], player);
+    zattera.body.immovable = false;
+    sasso.body.immovable = false;
+    game.physics.arcade.collide([zattera, sasso], [ground, platforms]);
 
     // Parallax
     parallax0.tilePosition.x = 0;
@@ -30,7 +35,7 @@ function update() {
         walk = 250;
         jump = 700;
         player.body.gravity.y = 1200;
-        player.body.maxVelocity.y = 9999;
+        player.body.maxVelocity.y = 1000;
     }
 
     // Walk
@@ -75,24 +80,23 @@ function update() {
         // Sasso
         if (game.physics.arcade.overlap(soffio, sasso)) {
             if (facing == 'left') {
-                sasso.x -= 1;
+                sasso.body.velocity.x -= 5;
             }
             else if (facing == 'right') {
-                sasso.x += 1;
+                sasso.body.velocity.x += 5;
             }
         }
         // Zattera
-        //if (game.physics.arcade.collide(player, zattera)) {
-        //    if (facing == 'left') {
-        //        zattera.x += 1;
-        //    }
-        //    else if (facing == 'right') {
-        //        zattera.x -= 1;
-        //    }
-        //}
+        if (zattera.body.touching.up == true) {
+            if (facing == 'left') {
+                zattera.body.velocity.x += 5;
+            }
+            else if (facing == 'right') {
+                zattera.body.velocity.x -= 5;
+            }
+        }
     }
     else {
         soffio.kill();
     }
-
 }

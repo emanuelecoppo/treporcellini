@@ -46,20 +46,20 @@ function create() {
     rainParticle.ctx.fillStyle = '#9cc9de';
     rainParticle.ctx.fill();
 
-    emitter = game.add.emitter(game.world.centerX, 0, 400);
-    emitter.width = game.world.width;
-    emitter.makeParticles(rainParticle);
-    emitter.setYSpeed(1200, 1500);
-    emitter.setXSpeed(-5, 5);
-    emitter.minRotation = 0;
-    emitter.maxRotation = 0;
-    emitter.alpha = 0.2;
-    emitter.start(false, 1600, 5, 0, false);
+    rain = game.add.emitter(game.world.centerX, 0, 400);
+    rain.width = game.world.width;
+    rain.makeParticles(rainParticle);
+    rain.setYSpeed(1200, 1500);
+    rain.setXSpeed(-5, 5);
+    rain.minRotation = 0;
+    rain.maxRotation = 0;
+    rain.alpha = 0.2;
+    rain.start(false, 1600, 5, 0, false);
 
     // Ground
     ground = game.add.group();
     ground.enableBody = true;
-    ground.create(0, game.world.height - 100, 'platform');
+    ground.create(500, game.world.height - 100, 'platform');
     ground.create(1000, game.world.height - 100, 'platform');
     ground.create(2000, game.world.height - 100, 'platform');
     ground.setAll('scale.x', 500);
@@ -67,21 +67,24 @@ function create() {
     ground.setAll('body.immovable', true);
 
     // Sasso
-    sasso = game.add.sprite(1050, game.world.height - 200, 'platform')
+    sasso = game.add.sprite(1000, game.world.height - 600, 'mud')
     sasso.scale.setTo(100,100);
-    game.physics.arcade.enable(sasso)
-    sasso.enableBody = true;
+    game.physics.arcade.enable(sasso);
     sasso.body.gravity.y = 500;
+    sasso.body.bounce.x = 0.2;
+    sasso.body.drag.x = 100;
+    sasso.body.maxVelocity.x = 60;
 
     // Zattera
-    zattera = game.add.sprite(1500+10, game.world.height-110, 'platform')
+    zattera = game.add.sprite(1500, game.world.height - 110, 'mud')
     zattera.scale.setTo(80,20);
-    game.physics.arcade.enable(zattera)
-    zattera.enableBody = true;
-    zattera.body.immovable = true;
+    game.physics.arcade.enable(zattera);
+    zattera.body.bounce.x = 0.5;
+    zattera.body.drag.x = 50;
+    zattera.body.maxVelocity.x = 100;
 
     // Mud
-    mud = game.add.sprite(500, game.world.height - 100, 'mud');
+    mud = game.add.sprite(0, game.world.height - 100, 'mud');
     mud.scale.setTo(500, 100);
     game.physics.arcade.enable(mud);
     mud.alpha = 0.95;
