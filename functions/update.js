@@ -95,4 +95,24 @@ function update() {
         soffio.kill();
     }
 
+
+
+    // /* -------------------------------------------------------- */
+    // /* uso della funzione "WASTED": ovvero quando il player muore e deve ripartire da un checkpoint */
+    //
+    // /* come fare in modo di rilevare che il giocatore ha perso la vita e deve ricominciare dall'ultimo chechpoint?
+    // Bisogna creare l'oggetto checkpoint */
+    // if(player.dead == true){ /* ogni qual volta che il player cade, o viene colpito, viene impostata su TRUE la variabile dead*/
+    //   player.life = player.life-1;
+    //   if(player.life > 0){
+    //     /* è ancora vivo*/
+    //     player.respawn(); /* ricomincia da ultimo checkpoint il quale viene registrato con un override progressivo di una variabile (coordinate x e y di respawn) quando il player passa da un checkpoint*/
+    //   }else{
+    //     player.wasted(); /* ricomincia da zero.*/
+    //   }
+    //   /*set.*/player.dead = false;
+    // }
+    // /* --------------------------------------------------------- */
+
+
 }

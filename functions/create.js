@@ -21,6 +21,20 @@ function create() {
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
 
+    // /* ---------------------------------------------------- */
+    // /* aggiunta de variabile dead*/   /* non so se funziona come con Java e gli oggetti */
+    // /* se siamo costretti ad usare solo variabili globali allora le chiameremo con questa logica: playerDead, playerLife ecc...*/
+    // player.dead = false;
+    // /* vita del giocatore, impostata arbitrariamente a 3*/
+    // player.life = 3;
+    // /* funzione wasted per ricominciare da capo */
+    // player.wasted(){
+    //   /* codice per ricominciare da capo */
+    // }
+    // /* ----------------------------------------------------- */
+
+
+
     // Soffio
     soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
     soffio.anchor.setTo(0,.5);
@@ -39,6 +53,14 @@ function create() {
     platforms.setAll('scale.x', 450);
     platforms.setAll('scale.y', 30);
     platforms.setAll('body.immovable', true);
+
+
+    /* ---------------------------------------------- */
+    /* Rami che dopo tot si spezzano */
+    platforms.create(850, 450, 'branch')
+    /* ---------------------------------------------- */
+
+
 
     //Rain
     rainParticle = game.add.bitmapData(0, 0);
