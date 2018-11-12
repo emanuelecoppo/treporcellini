@@ -20,6 +20,24 @@ function create() {
     cascata1.scale.setTo(500, game.world.height);
     cascata2.scale.setTo(500, game.world.height);
 
+    // Alberi
+    tree = game.add.sprite(3200, 0, 'mud');
+    tree.scale.setTo(100, 768);
+
+    // Rami
+    rami = game.add.group();
+    rami.enableBody = true;
+    rami.create(tree.x - 40, 200, 'mud');
+    rami.create(tree.x + tree.width + 40, 350, 'mud');
+    rami.create(tree.x - 40, 500, 'mud');
+
+    rami.children.forEach( function(ramo) {
+        ramo.anchor.setTo(.5,.5)
+        ramo.scale.setTo(80,15);
+        ramo.body.immovable = true;
+        ramo.body.maxVelocity.y = 800;
+    });
+
     // Player
     player = game.add.sprite(2100, game.world.height - 400, 'dude');
     game.physics.arcade.enable(player);

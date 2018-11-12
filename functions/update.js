@@ -1,7 +1,7 @@
 function update() {
 
     // Collisions
-    hitPlatform = game.physics.arcade.collide(player, [ledge, ground, tronchi, rocks]);
+    hitPlatform = game.physics.arcade.collide(player, [ledge, ground, tronchi, rocks, rami]);
     hitMud = game.physics.arcade.overlap(player, mud);
     hitWater = game.physics.arcade.overlap(player, water);
 
@@ -133,5 +133,23 @@ function update() {
         game.camera.follow(flies, Phaser.Camera.FOLLOW_LOCKON, 0.2, 0.2); /* camera fissa su nemico */
       }
     }
+
+    // Rami
+    rami.children.forEach( function(ramo) {
+
+        if (ramo.body.touching.up == true) {
+            game.time.events.add(Phaser.Timer.SECOND*0.2, cadeRamo, this);
+
+            function cadeRamo() {
+                if (ramo.body.touching.up == true ) {ramo.body.gravity.y = 800;}
+            }
+        }
+
+        if (ramo.y > game.world.height + 3000) {
+            ramo.body.gravity.y = 0;
+            ramo.body.velocity.y = 0;
+            ramo.y = 500; // da sistemare, fare in modo che ogni roma torni a sua posizione iniziale
+        }
+    });
 
 }
