@@ -1,10 +1,16 @@
 function update() {
 
-    hitPlatform = game.physics.arcade.collide(player, [platforms, ground]);
+    // Collisions
+    hitPlatform = game.physics.arcade.collide(player, [ledge, ground, tronchi, rocks]);
     hitMud = game.physics.arcade.overlap(player, mud);
     hitWater = game.physics.arcade.overlap(player, water);
-    game.physics.arcade.collide(sasso, [ground, platforms, player]);
-    game.physics.arcade.collide(zattera, [ground, platforms, player, water]);
+
+    zattera.body.immovable = true;
+    sasso.body.immovable = true;
+    game.physics.arcade.collide([zattera, sasso], player);
+    zattera.body.immovable = false;
+    sasso.body.immovable = false;
+    game.physics.arcade.collide([zattera, sasso], [ground, ledge]);
 
     // Parallax
     parallax0.tilePosition.x = 0;
@@ -28,9 +34,9 @@ function update() {
     }
     else {
         walk = 250;
-        jump = 700;
-        player.body.gravity.y = 1200;
-        player.body.maxVelocity.y = 9999;
+        jump = 900;
+        player.body.gravity.y = 2000;
+        player.body.maxVelocity.y = 1000;
     }
 
     // Walk
@@ -75,26 +81,27 @@ function update() {
         // Sasso
         if (game.physics.arcade.overlap(soffio, sasso)) {
             if (facing == 'left') {
-                sasso.x -= 1;
+                sasso.body.velocity.x -= 5;
             }
             else if (facing == 'right') {
-                sasso.x += 1;
+                sasso.body.velocity.x += 5;
             }
         }
         // Zattera
-        //if (game.physics.arcade.collide(player, zattera)) {
-        //    if (facing == 'left') {
-        //        zattera.x += 1;
-        //    }
-        //    else if (facing == 'right') {
-        //        zattera.x -= 1;
-        //    }
-        //}
+        if (zattera.body.touching.up == true) {
+            if (facing == 'left') {
+                zattera.body.velocity.x += 5;
+            }
+            else if (facing == 'right') {
+                zattera.body.velocity.x -= 5;
+            }
+        }
     }
     else {
         soffio.kill();
     }
 
+<<<<<<< HEAD
 
 
     // /* -------------------------------------------------------- */
@@ -115,4 +122,27 @@ function update() {
     // /* --------------------------------------------------------- */
 
 
+=======
+    // Tronchi
+    tronchi.children.forEach( function(tronco) {
+        tronco.anchor.setTo(.5, 0);
+        tronco.scale.setTo(100, 20);
+        tronco.body.immovable = true;
+        tronco.body.acceleration.y = 50 + 50*Math.random();
+        tronco.body.maxVelocity.y = 250;
+        if (tronco.y > game.world.height) {
+            tronco.destroy();
+        }
+    });
+
+    // Respawn
+    if (player.y > game.world.height + player.height) {
+        player.body.position.setTo(2100, game.world.height - 400);
+    }
+
+    // Vola (per test)
+    if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {
+        player.body.gravity.y = 0;
+    }
+>>>>>>> 4239991d22598ab0652518c1b47fb65d455b5af2
 }

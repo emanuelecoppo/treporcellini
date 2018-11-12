@@ -14,6 +14,5 @@ function preload() {
     game.load.image('parallax0', 'assets/parallax0.png');
     game.load.image('parallax1', 'assets/parallax1.png');
     game.load.image('parallax2', 'assets/parallax2.png');
-
-
+    
 }
