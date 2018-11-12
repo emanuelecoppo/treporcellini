@@ -40,8 +40,6 @@ function create() {
     // }
     // /* ----------------------------------------------------- */
 
-
-
     // Soffio
     soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
     soffio.anchor.setTo(0,.5);
@@ -82,13 +80,10 @@ function create() {
         tronchi.create(cascata1.x + 360, -300, 'mud');
     }
 
-
     /* ---------------------------------------------- */
     /* Rami che dopo tot si spezzano */
-    platforms.create(850, 450, 'branch')
+    //platforms.create(850, 450, 'branch')
     /* ---------------------------------------------- */
-
-
 
     //Rain
     rainParticle = game.add.bitmapData(0, 0);

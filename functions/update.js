@@ -101,9 +101,6 @@ function update() {
         soffio.kill();
     }
 
-<<<<<<< HEAD
-
-
     // /* -------------------------------------------------------- */
     // /* uso della funzione "WASTED": ovvero quando il player muore e deve ripartire da un checkpoint */
     //
@@ -121,8 +118,6 @@ function update() {
     // }
     // /* --------------------------------------------------------- */
 
-
-=======
     // Tronchi
     tronchi.children.forEach( function(tronco) {
         tronco.anchor.setTo(.5, 0);
@@ -144,5 +139,4 @@ function update() {
     if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {
         player.body.gravity.y = 0;
     }
->>>>>>> 4239991d22598ab0652518c1b47fb65d455b5af2
 }
