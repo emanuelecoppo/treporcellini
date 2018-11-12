@@ -4,7 +4,6 @@ function create() {
 
     // World
     game.world.setBounds(0, 0, 1024*4, 768);
-
     // Parallax
     parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax0');
     parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax1');
@@ -27,18 +26,20 @@ function create() {
     player.anchor.setTo(.5,.5);
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
+    /* -- VITA del PLAYER -- */
+    player.health = 30;
 
-    // /* ---------------------------------------------------- */
-    // /* aggiunta de variabile dead*/   /* non so se funziona come con Java e gli oggetti */
-    // /* se siamo costretti ad usare solo variabili globali allora le chiameremo con questa logica: playerDead, playerLife ecc...*/
-    // player.dead = false;
-    // /* vita del giocatore, impostata arbitrariamente a 3*/
-    // player.life = 3;
-    // /* funzione wasted per ricominciare da capo */
-    // player.wasted(){
-    //   /* codice per ricominciare da capo */
-    // }
-    // /* ----------------------------------------------------- */
+    /* -- FLIES -- */
+    flies = game.add.sprite(2300, game.world.height -400, 'flies');
+    game.physics.arcade.enable(flies);
+    flies.anchor.setTo(.5,.5);
+    flies.scale.setTo(4, 3);
+    /* moviemnto oscillatorio */
+    flies.body.velocity.y = 100;
+    game.time.events.loop(Phaser.Timer.SECOND*1, shiftVelocity, this);
+    function shiftVelocity() {
+        flies.body.velocity.y = flies.body.velocity.y*-1; /* inversione di velocità*/
+    }
 
     // Soffio
     soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
@@ -79,11 +80,6 @@ function create() {
         tronchi.create(cascata1.x + 140, -100, 'mud');
         tronchi.create(cascata1.x + 360, -300, 'mud');
     }
-
-    /* ---------------------------------------------- */
-    /* Rami che dopo tot si spezzano */
-    //platforms.create(850, 450, 'branch')
-    /* ---------------------------------------------- */
 
     //Rain
     rainParticle = game.add.bitmapData(0, 0);
@@ -154,5 +150,6 @@ function create() {
 
     // Camera
     game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.2, 0.2);
+
 
 }

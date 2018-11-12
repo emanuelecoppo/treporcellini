@@ -101,22 +101,6 @@ function update() {
         soffio.kill();
     }
 
-    // /* -------------------------------------------------------- */
-    // /* uso della funzione "WASTED": ovvero quando il player muore e deve ripartire da un checkpoint */
-    //
-    // /* come fare in modo di rilevare che il giocatore ha perso la vita e deve ricominciare dall'ultimo chechpoint?
-    // Bisogna creare l'oggetto checkpoint */
-    // if(player.dead == true){ /* ogni qual volta che il player cade, o viene colpito, viene impostata su TRUE la variabile dead*/
-    //   player.life = player.life-1;
-    //   if(player.life > 0){
-    //     /* è ancora vivo*/
-    //     player.respawn(); /* ricomincia da ultimo checkpoint il quale viene registrato con un override progressivo di una variabile (coordinate x e y di respawn) quando il player passa da un checkpoint*/
-    //   }else{
-    //     player.wasted(); /* ricomincia da zero.*/
-    //   }
-    //   /*set.*/player.dead = false;
-    // }
-    // /* --------------------------------------------------------- */
 
     // Tronchi
     tronchi.children.forEach( function(tronco) {
@@ -139,4 +123,15 @@ function update() {
     if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {
         player.body.gravity.y = 0;
     }
+
+    /* -- FLIES -- */
+    flies.body.velocity.x = 0;
+    if(game.physics.arcade.overlap(flies, player)){
+      player.damage(1); /* player subisce danno */
+      if(player.health > 0){  /* player non è morto*/
+      }else{  /* plyer è morto */
+        game.camera.follow(flies, Phaser.Camera.FOLLOW_LOCKON, 0.2, 0.2); /* camera fissa su nemico */
+      }
+    }
+
 }
