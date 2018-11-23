@@ -3,7 +3,8 @@ function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // World
-    game.world.setBounds(0, 0, 1024*4, 768);
+    game.world.setBounds(0, 0, 1024*6, 768);
+
     // Parallax
     parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax0');
     parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax1');
@@ -32,31 +33,40 @@ function create() {
     rami.create(tree.x - 40, 500, 'mud');
 
     rami.children.forEach( function(ramo) {
-        ramo.anchor.setTo(.5,.5)
+        ramo.posizioneY = ramo.body.y //crea classe che memorizza y iniziale di ciascun ramo
+        ramo.anchor.x = .5;
         ramo.scale.setTo(80,15);
         ramo.body.immovable = true;
         ramo.body.maxVelocity.y = 800;
     });
 
+    // Fruits
+    fruits = game.add.group()
+    fruits.enableBody = true;
+    for (var i = 0; i < 15; i++) { fruit = fruits.create(i*550, 0, 'fruit'); }
+    fruits.setAll('body.gravity.y', 600);
+    fruits.setAll('scale.x', .1);
+    fruits.setAll('scale.y', .1);
+
     // Player
-    player = game.add.sprite(2100, game.world.height - 400, 'dude');
+    player = game.add.sprite(4500, game.world.height - 400, 'dude');
     game.physics.arcade.enable(player);
     player.anchor.setTo(.5,.5);
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
     /* -- VITA del PLAYER -- */
-    player.health = 30;
+    //player.health = 3;
 
     /* -- FLIES -- */
-    flies = game.add.sprite(2300, game.world.height -400, 'flies');
+    flies = game.add.sprite(1800, game.world.height - 300, 'flies');
     game.physics.arcade.enable(flies);
     flies.anchor.setTo(.5,.5);
-    flies.scale.setTo(4, 3);
+    flies.scale.setTo(.1,.1);
     /* moviemnto oscillatorio */
     flies.body.velocity.y = 100;
-    game.time.events.loop(Phaser.Timer.SECOND*1, shiftVelocity, this);
+    game.time.events.loop(Phaser.Timer.SECOND*2, shiftVelocity, this);
     function shiftVelocity() {
-        flies.body.velocity.y = flies.body.velocity.y*-1; /* inversione di velocità*/
+        flies.body.velocity.y = -flies.body.velocity.y; /* inversione di velocità*/
     }
 
     // Soffio
@@ -122,11 +132,11 @@ function create() {
     ground.create(1000, game.world.height - 100, 'platform');
     ground.create(2000, game.world.height - 100, 'platform');
     ground.create(3000, game.world.height - 100, 'platform');
-    ground.create(4000, game.world.height - 100, 'platform');
-    ground.create(5000, game.world.height - 100, 'platform');
+    groundBig = ground.create(4000, game.world.height - 100, 'platform');
     ground.setAll('scale.x', 500);
     ground.setAll('scale.y', 100);
     ground.setAll('body.immovable', true);
+    groundBig.scale.x = 2000;
 
     // Sasso
     sasso = game.add.sprite(1000, game.world.height - 600, 'mud')
@@ -134,7 +144,7 @@ function create() {
     game.physics.arcade.enable(sasso);
     sasso.body.gravity.y = 700;
     sasso.body.bounce.x = 0.2;
-    sasso.body.drag.x = 100;
+    sasso.body.drag.x = 150;
     sasso.body.maxVelocity.x = 60;
 
     // Zattera
@@ -159,6 +169,18 @@ function create() {
     water.alpha = 0.4;
     water.body.immovable = true;
 
+    // Barra Fame
+    barra = game.add.graphics(25, 25);
+    barra.lineStyle(2, 0xffffff, .5);
+    barra.drawRect(0, 0, 250, 20);
+    barra.fixedToCamera = true;
+
+    fame = game.add.graphics(25, 25);
+    fame.beginFill(0xfefefe, .2);
+    fame.drawRect(0, 0, 250, 20);
+    fame.endFill();
+    fame.fixedToCamera = true;
+
     // Controls
     cursors = game.input.keyboard.createCursorKeys();
     spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -168,6 +190,5 @@ function create() {
 
     // Camera
     game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.2, 0.2);
-
 
 }

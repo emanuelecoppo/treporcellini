@@ -10,7 +10,8 @@ function preload() {
     game.load.image('mud', 'assets/mud.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     game.load.image('soffio', 'assets/soffio.png');
-    game.load.image('flies', 'assets/flies.png');
+    game.load.image('flies', 'assets/flies2.png');
+    game.load.image('fruit', 'assets/fruit.png');
 
     game.load.image('parallax0', 'assets/parallax0.png');
     game.load.image('parallax1', 'assets/parallax1.png');
