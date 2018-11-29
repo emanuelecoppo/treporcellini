@@ -1,17 +1,17 @@
 function update() {
 
     // Collisions
-    hitPlatform = game.physics.arcade.collide(player, [ledge, ground, tronchi, rocks, rami]);
+    hitPlatform = game.physics.arcade.collide([player, maiale], [ground, tronchi, rocks, rami]);
     hitMud = game.physics.arcade.overlap(player, mud);
     hitWater = game.physics.arcade.overlap(player, water);
-    game.physics.arcade.collide(fruits, [ledge, ground, rocks, tronchi]);
+    game.physics.arcade.collide(fruits, [ground, rocks, tronchi]);
 
     zattera.body.immovable = true;
     sasso.body.immovable = true;
     game.physics.arcade.collide([zattera, sasso], player);
     zattera.body.immovable = false;
     sasso.body.immovable = false;
-    game.physics.arcade.collide([zattera, sasso], [ground, ledge]);
+    game.physics.arcade.collide([zattera, sasso], ground);
 
     // Parallax
     parallax0.tilePosition.x = 0;
@@ -20,25 +20,25 @@ function update() {
 
     // Velocity
     player.body.velocity.x = 0.8 * player.body.velocity.x;
+    player.body.drag.x = 1600;
 
     if (hitMud) {
         walk = 50;
         jump = 50;
         player.body.gravity.y = 150;
-        player.body.maxVelocity.y = 50;
     }
     else if (hitWater) {
         walk = 100;
         jump = 120;
         player.body.gravity.y = 150;
-        player.body.maxVelocity.y = 120;
     }
     else {
-        walk = 250;
+        walk = 275;
         jump = 900;
         player.body.gravity.y = 2000;
-        player.body.maxVelocity.y = 1000;
     }
+    player.body.maxVelocity.y = jump;
+    player.body.maxVelocity.x = walk;
 
     // Walk
     if (cursors.left.isDown) {
@@ -53,10 +53,10 @@ function update() {
     }
     else {
         if (facing == 'left') {
-            player.frame = 0;
+            player.frame = 11;
         }
         else if (facing == 'right') {
-            player.frame = 5;
+            player.frame = 12;
         }
     }
 
@@ -131,16 +131,6 @@ function update() {
         player.body.gravity.y = 0;
     }
 
-    /* -- FLIES -- */
-    //if(game.physics.arcade.overlap(flies, player)){
-    //  player.damage(1); /* player subisce danno */
-    //  if(player.health > 0){  /* player non è morto*/
-    //      respawn();
-    //  }else{  /* plyer è morto */
-    //      player.body.position.setTo(2100, game.world.height - 400);
-    //  }
-    //}
-
     // Flies
     if (game.physics.arcade.overlap(player, flies)) {
         respawn();
@@ -168,17 +158,17 @@ function update() {
     // Barra Fame
     fame.width -= .05;
 
-    if (fame.width > 100) { //bianco
-        fame.tint = 0xfefefe;
+    if (fame.width <= 0) { //muore
+        respawn();
     }
-    else if (50 < fame.width && fame.width <= 100) { //giallo
-        fame.tint = 0xffff00;
-    }
-    else if (0 < fame.width && fame.width <= 50) { //rosso
+    else if (fame.width <= 50) { //rosso
         fame.tint = 0xff0000;
     }
-    else if (fame.width <= 0) { //muore
-        respawn();
+    else if (fame.width <= 100) { //giallo
+        fame.tint = 0xffff00;
+    }
+    else if (fame.width > 100) { //bianco
+        fame.tint = 0xfefefe;
     }
 
     // Fruits
@@ -192,4 +182,16 @@ function update() {
         }
     }
     game.physics.arcade.overlap(player, fruits, eatFruit, null, this)
+
+    if (maiale.body.velocity.x > 0) {
+        maiale.animations.play('right');
+    }
+    else if (maiale.body.velocity.x < 0) {
+        maiale.animations.play('left');
+    }
+
+    if (game.physics.arcade.overlap(player, torcia)) {
+        respawn();
+    }
+
 }

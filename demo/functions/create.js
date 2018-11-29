@@ -1,6 +1,7 @@
 function create() {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.plugins.add(Phaser.Plugin.ArcadeSlopes);
 
     // World
     game.world.setBounds(0, 0, 1024*6, 768);
@@ -47,24 +48,46 @@ function create() {
     fruits.setAll('body.gravity.y', 600);
     fruits.setAll('scale.x', .1);
     fruits.setAll('scale.y', .1);
+    fruits.setAll('body.drag.x', 1000);
 
     // Player
-    player = game.add.sprite(4500, game.world.height - 400, 'dude');
+    player = game.add.sprite(4500, game.world.height - 800, 'lupo');
     game.physics.arcade.enable(player);
     player.anchor.setTo(.5,.5);
-    player.animations.add('left', [0, 1, 2, 3], 10, true);
-    player.animations.add('right', [5, 6, 7, 8], 10, true);
-    /* -- VITA del PLAYER -- */
-    //player.health = 3;
+    player.scale.setTo(.8,.8);
+    player.body.setSize(40,100,40,-3);
+    player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20, true);
+    player.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
+
+    // Maiale
+    maiale = game.add.sprite(5500, game.world.height - 800, 'lupo');
+    maiale.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
+    maiale.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 10, true);
+    maiale.posizioneX = maiale.x; //memorizza x iniziale
+    game.physics.arcade.enable(maiale);
+    maiale.body.gravity.y = 1000;
+    maiale.body.velocity.x = -80;
+
+    game.time.events.loop(Phaser.Timer.SECOND*4, maialeVelocity, game);
+    function maialeVelocity() {
+        maiale.body.velocity.x = -maiale.body.velocity.x;
+        torcia.scale.x = -torcia.scale.x;
+    }
+
+    torcia = maiale.addChild(game.make.sprite(50, -50, 'torcia'));
+    torcia.anchor.setTo(1,0);
+    torcia.scale.setTo(.5,.5);
+    torcia.alpha = .5;
+    game.physics.arcade.enable(torcia);
 
     /* -- FLIES -- */
-    flies = game.add.sprite(1800, game.world.height - 300, 'flies');
+    flies = game.add.sprite(1800, game.world.height - 350, 'flies');
     game.physics.arcade.enable(flies);
     flies.anchor.setTo(.5,.5);
     flies.scale.setTo(.1,.1);
     /* moviemnto oscillatorio */
     flies.body.velocity.y = 100;
-    game.time.events.loop(Phaser.Timer.SECOND*2, shiftVelocity, this);
+    game.time.events.loop(Phaser.Timer.SECOND*2, shiftVelocity, game);
     function shiftVelocity() {
         flies.body.velocity.y = -flies.body.velocity.y; /* inversione di velocità*/
     }
@@ -74,19 +97,6 @@ function create() {
     soffio.anchor.setTo(0,.5);
     soffio.alpha = .2;
     game.physics.arcade.enable(soffio);
-
-    // Ledge
-    ledge = game.add.group();
-    ledge.enableBody = true;
-    ledge.create(-150, 350, 'platform');
-    ledge.create(400, 500, 'platform');
-    ledge.create(800, 400, 'platform');
-    ledge.create(1200, 200, 'platform');
-    ledge.create(1600, 350, 'platform');
-    ledge.create(2000, 500, 'platform');
-    ledge.setAll('scale.x', 450);
-    ledge.setAll('scale.y', 30);
-    ledge.setAll('body.immovable', true);
 
     // Rocks
     rocks = game.add.group();
@@ -103,7 +113,7 @@ function create() {
     tronchi = game.add.group();
     tronchi.enableBody = true;
 
-    game.time.events.loop(Phaser.Timer.SECOND*2, creaTronco, this);
+    game.time.events.loop(Phaser.Timer.SECOND*2, creaTronco, game);
     function creaTronco() {
         tronchi.create(cascata1.x + 140, -100, 'mud');
         tronchi.create(cascata1.x + 360, -300, 'mud');
@@ -125,56 +135,51 @@ function create() {
     rain.alpha = 0.2;
     rain.start(false, 1600, 5, 0, false);
 
-    // Ground
-    ground = game.add.group();
-    ground.enableBody = true;
-    ground.create(0, game.world.height - 100, 'platform');
-    ground.create(1000, game.world.height - 100, 'platform');
-    ground.create(2000, game.world.height - 100, 'platform');
-    ground.create(3000, game.world.height - 100, 'platform');
-    groundBig = ground.create(4000, game.world.height - 100, 'platform');
-    ground.setAll('scale.x', 500);
-    ground.setAll('scale.y', 100);
-    ground.setAll('body.immovable', true);
-    groundBig.scale.x = 2000;
-
     // Sasso
-    sasso = game.add.sprite(1000, game.world.height - 600, 'mud')
-    sasso.scale.setTo(100,100);
+    sasso = game.add.sprite(4250, game.world.height - 2000, 'sasso');
     game.physics.arcade.enable(sasso);
+    sasso.enableBody = true;
     sasso.body.gravity.y = 700;
     sasso.body.bounce.x = 0.2;
     sasso.body.drag.x = 150;
     sasso.body.maxVelocity.x = 60;
+    sasso.body.setCircle(45, 18, 0);
+    sasso.anchor.setTo(.5,.5);
 
     // Zattera
-    zattera = game.add.sprite(1500, game.world.height - 110, 'mud')
-    zattera.scale.setTo(80,20);
+    zattera = game.add.sprite(1150, game.world.height - 120, 'zattera')
     game.physics.arcade.enable(zattera);
     zattera.body.bounce.x = 0.5;
     zattera.body.drag.x = 50;
     zattera.body.maxVelocity.x = 100;
+    zattera.scale.setTo(.2,.2)
 
     // Mud
-    mud = game.add.sprite(500, game.world.height - 100, 'mud');
-    mud.scale.setTo(500, 100);
+    mud = game.add.sprite(272, game.world.height - 112, 'mud');
+    mud.scale.setTo(464, 112);
     game.physics.arcade.enable(mud);
     mud.alpha = 0.95;
     mud.body.immovable = true;
 
     // Water
-    water = game.add.sprite(1500, game.world.height - 100, 'water');
-    water.scale.setTo(500, 100);
+    water = game.add.sprite(1120, game.world.height - 112, 'water');
+    water.scale.setTo(576, 112);
     game.physics.arcade.enable(water);
     water.alpha = 0.4;
     water.body.immovable = true;
+
+    // Arcade Slopes
+    mappa = game.add.tilemap('tilemap');
+    mappa.addTilesetImage('slopes-green', 'slopes-green');
+    mappa.setCollisionBetween(1, 38);
+    ground = mappa.createLayer('ground');
+    game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
 
     // Barra Fame
     barra = game.add.graphics(25, 25);
     barra.lineStyle(2, 0xffffff, .5);
     barra.drawRect(0, 0, 250, 20);
     barra.fixedToCamera = true;
-
     fame = game.add.graphics(25, 25);
     fame.beginFill(0xfefefe, .2);
     fame.drawRect(0, 0, 250, 20);
@@ -190,5 +195,9 @@ function create() {
 
     // Camera
     game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.2, 0.2);
+
+    // Enable Slopes
+    game.slopes.enable([player, fruits, sasso, zattera, maiale]);
+    game.slopes.preferY = true;
 
 }
