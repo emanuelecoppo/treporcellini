@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <head>
 
-	<meta charset="UTF-8" />
-    <script src="phaser-2.11.1.min.js"></script>
-    <script src="functions/preload.js"></script>
-    <script src="functions/create.js"></script>
-    <script src="functions/update.js"></script>
-	<script src="functions/render.js"></script>
-    <script src="functions/functions.js"></script>
+	<meta charset='UTF-8' />
+	<title>I Tre Porcellini: 10 anni dopo</title>
+	<script src='phaser-2.11.1.min.js'></script>
+	<script src='phaser-arcade-slopes.min.js'></script>
+    <script src='functions/loading.js'></script>
+	<script src='functions/menu.js'></script>
+	<script src='functions/level1.js'></script>
+	<script src='functions/level2.js'></script>
+	<script src='functions/gameover.js'></script>
 
     <style>
-		body {
-			margin: 0;
-			background-color: #000;
-		}
-		canvas {
-			margin:0;
-		}
+		body {margin: 0; background-color: #000;}
+		canvas {margin:0;}
     </style>
 
 </head>
@@ -24,28 +21,16 @@
 
 <script>
 
-	var player;
-	var mud;
-	var water;
-	var platforms;
-	var ground;
-	var sasso;
-	var soffio;
-	var walk;
-	var jump;
 	var facing = 'right';
-	var zattera;
-	var cursors;
-	var tronchi;
-	var rami;
-	var ramo;
 
-	game = new Phaser.Game(1024, 768, Phaser.CANVAS, '', {
-		preload: preload,
-		create: create,
-		update: update,
-		render: render
-	});
+	var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'game');
+	game.state.add('bootState', bootState);
+	game.state.add('loadingState', loadingState);
+	game.state.add('menuState', menuState);
+	game.state.add('level1', level1);
+	game.state.add('level2', level2);
+	game.state.add('gameOver', gameOver);
+	game.state.start('bootState');
 
 </script>
 
