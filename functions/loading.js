@@ -44,7 +44,8 @@ var loadingState = {
         game.load.image('mud', 'objects/mud.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
-        game.load.tilemap('tilemap', 'tilemaps/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('demo', 'tilemaps/demo.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level1', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
     },
 
     create: function() {
