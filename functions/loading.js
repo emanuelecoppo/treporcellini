@@ -50,6 +50,6 @@ var loadingState = {
 
     create: function() {
         game.stage.backgroundColor = "#555";
-        game.state.start('menuState');
+        game.state.start('level1');
     }
 }

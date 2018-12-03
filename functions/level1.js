@@ -11,26 +11,70 @@ var level1 = {
         spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         s = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
         // World
         game.world.setBounds(0, 0, 4200*16, 200*16);
 
-        // Parallax
+        // Background
         parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax0');
         parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax1');
         parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax2');
         parallax0.fixedToCamera = true;
         parallax1.fixedToCamera = true;
         parallax2.fixedToCamera = true;
+        grottaBg = game.add.graphics(0, game.world.height-58*16);
+        grottaBg.beginFill(0x221100, 1);
+        grottaBg.drawRect(0, 0, 443*16, 58*16);
+        grottaBg.endFill();
 
-        // Cascata
+        // Water
+        water = game.add.group();
+        water.enableBody = true;
+        water.alpha = 0.4;
+        waterCascata = water.create(3380*16, 44*16, 'water');
+        waterCascata.scale.setTo(370*16, 156*16);
+        waterGrotta = water.create(70*16, game.world.height-25, 'water');
+        waterGrotta.scale.setTo(250*16, 25);
+        waterPonte = water.create(1080*16, game.world.height-600, 'water');
+        waterPonte.scale.setTo(70*16, 600);
+        waterZattera = water.create(1730*16, game.world.height-49*16, 'water');
+        waterZattera.scale.setTo(253*16, 49*16);
+        water.setAll('body.immovable', true);
+
+        // Tronchi
+        tronchi = game.add.group();
+        tronchi.enableBody = true;
+
+        game.time.events.loop(Phaser.Timer.SECOND*4, creaTronco, game);
+        function creaTronco() {
+            tronchi.create(3463*16, 43*16, 'mud');
+
+            tronchi.create(3493*16, 43*16, 'mud');//
+
+            tronchi.create(3534*16, 43*16, 'mud');
+            tronchi.create(3554*16, 36*16, 'mud');
+
+            tronchi.create(3620*16, 43*16, 'mud');
+            tronchi.create(3626*16, 28*16, 'mud');
+            tronchi.create(3639*16, 36*16, 'mud');
+
+            tronchi.create(3678*16, 43*16, 'mud');
+        }
+
         // Alberi
         // Rami
 
         // Fruits
         fruits = game.add.group()
         fruits.enableBody = true;
-        for (var i = 0; i < 15; i++) { fruit = fruits.create(i*550, 0, 'fruit'); }
+        for (var i = 0; i < 100; i++) { fruit = fruits.create(i*550, 0, 'fruit'); }
         fruits.setAll('body.gravity.y', 600);
         fruits.setAll('scale.x', .1);
         fruits.setAll('scale.y', .1);
@@ -43,27 +87,19 @@ var level1 = {
         maiali.create(11500, 2000, 'lupo');
 
         maiali.children.forEach( function(maiale) {
-
-            maiale.posX = maiale.x; //memorizza posizione X iniziale
+            maiale.posX = maiale.x; //memorizza x iniziale
             maiale.anchor.setTo(.5,.5);
             maiale.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
             maiale.frame = 11;
             game.physics.arcade.enable(maiale);
             maiale.body.gravity.y = 1000;
             maiale.body.maxVelocity.x = 0;
-        });
 
-
-            maiali.children.forEach( function(maiale) {
-                torcia = maiale.addChild(game.make.sprite(0, 0, 'torcia'));
-                torcia.anchor.setTo(1,.5);
-                torcia.scale.setTo(.5,.5);
-                torcia.alpha = .5;
-                game.physics.arcade.enable(torcia);
-
-            });
-
-            maiali.children.forEach( function(maiale) {
+            torcia = maiale.addChild(game.make.sprite(0, 0, 'torcia'));
+            torcia.anchor.setTo(1,.5);
+            torcia.scale.setTo(.5,.5);
+            torcia.alpha = .5;
+            game.physics.arcade.enable(torcia);
 
             maialeA = game.add.tween(maiale).to( {x: maiale.posX-200}, 2000, 'Linear').delay(2000);
             maialeB = game.add.tween(maiale).to( {x: maiale.posX    }, 2000, 'Linear').delay(2000);
@@ -79,11 +115,10 @@ var level1 = {
             maialeD.onComplete.add(function(){ maiale.animations.stop(); maiale.frame = 11; torcia.kill() });
             maialeA.chain(maialeB, maialeC, maialeD, maialeA);
             maialeA.start();
-
         });
 
         // Player
-        player = game.add.sprite(10670, 2000, 'lupo');
+        player = game.add.sprite(50600, 600, 'lupo');
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
         player.scale.setTo(.8,.8);
@@ -91,30 +126,32 @@ var level1 = {
         player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20, true);
         player.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
 
-        /* -- FLIES -- */
-
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
         soffio.anchor.setTo(0,1);
         soffio.alpha = .2;
         game.physics.arcade.enable(soffio);
 
-        // Rocks
-        // Tronchi
         // Rain
-        // Sasso
-        // Zattera
-        // Mud
 
-        // Water
-        water = game.add.group();
-        water.enableBody = true;
-        water.alpha = 0.4;
-        waterGrotta = water.create(1130, game.world.height-25, 'water');
-        waterGrotta.scale.setTo(4070, 25);
-        waterPonte = water.create(17400, game.world.height-600, 'water');
-        waterPonte.scale.setTo(910, 600);
-        water.setAll('body.immovable', true);
+        // Sasso
+        sasso = game.add.sprite(3165*16, 45*16, 'sasso');
+        sasso.anchor.setTo(.5,.5);
+        game.physics.arcade.enable(sasso);
+        sasso.body.gravity.y = 1000;
+        sasso.body.drag.x = 100;
+        sasso.body.maxVelocity.x = 100;
+        sasso.scale.setTo(1.5,1.5);
+
+        // Zattera
+        zattera = game.add.sprite(1740*16, game.world.height-49*16, 'zattera')
+        game.physics.arcade.enable(zattera);
+        zattera.body.bounce.x = 0.5;
+        zattera.body.drag.x = 50;
+        zattera.body.maxVelocity.x = 100;
+        zattera.scale.setTo(.2,.2)
+
+        // Mud
 
         // Arcade Slopes
         mappa = game.add.tilemap('level1');
@@ -123,7 +160,7 @@ var level1 = {
         ground = mappa.createLayer('ground');
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
 
-        game.slopes.enable([player, fruits, maiali]);
+        game.slopes.enable([player, fruits, maiali, sasso, zattera]);
         game.slopes.preferY = true;
 
         // Barra Fame
@@ -171,27 +208,34 @@ var level1 = {
         fuga.drawRect(0, 0, 3000, game.world.height);
         fuga.endFill();
         game.physics.arcade.enable(fuga);
-
-        // Camera
-        game.camera.follow(player, .1, .1);
-        game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
-
     },
 
     update: function() {
 
+        // Camera
         if (game.physics.arcade.overlap(player, fuga)) {
             game.camera.unfollow();
             game.camera.x += 4;
             if (player.x <= game.camera.x) {respawn()}
         }
+        // else if (player.x > waterCascata.x) {
+        //     game.camera.follow(player, .1, .1);
+        // }
         else {
             game.camera.follow(player, .1, .1);
+            game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
         }
 
         // Collisions
-        game.physics.arcade.collide([player, maiali], [ground]);
-        game.physics.arcade.collide(fruits, [ground]);
+        game.physics.arcade.collide([player, maiali], [ground, tronchi]);
+        game.physics.arcade.collide(fruits, [ground, tronchi]);
+
+        zattera.body.immovable = true;
+        sasso.body.immovable = true;
+        game.physics.arcade.collide([sasso, zattera], player);
+        zattera.body.immovable = false;
+        sasso.body.immovable = false;
+        game.physics.arcade.collide([sasso, zattera], ground);
 
         // Parallax
         parallax0.tilePosition.x = 0;
@@ -250,21 +294,13 @@ var level1 = {
             }
             // Sasso
             if (game.physics.arcade.overlap(soffio, sasso)) {
-                if (facing == 'left') {
-                    sasso.body.velocity.x -= 5;
-                }
-                else if (facing == 'right') {
-                    sasso.body.velocity.x += 5;
-                }
+                if (facing == 'left') {sasso.body.velocity.x -= 5}
+                else if (facing == 'right') {sasso.body.velocity.x += 5}
             }
             // Zattera
             if (zattera.body.touching.up == true) {
-                if (facing == 'left') {
-                    zattera.body.velocity.x += 5;
-                }
-                else if (facing == 'right') {
-                    zattera.body.velocity.x -= 5;
-                }
+                if (facing == 'left') {zattera.body.velocity.x += 5}
+                else if (facing == 'right') {zattera.body.velocity.x -= 5}
             }
         }
         else {
@@ -310,11 +346,31 @@ var level1 = {
         //    respawn();
         // }
 
+        // Teleport
+        key1.onDown.add( function() { player.position.setTo(0, 170*16) });
+        key2.onDown.add( function() { player.position.setTo(450*16, 150*16) });
+        key3.onDown.add( function() { player.position.setTo(1140*16, 140*16) });
+        key4.onDown.add( function() { player.position.setTo(1970*16, 140*16) });
+        key5.onDown.add( function() { player.position.setTo(3070*16, 115*16) });
+        key6.onDown.add( function() { player.position.setTo(3370*16, 38*16) });
+        key7.onDown.add( function() { player.position.setTo(3900*16, 38*16) });
+
+        // Tronchi
+        tronchi.children.forEach( function(tronco) {
+            tronco.anchor.setTo(.5, 0);
+            tronco.scale.setTo(100, 20);
+            tronco.body.immovable = true;
+            tronco.body.acceleration.y = 50;
+            tronco.body.maxVelocity.y = 180;
+            tronco.alpha = 0;
+
+            if (tronco.y >= 43*16) {tronco.alpha = 1}
+            if (tronco.y > game.world.height) {tronco.destroy()}
+        });
+
     },
 
     render: function() {
-        // game.context.fillStyle = 'rgba(255,0,0,0.05)';
-        // game.context.fillRect(game.camera.deadzone.x, game.camera.deadzone.y, game.camera.deadzone.width, game.camera.deadzone.height);
         game.debug.spriteCoords(player, 10, 762);
     }
 }
