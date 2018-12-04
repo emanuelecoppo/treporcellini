@@ -60,12 +60,12 @@ var level1 = {
 
             tronchi.create(3534*16, 43*16, 'mud');
             tronchi.create(3554*16, 36*16, 'mud');
+            tronchi.create(3587*16, 42*16, 'mud');
+            tronchi.create(3615*16, 45*16, 'mud');
+            tronchi.create(3625*16, 18*16, 'mud');
+            tronchi.create(3633*16, 35*16, 'mud');
 
-            tronchi.create(3620*16, 43*16, 'mud');
-            tronchi.create(3626*16, 28*16, 'mud');
-            tronchi.create(3639*16, 36*16, 'mud');
-
-            tronchi.create(3678*16, 43*16, 'mud');
+            tronchi.create(3665*16, 43*16, 'mud');
         }
 
         // Alberi
@@ -218,9 +218,9 @@ var level1 = {
             game.camera.x += 4;
             if (player.x <= game.camera.x) {respawn()}
         }
-        // else if (player.x > waterCascata.x) {
-        //     game.camera.follow(player, .1, .1);
-        // }
+         else if (player.x > waterCascata.x) {
+             game.camera.follow(player, .1, .1);
+         }
         else {
             game.camera.follow(player, .1, .1);
             game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
