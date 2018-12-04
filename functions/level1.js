@@ -6,7 +6,7 @@ var level1 = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.plugins.add(Phaser.Plugin.ArcadeSlopes);
 
-        // Controls
+        // Controllli
         cursors = game.input.keyboard.createCursorKeys();
         spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
