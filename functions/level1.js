@@ -20,7 +20,7 @@ var level1 = {
         key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
         // World
-        game.world.setBounds(0, 0, 4200*16, 200*16);
+        game.world.setBounds(0, 0, 3870*16, 200*16);
 
         // Background
         parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax0');
@@ -33,6 +33,55 @@ var level1 = {
         grottaBg.beginFill(0x221100, 1);
         grottaBg.drawRect(0, 0, 443*16, 58*16);
         grottaBg.endFill();
+
+        // Trees (quelli con i rami)
+        trees = game.add.group();
+        tree1 = trees.create(1414*16, 0, 'brown');
+        tree2 = trees.create(1460*16, 0, 'brown');
+        tree3 = trees.create(1510*16, 0, 'brown');
+        tree4 = trees.create(1556*16, 0, 'brown');
+        tree5 = trees.create(1630*16, 0, 'brown');
+        tree6 = trees.create(2230*16, 0, 'brown');
+        tree7 = trees.create(2267*16, 0, 'brown');
+        tree8 = trees.create(2343*16, 0, 'brown');
+        tree9 = trees.create(2465*16, 0, 'brown');
+        tree10 = trees.create(2515*16, 0, 'brown');
+        tree11 = trees.create(2644*16, 0, 'brown');
+        trees.setAll('anchor.x', .5);
+        trees.setAll('scale.x', 6*16);
+        trees.setAll('scale.y', game.world.height);
+
+        // Rami
+        rami = game.add.group();
+        rami.enableBody = true;
+        rami.create( tree1.left -50, 129*16, 'brown');
+        rami.create( tree2.left -50, 119*16, 'brown');
+        rami.create( tree2.right+50, 110*16, 'brown');
+        rami.create( tree2.right+50, 129*16, 'brown');
+        rami.create( tree2.right+50, 139*16, 'brown');
+        rami.create( tree3.left -50, 139*16, 'brown');
+        rami.create( tree3.right+50, 129*16, 'brown');
+        rami.create( tree4.left -50, 134*16, 'brown');
+        rami.create( tree4.right+50, 128*16, 'brown');
+        rami.create( tree5.left -50, 133*16, 'brown');
+        rami.create( tree6.left -50, 129*16, 'brown');
+        rami.create( tree7.left -50, 141*16, 'brown');
+        rami.create( tree7.right+50, 129*16, 'brown');
+        rami.create( tree8.left -50, 134*16, 'brown');
+        rami.create( tree8.right+50, 141*16, 'brown');
+        rami.create( tree9.left -50, 136*16, 'brown');
+        rami.create( tree9.right+50, 129*16, 'brown');
+        rami.create(tree10.left -50, 138*16, 'brown');
+        rami.create(tree10.right+50, 128*16, 'brown');
+        rami.create(tree11.left -50, 139*16, 'brown');
+
+        rami.children.forEach( function(ramo) {
+            ramo.posY = ramo.body.y //memorizza Y iniziale
+            ramo.anchor.x = .5;
+            ramo.scale.setTo(100,16);
+            ramo.body.immovable = true;
+            ramo.body.maxVelocity.y = 800;
+        })
 
         // Stalattiti
         stalattiti = game.add.group();
@@ -52,13 +101,13 @@ var level1 = {
         water = game.add.group();
         water.enableBody = true;
         water.alpha = 0.4;
-        waterCascata = water.create(3380*16, 44*16, 'water');
+        waterCascata = water.create(3380*16, 44*16, 'blue');
         waterCascata.scale.setTo(370*16, 156*16);
-        waterGrotta = water.create(70*16, game.world.height-25, 'water');
+        waterGrotta = water.create(70*16, game.world.height-25, 'blue');
         waterGrotta.scale.setTo(250*16, 25);
-        waterPonte = water.create(1080*16, game.world.height-600, 'water');
-        waterPonte.scale.setTo(70*16, 600);
-        waterZattera = water.create(1730*16, game.world.height-49*16, 'water');
+        waterPonte = water.create(1080*16, game.world.height-400, 'blue');
+        waterPonte.scale.setTo(70*16, 400);
+        waterZattera = water.create(1730*16, game.world.height-49*16, 'blue');
         waterZattera.scale.setTo(253*16, 49*16);
         water.setAll('body.immovable', true);
 
@@ -68,19 +117,16 @@ var level1 = {
 
         game.time.events.loop(Phaser.Timer.SECOND*4, creaTronco, game);
         function creaTronco() {
-            tronchi.create(3463*16, 43*16, 'mud');
-            tronchi.create(3493*16, 43*16, 'mud');
-            tronchi.create(3536*16, 43*16, 'mud');
-            tronchi.create(3554*16, 34*16, 'mud');
-            tronchi.create(3587*16, 42*16, 'mud');
-            tronchi.create(3615*16, 45*16, 'mud');
-            tronchi.create(3625*16, 18*16, 'mud');
-            tronchi.create(3633*16, 35*16, 'mud');
-            tronchi.create(3668*16, 43*16, 'mud');
+            tronchi.create(3463*16, 43*16, 'brown');
+            tronchi.create(3493*16, 43*16, 'brown');
+            tronchi.create(3536*16, 43*16, 'brown');
+            tronchi.create(3554*16, 34*16, 'brown');
+            tronchi.create(3587*16, 42*16, 'brown');
+            tronchi.create(3615*16, 45*16, 'brown');
+            tronchi.create(3625*16, 18*16, 'brown');
+            tronchi.create(3633*16, 35*16, 'brown');
+            tronchi.create(3668*16, 43*16, 'brown');
         }
-
-        // Alberi
-        // Rami
 
         // Fruits
         fruits = game.add.group()
@@ -106,7 +152,7 @@ var level1 = {
             maiale.body.gravity.y = 1000;
             maiale.body.maxVelocity.x = 0;
 
-            torcia = maiale.addChild(game.make.sprite(0, 0, 'torcia'));
+            var torcia = maiale.addChild(game.make.sprite(0, 0, 'torcia'));
             torcia.anchor.setTo(1,.5);
             torcia.scale.setTo(.5,.5);
             torcia.alpha = .5;
@@ -155,16 +201,27 @@ var level1 = {
         sasso.scale.setTo(1.5,1.5);
 
         // Zattera
-        zattera = game.add.sprite(1740*16, game.world.height-49*16, 'zattera')
+        zattera = game.add.sprite(1740*16, game.world.height-49.5*16, 'zattera')
         game.physics.arcade.enable(zattera);
         zattera.body.bounce.x = 0.5;
         zattera.body.drag.x = 50;
-        zattera.body.maxVelocity.x = 100;
+        zattera.body.maxVelocity.x = 125;
         zattera.scale.setTo(.2,.2)
 
-        // Mud
+        // Fango
+        fango = game.add.group();
+        fango.enableBody = true;
+        fango.alpha = .95;
+        fango.create(1285*16, 150*16, 'brown');
+        fango.create(1494*16, 150*16, 'brown');
+        fango.create(2200*16, 150*16, 'brown');
+        fango.create(2390*16, 150*16, 'brown');
+        fango.create(2531*16, 150*16, 'brown');
+        fango.setAll('body.immovable', true);
+        fango.setAll('scale.x', 82*16);
+        fango.setAll('scale.y', 10*16);
 
-        // Arcade Slopes
+        // Slopes
         mappa = game.add.tilemap('level1');
         mappa.addTilesetImage('slopes-green', 'slopes-green');
         mappa.setCollisionBetween(1, 38);
@@ -173,10 +230,16 @@ var level1 = {
         game.slopes.enable([player, fruits, maiali, sasso, zattera]);
         game.slopes.preferY = true;
 
+        // Segreti
+        segreto = game.add.graphics(3750*16, 50*16);
+        segreto.beginFill(0x21572f, 1);
+        segreto.drawRect(0, 0, 60*16, 22*16);
+        segreto.endFill();
+
         // Fuga
         fuga = game.add.graphics(11800, 0);
         fuga.beginFill(0xffffff, .05);
-        fuga.drawRect(0, 0, 3000, game.world.height);
+        fuga.drawRect(0, 0, 5000, game.world.height);
         fuga.endFill();
 
         // Barra Fame
@@ -227,7 +290,7 @@ var level1 = {
             game.camera.x += 4;
             if (player.x <= game.camera.x) {respawn()}
         }
-         else if (player.x > waterCascata.left && player.x < waterCascata.right) {
+         else if (player.x > waterCascata.left && player.x < waterCascata.right-15*16) {
              game.camera.follow(player, .1, .1);
              game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 768/2, 200, 0);
         }
@@ -236,12 +299,15 @@ var level1 = {
             game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
         }
 
+        // Segreti
+        if (player.x > segreto.left && player.x < segreto.right && player.y > segreto.top) {segreto.alpha = 0}
+        else {segreto.alpha = 1}
+
         // Collisions
-        game.physics.arcade.collide([player, maiali], [ground, tronchi]);
-        game.physics.arcade.collide(fruits, [ground, tronchi]);
+        game.physics.arcade.collide([player, maiali, fruits], [ground, tronchi, rami]);
         zattera.body.immovable = true; sasso.body.immovable = true; game.physics.arcade.collide([sasso, zattera], player);
         zattera.body.immovable = false; sasso.body.immovable = false; game.physics.arcade.collide([sasso, zattera], ground);
-        game.physics.arcade.overlap(player, fruits, eatFruit, null, this)
+        game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
 
         // Parallax
         parallax0.tilePosition.x = 0;
@@ -252,9 +318,16 @@ var level1 = {
         player.body.velocity.x = 0.8 * player.body.velocity.x;
         player.body.drag.x = 1600;
 
-        walk = 300;
-        jump = 900;
-        player.body.gravity.y = 2000;
+        if (game.physics.arcade.overlap(player, fango)) {
+            walk = 100;
+            jump = 75;
+            player.body.gravity.y = 150;
+        }
+        else {
+            walk = 300;
+            jump = 900;
+            player.body.gravity.y = 2000;
+        }
 
         player.body.maxVelocity.y = jump;
         player.body.maxVelocity.x = walk;
@@ -340,7 +413,7 @@ var level1 = {
         // Teleport
         key1.onDown.add( function() {player.position.setTo(0, 170*16)});
         key2.onDown.add( function() {player.position.setTo(450*16, 150*16)});
-        key3.onDown.add( function() {player.position.setTo(1140*16, 140*16)});
+        key3.onDown.add( function() {player.position.setTo(1490*16, 140*16)});
         key4.onDown.add( function() {player.position.setTo(1970*16, 140*16)});
         key5.onDown.add( function() {player.position.setTo(3070*16, 115*16)});
         key6.onDown.add( function() {player.position.setTo(3370*16, 38*16)});
@@ -356,6 +429,22 @@ var level1 = {
             tronco.alpha = 0;
             if (tronco.y >= 43*16) {tronco.alpha = 1}
             if (tronco.y > game.world.height) {tronco.destroy()}
+        })
+
+        // Rami
+        rami.children.forEach( function(ramo) {
+            if (ramo.body.touching.up) {
+                game.time.events.add(Phaser.Timer.SECOND*0.2, cadeRamo, this);
+
+                function cadeRamo() {
+                    if (ramo.body.touching.up) {ramo.body.gravity.y = 800}
+                }
+            }
+            if (ramo.y > game.world.height + 3000) {
+                ramo.body.gravity.y = 0;
+                ramo.body.velocity.y = 0;
+                ramo.body.y = ramo.posY;
+            }
         })
 
         // Stalattiti

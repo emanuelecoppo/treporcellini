@@ -40,8 +40,8 @@ var loadingState = {
         game.load.image('fruit', 'objects/fruit.png');
         game.load.image('sasso', 'objects/sasso.png');
         game.load.image('zattera', 'objects/zattera.png');
-        game.load.image('water', 'objects/water.png');
-        game.load.image('mud', 'objects/mud.png');
+        game.load.image('blue', 'objects/blue.png');
+        game.load.image('brown', 'objects/brown.png');
         game.load.image('stalattite', 'objects/stalattite.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
