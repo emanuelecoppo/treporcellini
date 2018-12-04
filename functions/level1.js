@@ -353,7 +353,7 @@ var level1 = {
         key4.onDown.add( function() { player.position.setTo(1970*16, 140*16) });
         key5.onDown.add( function() { player.position.setTo(3070*16, 115*16) });
         key6.onDown.add( function() { player.position.setTo(3370*16, 38*16) });
-        key7.onDown.add( function() { player.position.setTo(3900*16, 38*16) });
+        key7.onDown.add( function() { player.position.setTo(3600*16, 38*16) });
 
         // Tronchi
         tronchi.children.forEach( function(tronco) {
