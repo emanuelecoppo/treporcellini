@@ -58,14 +58,14 @@ var level1 = {
 
             tronchi.create(3493*16, 43*16, 'mud');//
 
-            tronchi.create(3534*16, 43*16, 'mud');
-            tronchi.create(3554*16, 36*16, 'mud');
+            tronchi.create(3536*16, 43*16, 'mud');
+            tronchi.create(3554*16, 34*16, 'mud');
             tronchi.create(3587*16, 42*16, 'mud');
             tronchi.create(3615*16, 45*16, 'mud');
             tronchi.create(3625*16, 18*16, 'mud');
             tronchi.create(3633*16, 35*16, 'mud');
 
-            tronchi.create(3665*16, 43*16, 'mud');
+            tronchi.create(3668*16, 43*16, 'mud');
         }
 
         // Alberi
