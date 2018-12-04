@@ -34,6 +34,23 @@ var level1 = {
         grottaBg.drawRect(0, 0, 443*16, 58*16);
         grottaBg.endFill();
 
+        // Stalattiti
+        stalattiti = game.add.group();
+        stalattiti.enableBody = true;
+        stalattiti.create(45*16, 168*16, 'stalattite');
+        stalattiti.create(84*16, 167*16, 'stalattite');
+        stalattiti.create(149*16, 166*16, 'stalattite');
+        stalattiti.create(184*16, 169*16, 'stalattite');
+        stalattiti.create(216*16, 169*16, 'stalattite');
+        stalattiti.create(252*16, 165*16, 'stalattite');
+        stalattiti.create(299*16, 162*16, 'stalattite');
+        stalattiti.create(363*16, 165*16, 'stalattite');
+
+        stalattiti.children.forEach( function(stalattite) {
+            stalattite.body.immovable = true;
+            stalattite.anchor.setTo(.5,0);
+        });
+
         // Water
         water = game.add.group();
         water.enableBody = true;
@@ -366,6 +383,13 @@ var level1 = {
 
             if (tronco.y >= 43*16) {tronco.alpha = 1}
             if (tronco.y > game.world.height) {tronco.destroy()}
+        });
+
+        // Stalattiti
+        stalattiti.children.forEach( function(stalattite) {
+            if (player.x > stalattite.left-100 && player.x < stalattite.right+100) {stalattite.body.gravity.y = 900};
+            if (game.physics.arcade.overlap(player, stalattiti)) {respawn()};
+            if (stalattite.top > game.world.height) {stalattite.kill()};
         });
 
     },
