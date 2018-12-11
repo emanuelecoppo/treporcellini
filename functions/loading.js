@@ -31,6 +31,8 @@ var loadingState = {
         game.load.image('parallax0', 'background/parallax0.png');
         game.load.image('parallax1', 'background/parallax1.png');
         game.load.image('parallax2', 'background/parallax2.png');
+        game.load.image('grottaBg', 'background/grottaBg.png');
+        game.load.image('grottaP', 'background/grottaP.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 100, 100);
         game.load.image('soffio', 'characters/soffio.png');

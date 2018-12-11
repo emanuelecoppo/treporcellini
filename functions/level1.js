@@ -29,10 +29,12 @@ var level1 = {
         parallax0.fixedToCamera = true;
         parallax1.fixedToCamera = true;
         parallax2.fixedToCamera = true;
-        grottaBg = game.add.graphics(0, game.world.height-58*16);
-        grottaBg.beginFill(0x221100, 1);
-        grottaBg.drawRect(0, 0, 443*16, 58*16);
-        grottaBg.endFill();
+        grottaBg = game.add.sprite(0, game.world.height, 'grottaBg');
+        grottaBg.anchor.y = 1;
+        // grottaBg = game.add.graphics(0, game.world.height-58*16);
+        // grottaBg.beginFill(0x221100, 1);
+        // grottaBg.drawRect(0, 0, 443*16, 58*16);
+        // grottaBg.endFill();
 
         // Trees (quelli con i rami)
         trees = game.add.group();
