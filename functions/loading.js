@@ -45,14 +45,18 @@ var loadingState = {
         game.load.image('blue', 'objects/blue.png');
         game.load.image('brown', 'objects/brown.png');
         game.load.image('stalattite', 'objects/stalattite.png');
+        game.load.image('checkpoint', 'objects/checkpoint.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
         game.load.tilemap('demo', 'tilemaps/demo.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+        // Img
+        game.load.image('menu', 'img/menu.jpg');
     },
 
     create: function() {
         game.stage.backgroundColor = "#555";
-        game.state.start('level1');
+        game.camera.fade('#000', 100);
+        game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
     }
 }

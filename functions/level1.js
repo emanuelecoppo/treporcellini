@@ -1,7 +1,7 @@
 var level1 = {
 
     create: function() {
-
+        game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.plugins.add(Phaser.Plugin.ArcadeSlopes);
@@ -99,19 +99,15 @@ var level1 = {
         stalattiti.setAll('body.immovable', true);
         stalattiti.setAll('anchor.x', .5);
 
-        // Water
-        water = game.add.group();
-        water.enableBody = true;
-        water.alpha = 0.4;
-        waterCascata = water.create(3380*16, 44*16, 'blue');
+        // Water (dietro)
+        water1 = game.add.group();
+        water1.alpha = 0.4;
+        waterCascata = water1.create(3380*16, 44*16, 'blue');
         waterCascata.scale.setTo(370*16, 156*16);
-        waterGrotta = water.create(70*16, game.world.height-25, 'blue');
+        waterGrotta = water1.create(70*16, game.world.height-25, 'blue');
         waterGrotta.scale.setTo(250*16, 25);
-        waterPonte = water.create(1080*16, game.world.height-400, 'blue');
+        waterPonte = water1.create(1080*16, game.world.height-400, 'blue');
         waterPonte.scale.setTo(70*16, 400);
-        waterZattera = water.create(1730*16, game.world.height-49*16, 'blue');
-        waterZattera.scale.setTo(253*16, 49*16);
-        water.setAll('body.immovable', true);
 
         // Tronchi
         tronchi = game.add.group();
@@ -174,10 +170,26 @@ var level1 = {
             maialeD.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 11; torcia.kill()});
             maialeA.chain(maialeB, maialeC, maialeD, maialeA);
             maialeA.start();
-        });
+        })
+
+        // Checkpoints
+        checkpoints = game.add.group();
+        checkpoints.enableBody = true;
+        checkpoints.create(458*16, 150*16, 'checkpoint');
+        checkpoints.create(1490*16, 148*16, 'checkpoint');
+        checkpoints.create(1970*16, 147*16, 'checkpoint');
+        checkpoints.create(3070*16, 123*16, 'checkpoint');
+        checkpoints.create(3370*16, 41*16, 'checkpoint');
+
+        checkpoints.children.forEach( function(check) {
+            check.anchor.setTo(.5,.5);
+            check.scale.setTo(.7,.7);
+            // var checkText = check.addChild(game.make.text(0, -100, 'Checkpoint salvato', {font: "30px Arial", fill:'#fff'}));
+            // checkText.anchor.setTo(.5,.5);
+        })
 
         // Player
-        player = game.add.sprite(50600, 600, 'lupo');
+        player = game.add.sprite(checkSpawnX, checkSpawnY, 'lupo');
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
         player.scale.setTo(.8,.8);
@@ -209,6 +221,15 @@ var level1 = {
         zattera.body.drag.x = 50;
         zattera.body.maxVelocity.x = 125;
         zattera.scale.setTo(.2,.2)
+
+        // Water (davanti)
+        water2 = game.add.group();
+        water2.enableBody = true;
+        water2.alpha = 0.4;
+        waterZattera = water2.create(1730*16, game.world.height-49*16, 'blue');
+        waterZattera.scale.setTo(253*16, 49*16);
+        waterZattera.z = 100;
+        water2.setAll('body.immovable', true);
 
         // Fango
         fango = game.add.group();
@@ -257,30 +278,49 @@ var level1 = {
 
         // Pause
         pauseOverlay = game.add.graphics(0, 0);
-        pauseOverlay.beginFill(0x000000, 1);
+        pauseOverlay.beginFill('#000', 1);
         pauseOverlay.drawRect(0, 0, 1024, 768);
         pauseOverlay.endFill();
-        pauseOverlay.alpha = 0;
-        pauseOverlay.fixedToCamera = true;
+        pauseOverlay.alpha = .5;
 
-        pauseText = game.add.text(1024/2, 768/2, 'Paused', {font: "50px Arial", fill:'#fff'});
+        pauseText = game.add.text(1024/2, 768/2, 'PAUSA', {font: "60px Arial", fill:'#fff'});
         pauseText.anchor.setTo(.5,.5);
-        pauseText.alpha = 0;
-        pauseText.fixedToCamera = true;
 
-        pause = game.add.sprite(1024-25, 25, 'pause');
-        pause.fixedToCamera = true;
-        pause.anchor.setTo(1,0);
-        pause.scale.setTo(.1,.1);
-        pause.inputEnabled = true;
-        pause.input.useHandCursor = true;
-        pause.events.onInputUp.add(pauseGame);
-        enter.onDown.add(pauseGame)
+        continua = game.add.text(1024/2, 768-200, 'Continua', {font: "30px Arial", fill:'#fff'});
+        continua.anchor.setTo(.5,.5);
+        continua.events.onInputUp.add(pauseGame);
+
+        tornaMenu = game.add.text(1024/2, 768-150, 'Torna al Menu', {font: "30px Arial", fill:'#fff'});
+        tornaMenu.anchor.setTo(.5,.5);
+        tornaMenu.events.onInputUp.add(backMenu);
+
+        pauseScreen = game.add.group();
+        pauseScreen.fixedToCamera = true;
+        pauseScreen.alpha = 0;
+        pauseScreen.add(pauseOverlay); pauseScreen.add(pauseText); pauseScreen.add(continua); pauseScreen.add(tornaMenu);
+
+        pauseButton = game.add.sprite(1024-25, 25, 'pause');
+        pauseButton.anchor.setTo(1,0);
+        pauseButton.scale.setTo(.1,.1);
+        pauseButton.fixedToCamera = true;
+        pauseButton.inputEnabled = true;
+        pauseButton.input.useHandCursor = true;
+        pauseButton.events.onInputUp.add(pauseGame);
+
+        enter.onDown.add(pauseGame);
 
         function pauseGame() {
             game.paused = (game.paused) ? false : true;
-            pauseOverlay.alpha = (pauseOverlay.alpha) ? 0 : .5;
-            pauseText.alpha = (pauseText.alpha) ? 0 : 1;
+            pauseScreen.alpha = (pauseScreen.alpha) ? 0 : 1;
+            continua.inputEnabled = (game.paused) ? true : false;
+            tornaMenu.inputEnabled = (game.paused) ? true : false;
+            continua.input.useHandCursor = (game.paused) ? true : false;
+            tornaMenu.input.useHandCursor = (game.paused) ? true : false;
+        }
+        function backMenu() {
+            game.paused = false;
+            game.camera.fade('#000', 500);
+            game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
         }
     },
 
@@ -290,7 +330,7 @@ var level1 = {
         if (player.x > fuga.left && player.x < fuga.right) {
             game.camera.unfollow();
             game.camera.x += 4;
-            if (player.x <= game.camera.x) {respawn()}
+            if (player.x <= game.camera.x) {gameOver()}
         }
          else if (player.x > waterCascata.left && player.x < waterCascata.right-15*16) {
              game.camera.follow(player, .1, .1);
@@ -323,6 +363,11 @@ var level1 = {
         if (game.physics.arcade.overlap(player, fango)) {
             walk = 100;
             jump = 75;
+            player.body.gravity.y = 150;
+        }
+        else if (game.physics.arcade.overlap(player, water2)) {
+            walk = 150;
+            jump = 150;
             player.body.gravity.y = 150;
         }
         else {
@@ -384,18 +429,21 @@ var level1 = {
             soffio.kill();
         }
 
-        // Respawn
-        function respawn() {game.state.start('gameOver')}
+        // Game Over
+        function gameOver() {
+            game.camera.fade('#000', 50);
+            game.camera.onFadeComplete.add( function() {game.state.start('gameOver')} );
+        }
 
         // Out of bounds
-        if (player.y > game.world.height + player.height) {respawn()}
+        if (player.y > game.world.height + player.height) {gameOver()}
 
         // Vola (per test)
         if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0}
 
         // Barra Fame
         fame.width -= .025;
-        if (fame.width <= 0) {respawn();} //muore
+        if (fame.width <= 0) {gameOver();} //muore
         else if (fame.width <= 50) {fame.tint = 0xff0000;} //rosso
         else if (fame.width <= 100) {fame.tint = 0xffff00;} //giallo
         else if (fame.width > 100) {fame.tint = 0xfefefe;} //bianco
@@ -409,7 +457,7 @@ var level1 = {
 
         // // Maiale
         // if (game.physics.arcade.overlap(player, torcia)) {
-        //    respawn();
+        //    gameOver();
         // }
 
         // Teleport
@@ -452,10 +500,21 @@ var level1 = {
         // Stalattiti
         stalattiti.children.forEach( function(stalattite) {
             if (player.x > stalattite.left-100 && player.x < stalattite.right+100) {stalattite.body.gravity.y = 900};
-            if (game.physics.arcade.overlap(player, stalattiti)) {respawn()};
+            if (game.physics.arcade.overlap(player, stalattiti)) {gameOver()};
             if (stalattite.top > game.world.height) {stalattite.kill()};
         })
 
+        // Checkpoints
+        checkpoints.children.forEach( function(check) {
+            if (game.physics.arcade.overlap(player, check)) {
+                checkSpawnX = check.x;
+                checkSpawnY = check.y;
+                // checkText.revive();
+            }
+            else {
+                // checkText.kill();
+            }
+        })
     },
 
     render: function() {
