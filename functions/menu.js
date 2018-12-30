@@ -27,7 +27,7 @@ var menuState = {
 
         function changeState() {
             game.camera.fade('#000', 500);
-            game.camera.onFadeComplete.add( function() {game.state.start('level1')} );
+            game.camera.onFadeComplete.add( function() {game.state.start('intro')} );
         }
     }
 }

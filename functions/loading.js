@@ -33,6 +33,7 @@ var loadingState = {
         game.load.image('parallax2', 'background/parallax2.png');
         game.load.image('grottaBg', 'background/grottaBg.png');
         game.load.image('grottaP', 'background/grottaP.png');
+        game.load.image('tana', 'background/tana.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 100, 100);
         game.load.image('soffio', 'characters/soffio.png');
@@ -50,6 +51,7 @@ var loadingState = {
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
         game.load.tilemap('demo', 'tilemaps/demo.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('intro', 'tilemaps/intro.json', null, Phaser.Tilemap.TILED_JSON);
         // Img
         game.load.image('menu', 'img/menu.jpg');
     },

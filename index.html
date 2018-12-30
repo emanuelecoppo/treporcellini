@@ -7,6 +7,7 @@
 	<script src='phaser-arcade-slopes.min.js'></script>
     <script src='functions/loading.js'></script>
 	<script src='functions/menu.js'></script>
+	<script src='functions/intro.js'></script>
 	<script src='functions/level1.js'></script>
 	<script src='functions/level2.js'></script>
 	<script src='functions/demo.js'></script>
@@ -25,11 +26,12 @@
 	var facing = 'right';
 	var checkSpawnX = 0;
 	var checkSpawnY = 171*16;
-	
+
 	var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'game');
 	game.state.add('bootState', bootState);
 	game.state.add('loadingState', loadingState);
 	game.state.add('menuState', menuState);
+	game.state.add('intro', intro);
 	game.state.add('level1', level1);
 	game.state.add('level2', level2);
 	game.state.add('demo', demo);
