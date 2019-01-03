@@ -14,6 +14,9 @@ var intro = {
         // World
         game.world.setBounds(0, 0, 1024, 768);
 
+        // BG
+        bg = game.add.sprite(0, 0, 'intro');
+
         // Mamma
         mamma = game.add.sprite(0, 30*16, 'lupo');
         game.physics.arcade.enable(mamma);
@@ -44,6 +47,9 @@ var intro = {
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
         game.slopes.enable([lupo, mamma]);
         game.slopes.preferY = true;
+
+        tana.alpha = 0;
+        ground.alpha = 0;
 
         // Text
         style = {font:'20px Arial', fill:'#fff'};
