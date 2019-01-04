@@ -109,6 +109,8 @@ var level1 = {
         waterPonte = water1.create(1080*16, game.world.height-400, 'blue');
         waterPonte.scale.setTo(70*16, 400);
 
+        waterfall = game.add.tileSprite(waterCascata.x, waterCascata.y, 370*16, 156*16, 'waterfall');
+
         // Tronchi
         tronchi = game.add.group();
         tronchi.enableBody = true;
@@ -355,6 +357,8 @@ var level1 = {
         parallax0.tilePosition.x = 0;
         parallax1.tilePosition.x = -0.5 * game.camera.x;
         parallax2.tilePosition.x = -0.9 * game.camera.x;
+
+        waterfall.tilePosition.y += 2;
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;

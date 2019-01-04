@@ -35,7 +35,7 @@ var loadingState = {
         game.load.image('grottaP', 'background/grottaP.png');
         game.load.image('tana', 'background/tana.png');
         game.load.image('intro', 'background/intro.png');
-
+        game.load.image('waterfall', 'background/waterfall.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 100, 100);
         game.load.image('soffio', 'characters/soffio.png');

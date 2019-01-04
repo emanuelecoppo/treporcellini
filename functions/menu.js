@@ -13,6 +13,7 @@ var menuState = {
         comincia.anchor.setTo(.5,.5);
 
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        one = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
 
         comincia.inputEnabled = true;
         comincia.input.useHandCursor = true;
@@ -29,5 +30,8 @@ var menuState = {
             game.camera.fade('#000', 500);
             game.camera.onFadeComplete.add( function() {game.state.start('intro')} );
         }
+
+        one.onDown.add(function() {game.state.start('level1')});
+
     }
 }
