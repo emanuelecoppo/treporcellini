@@ -22,13 +22,13 @@ var gameOver = {
     update: function() {
         enter.onDown.add(changeState);
         continua.events.onInputUp.add(changeState);
-        tornaMenu.events.onInputUp.add(changeState2);
+        tornaMenu.events.onInputUp.add(backMenu);
 
         function changeState() {
             game.camera.fade('#000', 500);
-            game.camera.onFadeComplete.add( function() {game.state.start('level1')} );
+            game.camera.onFadeComplete.add( function() {game.state.start(currentLevel)} );
         }
-        function changeState2() {
+        function backMenu() {
             game.camera.fade('#000', 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
         }

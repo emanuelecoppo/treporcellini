@@ -21,7 +21,6 @@ var loadingState = {
         loadingBar.x = game.world.centerX - loadingBar.width/2;
         loadingBar.y = game.world.centerY - loadingBar.height/2;
         game.load.setPreloadSprite(loadingBar);
-
         game.add.text(game.world.centerX, game.world.centerY + 50, 'Loading...', {font: "25px Arial", fill:'#fff'}).anchor.setTo(.5,.5);
 
         game.load.baseURL = 'assets/';
@@ -49,11 +48,17 @@ var loadingState = {
         game.load.image('brown', 'objects/brown.png');
         game.load.image('stalattite', 'objects/stalattite.png');
         game.load.image('checkpoint', 'objects/checkpoint.png');
+        game.load.image('rametto', 'objects/rametto.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
-        game.load.tilemap('demo', 'tilemaps/demo.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.tilemap('level1', 'tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('intro', 'tilemaps/intro.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level1A', 'tilemaps/level1A.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level1B', 'tilemaps/level1B.json', null, Phaser.Tilemap.TILED_JSON);
+        //game.load.tilemap('level1C', 'tilemaps/level1C.json', null, Phaser.Tilemap.TILED_JSON);
+        //game.load.tilemap('level1D', 'tilemaps/level1D.json', null, Phaser.Tilemap.TILED_JSON);
+        //game.load.tilemap('level1E', 'tilemaps/level1E.json', null, Phaser.Tilemap.TILED_JSON);
+        //game.load.tilemap('level2A', 'tilemaps/level2A.json', null, Phaser.Tilemap.TILED_JSON);
+        //game.load.tilemap('level2B', 'tilemaps/level2B.json', null, Phaser.Tilemap.TILED_JSON);
         // Img
         game.load.image('menu', 'img/menu.jpg');
     },

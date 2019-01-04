@@ -5,16 +5,9 @@ var intro = {
         game.stage.backgroundColor = "#222";
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.plugins.add(Phaser.Plugin.ArcadeSlopes);
-
-        // Controlli
-        cursors = game.input.keyboard.createCursorKeys();
-        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-
-        // World
         game.world.setBounds(0, 0, 1024, 768);
 
-        // BG
+        // Background
         bg = game.add.sprite(0, 0, 'intro');
 
         // Mamma
@@ -61,8 +54,6 @@ var intro = {
         text1.alpha=0; text2.alpha=0; text3.alpha=0; text4.alpha=0;
 
         // Tween
-        ease = Phaser.Easing.Sinusoidal.InOut;
-
         textA = game.add.tween(text1).to( {alpha: 1}, 250).delay(1000);
         textB = game.add.tween(text2).to( {alpha: 1}, 250).delay(3000);
         textC = game.add.tween(text3).to( {alpha: 1}, 250).delay(3000);
@@ -87,7 +78,7 @@ var intro = {
 
         function changeState() {
             game.camera.fade('#000', 500);
-            game.camera.onFadeComplete.add( function() {game.state.start('level1')} );
+            game.camera.onFadeComplete.add( function() {game.state.start('level1A')} );
         }
     },
 
