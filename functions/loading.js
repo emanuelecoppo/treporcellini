@@ -56,7 +56,7 @@ var loadingState = {
         game.load.tilemap('intro', 'tilemaps/intro.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1A', 'tilemaps/level1A.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1B', 'tilemaps/level1B.json', null, Phaser.Tilemap.TILED_JSON);
-        //game.load.tilemap('level1C', 'tilemaps/level1C.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level1C', 'tilemaps/level1C.json', null, Phaser.Tilemap.TILED_JSON);
         //game.load.tilemap('level1D', 'tilemaps/level1D.json', null, Phaser.Tilemap.TILED_JSON);
         //game.load.tilemap('level1E', 'tilemaps/level1E.json', null, Phaser.Tilemap.TILED_JSON);
         //game.load.tilemap('level2A', 'tilemaps/level2A.json', null, Phaser.Tilemap.TILED_JSON);

@@ -112,6 +112,7 @@ var level1A = {
 
         // Maiali Tronco
         maiali = game.add.group();
+        maiali.enableBody = true;
         maiale1 = maiali.create(352*16, 72*16, 'lupo'); maiale1.scale.x = -1;
         maiale2 = maiali.create(375*16, 72*16, 'lupo'); maiale2.scale.x = -1;
         maiale3 = maiali.create(391*16, 72*16, 'lupo'); maiale3.scale.x = 1;
@@ -119,7 +120,6 @@ var level1A = {
         maiali.children.forEach( function(maiale) {
             maiale.anchor.setTo(.5,.5);
             maiale.frame = 12;
-            game.physics.arcade.enable(maiale);
             maiale.body.offset.x = 50;
 
             var torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
