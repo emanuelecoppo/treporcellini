@@ -4,6 +4,7 @@ var gameOver = {
         game.camera.flash('#000', 100);
         game.stage.backgroundColor = '#000';
         game.world.setBounds(0, 0, 1024, 768);
+        currentFame = 250;
 
         game.add.text(game.world.centerX, game.world.centerY, 'GAME OVER', {font: "60px Arial", fill:'#fff'}).anchor.setTo(.5,.5);
         continua = game.add.text(game.world.centerX, game.world.height-200, 'Continua', {font: "30px Arial", fill:'#fff'});

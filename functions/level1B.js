@@ -5,6 +5,7 @@ var level1B = {
         currentLevel = 'level1B';
         playerX = 482;
         playerY = 1095;
+
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -100,9 +101,6 @@ var level1B = {
         fango.setAll('scale.x', 82*16);
         fango.setAll('scale.y', 10*16);
 
-        // Torcia
-        torce = game.add.grou
-
         // Slopes
         mappa = game.add.tilemap('level1B');
         mappa.addTilesetImage('slopes-green', 'slopes-green');
@@ -130,8 +128,8 @@ var level1B = {
             torcia.scale.setTo(.5,.5);
             torcia.alpha = .5;
 
-            torciaA = game.add.tween(torcia).to( {angle: 20+20*Math.random()}, 1000+1000*Math.random(), sin).delay(250*Math.random());
-            torciaB = game.add.tween(torcia).to( {angle:-20-20*Math.random()}, 1000+1000*Math.random(), sin).delay(250*Math.random());
+            torciaA = game.add.tween(torcia).to( {angle: 10+10*Math.random()}, 500+500*Math.random(), sin).delay(250*Math.random());
+            torciaB = game.add.tween(torcia).to( {angle:-10-10*Math.random()}, 500+500*Math.random(), sin).delay(250*Math.random());
             torciaA.chain(torciaB, torciaA);
             torciaA.start();
         })
@@ -142,7 +140,7 @@ var level1B = {
         game.physics.arcade.enable(ponte);
         ponte.body.immovable = true;
 
-        // Barra Fame
+        // Fame
         barra = game.add.graphics(25, 25);
         barra.lineStyle(2, 0xffffff, .8);
         barra.drawRect(0, 0, 250, 20);
@@ -152,6 +150,7 @@ var level1B = {
         fame.drawRect(0, 0, 250, 20);
         fame.endFill();
         fame.fixedToCamera = true;
+        fame.width = currentFame;
 
         // Pause
         pauseOverlay = game.add.graphics(0, 0);
@@ -310,6 +309,7 @@ var level1B = {
 
         // Barra Fame
         fame.width -= .025;
+        currentFame = fame.width;
         if (fame.width <= 0) {gameOver();} //muore
         else if (fame.width <= 50) {fame.tint = 0xff0000;} //rosso
         else if (fame.width <= 100) {fame.tint = 0xffff00;} //giallo

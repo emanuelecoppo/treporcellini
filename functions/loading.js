@@ -49,6 +49,7 @@ var loadingState = {
         game.load.image('stalattite', 'objects/stalattite.png');
         game.load.image('checkpoint', 'objects/checkpoint.png');
         game.load.image('rametto', 'objects/rametto.png');
+        game.load.image('cespuglio', 'objects/cespuglio.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
         game.load.tilemap('intro', 'tilemaps/intro.json', null, Phaser.Tilemap.TILED_JSON);

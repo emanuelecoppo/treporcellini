@@ -4,6 +4,7 @@ var menuState = {
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#555";
         game.world.setBounds(0, 0, 1024, 768);
+        currentFame = 250;
 
         game.add.sprite(0, 0, 'menu');
 
