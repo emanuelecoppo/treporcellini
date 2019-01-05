@@ -11,7 +11,7 @@ var level1B = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.plugins.add(Phaser.Plugin.ArcadeSlopes);
 
-        // World
+        /// World
         game.world.setBounds(0, 0, 400*16-50, 100*16);
         boundL = game.add.graphics(0, 0).drawRect(0, 0, 1, game.world.height);
         boundR = game.add.graphics(game.world.width+50, 0).drawRect(0, 0, 1, game.world.height);
@@ -42,27 +42,60 @@ var level1B = {
 
         // Trees
         trees = game.add.group();
-        trees.create(19*16, 0, 'brown');
-        trees.create(130*16, 0, 'brown');
-        trees.create(205*16, 0, 'brown');
-        trees.create(297*16, 0, 'brown');
-        trees.create(385*16, 0, 'brown');
+        tree1 = trees.create( 19*16, 0, 'brown');
+        tree2 = trees.create(129*16, 0, 'brown');
+        //tree3 = trees.create(185*16, 0, 'brown');
+        tree4 = trees.create(297*16, 0, 'brown');
+        tree5 = trees.create(385*16, 0, 'brown');
         trees.setAll('anchor.x', .5);
         trees.setAll('scale.x', 6*16);
         trees.setAll('scale.y', game.world.height);
+
+        // Rami
+        rami = game.add.group();
+        rami.enableBody = true;
+        rami.create(tree1.right+50, 50*16, 'brown');
+        rami.create(tree2.left -50, 57*16, 'brown').cade = true;
+        rami.create(tree2.right+50, 46*16, 'brown');
+        rami.create(tree4.right+50, 47*16, 'brown');
+        rami.create(tree5.left -50, 46*16, 'brown');
+        rami.create(tree5.right+50, 58*16, 'brown').cade = true;
+
+        rami.children.forEach( function(ramo) {
+            ramo.posY = ramo.body.y //memorizza Y iniziale
+            ramo.anchor.x = .5;
+            ramo.scale.setTo(100,16);
+            ramo.body.immovable = true;
+            ramo.body.maxVelocity.y = 800;
+        })
 
         // Water (dietro)
         waterPonte = game.add.sprite(0, game.world.height-10*16, 'blue');
         waterPonte.scale.setTo(game.world.width, 10*16);
 
         // Fruits
+        cespugli = game.add.group();
+        cespugli.create(290*16, 71*16, 'cespuglio');
+        cespugli.create( 83*16, 71*16, 'cespuglio');
+
         fruits = game.add.group()
         fruits.enableBody = true;
-        for (var i = 0; i < 100; i++) { fruit = fruits.create(i*550, 0, 'fruit'); }
-        fruits.setAll('body.gravity.y', 600);
-        fruits.setAll('scale.x', .1);
-        fruits.setAll('scale.y', .1);
-        fruits.setAll('body.drag.x', 1000);
+        fruits.create(tree2.right+40, 600, 'fruit');
+        fruits.create(174*16, 1100, 'fruit'); //buco
+        fruits.create(247*16, 800, 'fruit'); //tronco caduto
+        fruits.create(tree5.left-60, 600, 'fruit');
+
+        cespugli.children.forEach( function(cespuglio) {
+            cespuglio.anchor.setTo(.5,1);
+            cespuglio.scale.setTo(.5,.5);
+            fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
+        })
+        fruits.children.forEach( function(fruit) {
+            fruit.scale.setTo(.1,.1);
+            fruit.body.drag.x = 1000;
+            fruit.body.gravity.y = 600;
+            if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
+        })
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
@@ -79,27 +112,27 @@ var level1B = {
         soffio.alpha = .2;
         game.physics.arcade.enable(soffio);
 
-        // Sasso
-        sasso = game.add.sprite(3165*16, 45*16, 'sasso');
-        sasso.anchor.setTo(.5,.5);
-        game.physics.arcade.enable(sasso);
-        sasso.body.gravity.y = 1000;
-        sasso.body.drag.x = 100;
-        sasso.body.maxVelocity.x = 100;
-        sasso.scale.setTo(1.5,1.5);
+        // Sassi
+        sassi = game.add.group();
+        sassi.enableBody = true;
+
+        sassi.children.forEach( function(sasso) {
+            sasso.anchor.setTo(.5,.5);
+            sasso.body.gravity.y = 1000;
+            sasso.body.drag.x = 200;
+            sasso.body.maxVelocity.x = 100;
+            sasso.scale.setTo(1,1);
+        })
 
         // Fango
         fango = game.add.group();
         fango.enableBody = true;
         fango.alpha = .95;
-        fango.create(1285*16, 150*16, 'brown');
-        fango.create(1494*16, 150*16, 'brown');
-        fango.create(2200*16, 150*16, 'brown');
-        fango.create(2390*16, 150*16, 'brown');
-        fango.create(2531*16, 150*16, 'brown');
+        fango.create( 41*16, 75*16, 'brown');
+        fango.create(210*16, 67*16, 'brown');
         fango.setAll('body.immovable', true);
-        fango.setAll('scale.x', 82*16);
-        fango.setAll('scale.y', 10*16);
+        fango.setAll('scale.x', 15*16);
+        fango.setAll('scale.y', 5*16);
 
         // Slopes
         mappa = game.add.tilemap('level1B');
@@ -107,24 +140,23 @@ var level1B = {
         mappa.setCollisionBetween(1, 38);
         ground = mappa.createLayer('ground');
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
-        game.slopes.enable([player, fruits, sasso]);
+        game.slopes.enable([player, fruits, sassi]);
         game.slopes.preferY = true;
 
         // Maiali
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(-100,66*16, 'lupo');
-        maiale2 = maiali.create(-75, 66*16, 'lupo');
-        maiale3 = maiali.create(-25, 66*16, 'lupo');
+        maiale1 = maiali.create(-120,66*16, 'lupo');
+        maiale2 = maiali.create(-95, 66*16, 'lupo');
+        maiale3 = maiali.create(-45, 66*16, 'lupo');
 
         maiali.children.forEach( function(maiale) {
             maiale.anchor.setTo(.5,.5);
-            maiale.scale.x = -1;
-            maiale.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 10, true);
+            maiale.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
             maiale.animations.play('walk');
 
-            var torcia = maiale.addChild(game.make.sprite(0, 0, 'torcia'));
-            torcia.anchor.setTo(1,.5);
+            torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
+            torcia.anchor.y = .5;
             torcia.scale.setTo(.5,.5);
             torcia.alpha = .5;
 
@@ -230,11 +262,10 @@ var level1B = {
 
         // Collisions
         game.physics.arcade.collide(player, [boundL, boundR]);
-        game.physics.arcade.collide([player, fruits], ground);
+        game.physics.arcade.collide([player, fruits], [ground, rami]);
         game.physics.arcade.collide([player, maiali], ponte);
-        sasso.body.immovable = true; game.physics.arcade.collide(sasso, player);
-        sasso.body.immovable = false; game.physics.arcade.collide(sasso, ground);
-        game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
+        sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
+        sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
         // Parallax
         parallax0.tilePosition.x = 0;
@@ -286,28 +317,12 @@ var level1B = {
         // Soffio
         if (s.isDown) {
             soffio.revive();
-            if (facing == 'left') {
-                soffio.x = -25;
-                soffio.scale.setTo(-.2,.2);
-            }
-            else if (facing == 'right') {
-                soffio.x = 25;
-                soffio.scale.setTo(.2,.2);
-            }
-            // Sasso
-            if (game.physics.arcade.overlap(soffio, sasso)) {
-                if (facing == 'left') {sasso.body.velocity.x -= 5}
-                else if (facing == 'right') {sasso.body.velocity.x += 5}
-            }
+            if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
+            else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
         }
-        else {
-            soffio.kill();
-        }
+        else {soffio.kill();}
 
-        // Vola (per test)
-        if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0}
-
-        // Barra Fame
+        // Fame
         fame.width -= .025;
         currentFame = fame.width;
         if (fame.width <= 0) {gameOver();} //muore
@@ -316,11 +331,44 @@ var level1B = {
         else if (fame.width > 100) {fame.tint = 0xfefefe;} //bianco
 
         // Fruits
+        game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
         function eatFruit(player, fruit) {
-            fruit.kill();
-            if (fame.width > 225) {fame.width = 250}
-            else {fame.width += 25}
+            if (!fruit.body.gravity.y==0) {
+                fruit.kill();
+                if (fame.width > 225) {fame.width = 250}
+                else {fame.width += 25}
+            }
         }
+
+        // Cespuglio
+        game.physics.arcade.overlap(soffio, fruits, soffioCespuglio, null, this);
+        function soffioCespuglio(soffio, fruit) {
+            fruit.body.gravity.y = 600;
+        }
+
+        // Sasso
+        game.physics.arcade.overlap(soffio, sassi, soffiaSasso, null, this);
+        function soffiaSasso(soffio, sasso) {
+            if (facing=='left') {sasso.body.velocity.x -= 5}
+            else if (facing=='right') {sasso.body.velocity.x += 5}
+        }
+
+        // Rami
+        rami.children.forEach( function(ramo) {
+            if (ramo.body.touching.up && ramo.cade==true) {
+                game.time.events.add(Phaser.Timer.SECOND*0.2, cadeRamo, this);
+                function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
+            }
+            if (ramo.y > game.world.height + 3000) {
+                ramo.body.gravity.y = 0;
+                ramo.body.velocity.y = 0;
+                ramo.body.y = ramo.posY;
+            }
+        })
+
+        // Vola
+        if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
+
     },
 
     render: function() {
