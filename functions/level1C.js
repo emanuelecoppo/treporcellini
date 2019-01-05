@@ -3,8 +3,8 @@ var level1C = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level1C';
-        playerX = 8190//310;
-        playerY = 1200//1200;
+        playerX = 310;
+        playerY = 1200;
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
