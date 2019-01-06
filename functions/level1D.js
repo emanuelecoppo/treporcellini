@@ -48,18 +48,6 @@ var level1D = {
         trees.setAll('scale.x', 6*16);
         trees.setAll('scale.y', game.world.height);
 
-        // Rami
-        rami = game.add.group();
-        rami.enableBody = true;
-        //rami.create( tree1.right+50, 67*16, 'brown');
-        rami.children.forEach( function(ramo) {
-            ramo.posY = ramo.body.y //memorizza Y iniziale
-            ramo.anchor.x = .5;
-            ramo.scale.setTo(100,16);
-            ramo.body.immovable = true;
-            ramo.body.maxVelocity.y = 800;
-        })
-
         // Waterfall
         waterfall = game.add.tileSprite(240*16, 48*16, 216*16, 100*16, 'waterfall');
 
@@ -268,7 +256,7 @@ var level1D = {
 
         // Collisions
         game.physics.arcade.collide(player, [boundL, boundR]);
-        game.physics.arcade.collide([player, fruits], [ground, rami, tronchi]);
+        game.physics.arcade.collide([player, fruits], [ground, tronchi]);
         sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
@@ -351,23 +339,6 @@ var level1D = {
             if (facing=='left') {sasso.body.velocity.x -= 5}
             else if (facing=='right') {sasso.body.velocity.x += 5}
         }
-
-        // Rami
-        rami.children.forEach( function(ramo) {
-            if (ramo.body.touching.up && ramo.cade==true) {
-                game.time.events.add(200, cadeRamo, this);
-                function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
-            }
-            else if (player.x>ramo.left-50 && player.x<ramo.right+50 && ramo.trap==true) {
-                ramo.body.gravity.y = 800;
-            }
-            if (ramo.y > game.world.height+3000 && !ramo.trap==true) {
-                ramo.body.gravity.y = 0;
-                ramo.body.velocity.y = 0;
-                ramo.body.y = ramo.posY;
-            }
-            if (game.physics.arcade.collide(player, ramo) && ramo.trap==true) {gameOver()}
-        })
 
         // Tronchi
         tronchi.children.forEach( function(tronco) {
