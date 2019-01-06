@@ -40,6 +40,7 @@ var loadingState = {
         game.load.image('soffio', 'characters/soffio.png');
         game.load.image('torcia', 'characters/torcia.png');
         game.load.image('flies', 'characters/flies.png');
+        game.load.image('boss', 'characters/boss.png');
         // Objects
         game.load.image('fruit', 'objects/fruit.png');
         game.load.image('sasso', 'objects/sasso.png');
@@ -53,13 +54,14 @@ var loadingState = {
         game.load.image('tronco-stealth', 'objects/tronco-stealth.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
+        game.load.spritesheet('castle', 'tilemaps/castle.png', 32, 32);
         game.load.tilemap('intro', 'tilemaps/intro.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1A', 'tilemaps/level1A.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1B', 'tilemaps/level1B.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1C', 'tilemaps/level1C.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1D', 'tilemaps/level1D.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level2A', 'tilemaps/level2A.json', null, Phaser.Tilemap.TILED_JSON);
-        //game.load.tilemap('level2B', 'tilemaps/level2B.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('level2B', 'tilemaps/level2B.json', null, Phaser.Tilemap.TILED_JSON);
         // Img
         game.load.image('menu', 'img/menu.jpg');
     },

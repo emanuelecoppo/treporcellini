@@ -3,21 +3,16 @@ var level2A = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level2A';
-        playerX = 200;
-        playerY = 1618;
+        playerX = 22*32;
+        playerY = 68*32;
+        lavaTrigger = 0;
 
         game.camera.flash('#000', 500);
-        game.stage.backgroundColor = "#222";
+        game.stage.backgroundColor = "#333";
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.plugins.add(Phaser.Plugin.ArcadeSlopes);
 
         /// World
-        game.world.setBounds(0, 0, 533*16-50, 138*16);
-        boundL = game.add.graphics(0, 0).drawRect(0, 0, 1, game.world.height);
-        boundR = game.add.graphics(game.world.width+50, 0).drawRect(0, 0, 1, game.world.height);
-        game.physics.arcade.enable([boundL, boundR]);
-        boundL.body.immovable = true;
-        boundR.body.immovable = true;
+        game.world.setBounds(0, 0, 153*32, 77*32);
 
         // Controllli
         cursors = game.input.keyboard.createCursorKeys();
@@ -32,24 +27,11 @@ var level2A = {
         key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
         key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
-        // Fruits
-        fruits = game.add.group()
-        fruits.enableBody = true;
-        fruits.create( 10*16,  38*16, 'fruit'); //sopra sasso
-        fruits.create( 17*16,  48*16, 'fruit'); //sopra sasso
-        fruits.create(120*16, 112*16, 'fruit'); //sotto sasso
-        fruits.create(201*16,  65*16, 'fruit'); //maiale
-        fruits.create(376*16,  61*16, 'fruit'); //cascata
-        fruits.create(476*16, 73*16, 'fruit'); //segreto
-        fruits.create(478*16, 73*16, 'fruit'); //segreto
-        fruits.create(480*16, 73*16, 'fruit'); //segreto
-
-        fruits.children.forEach( function(fruit) {
-            fruit.scale.setTo(.1,.1);
-            fruit.body.drag.x = 1000;
-            fruit.body.gravity.y = 600;
-            if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
-        })
+        // Tilemap
+        mappa = game.add.tilemap('level2A');
+        mappa.addTilesetImage('castle', 'castle');
+        mappa.setCollisionBetween(1, 6);
+        ground = mappa.createLayer('ground');
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
@@ -66,10 +48,25 @@ var level2A = {
         soffio.alpha = .2;
         game.physics.arcade.enable(soffio);
 
+        // Fruits
+        fruits = game.add.group()
+        fruits.enableBody = true;
+        fruits.create( 12*32,  67*32, 'fruit'); //cella
+        fruits.create( 13*32,  67*32, 'fruit'); //cella
+        fruits.create( 80*32,  47*32, 'fruit'); //lava
+        fruits.create( 63*32,  13*32, 'fruit'); //lava
+
+        fruits.children.forEach( function(fruit) {
+            fruit.scale.setTo(.1,.1);
+            fruit.body.drag.x = 1000;
+            fruit.body.gravity.y = 600;
+            if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
+        })
+
         // Sassi
         sassi = game.add.group();
         sassi.enableBody = true;
-        sassi.create(42*16, 65*16, 'sasso').scale.setTo(1.3,1.3);
+        sassi.create(18*32, 68*32, 'brown').scale.setTo(100,70);
 
         sassi.children.forEach( function(sasso) {
             sasso.anchor.setTo(.5,.5);
@@ -78,20 +75,19 @@ var level2A = {
             sasso.body.maxVelocity.x = 100;
         })
 
+        // Lava
+        lava = game.add.graphics(60*32, 64*32);
+        lava.beginFill(0x990000, 1);
+        lava.drawRect(0, 0, 22*32, 70*32);
+        lava.endFill();
+        game.physics.arcade.enable(lava);
+        lavaAlza = game.add.tween(lava).to( {y: 21*32}, 15000, sin);
+
         // Segreti
         segreto = game.add.graphics(454*16, 61*16);
         segreto.beginFill(0x21572f, 1);
         segreto.drawRect(0, 0, 33*16, 15*16);
         segreto.endFill();
-
-        // Slopes
-        mappa = game.add.tilemap('level1D');
-        mappa.addTilesetImage('slopes-green', 'slopes-green');
-        mappa.setCollisionBetween(1, 38);
-        ground = mappa.createLayer('ground');
-        game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
-        game.slopes.enable([player, fruits, sassi]);
-        game.slopes.preferY = true;
 
         // Maiali
         maiali = game.add.group();
@@ -184,24 +180,17 @@ var level2A = {
         // States
         function gameOver() {game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});}
         function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
-        if (player.y > game.world.height+200) {gameOver()};
-        if (player.x > game.world.width) {nextState()}
+        if (player.x<130*32 && player.y>game.world.height) {gameOver()};
+        if (player.x>130*32 && player.y>game.world.height) {nextState()}
 
         // Camera
         game.camera.follow(player, .1, .1);
         game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
 
         // Collisions
-        game.physics.arcade.collide(player, [boundL, boundR]);
         game.physics.arcade.collide([player, fruits], [ground]);
         sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
-
-        // Parallax
-        parallax0.tilePosition.x = 0;
-        parallax1.tilePosition.x = -0.5 * game.camera.x;
-        parallax2.tilePosition.x = -0.9 * game.camera.x;
-        waterfall.tilePosition.y += 2;
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;
@@ -233,7 +222,7 @@ var level2A = {
         // Jump
         spacebar.onDown.add(jumpFunction);
         function jumpFunction() {
-            if (player.body.touching.down) {
+            if (player.body.touching.down || player.body.blocked.down) {
                 player.body.velocity.y = -jump;
             }
         }
@@ -277,6 +266,10 @@ var level2A = {
         // Segreto
         if (player.x > segreto.left && player.y > segreto.top) {segreto.alpha = 0}
         else {segreto.alpha = 1}
+
+        // Lava
+        game.physics.arcade.overlap(player, lava, gameOver, null, this);
+        if (player.x > 65*32 && lavaTrigger==0) {lavaAlza.start(); lavaTrigger++}
 
         // Vola
         if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
