@@ -3,9 +3,9 @@ var level1A = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level1A';
-        fuga = 0;
         playerX = 75;//5400
         playerY = 1720;//1200
+        fuga = 0;
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -135,24 +135,6 @@ var level1A = {
             torciaA.chain(torciaB, torciaA);
         })
 
-        // Maiali Fuga
-        maialiF = game.add.group();
-        maialiF.alpha = 0;
-        maiale4 = maialiF.create(390*16, 79*16, 'lupo');
-        maiale5 = maialiF.create(390*16, 79*16, 'lupo');
-        maiale6 = maialiF.create(390*16, 79*16, 'lupo');
-
-        maialiF.children.forEach( function(maialeF) {
-            maialeF.anchor.setTo(.5,.5);
-            maialeF.frame = 12;
-            maialeF.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
-
-            var torcia = maialeF.addChild(game.make.sprite(15, 0, 'torcia'));
-            torcia.anchor.y = .5;
-            torcia.scale.setTo(.5,.5);
-            torcia.alpha = .5;
-        })
-
         // Tronco Stealth (2)
         game.add.sprite(troncoS.x, troncoS.y, 'tronco-stealth');
 
@@ -173,7 +155,24 @@ var level1A = {
         player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20, true);
         player.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
 
-        // Inizio Fuga
+        // Maiali Fuga
+        maialiF = game.add.group();
+        maialiF.alpha = 0;
+        maiale4 = maialiF.create(390*16, 79*16, 'lupo');
+        maiale5 = maialiF.create(390*16, 79*16, 'lupo');
+        maiale6 = maialiF.create(390*16, 79*16, 'lupo');
+
+        maialiF.children.forEach( function(maialeF) {
+            maialeF.anchor.setTo(.5,.5);
+            maialeF.frame = 12;
+            maialeF.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
+
+            var torcia = maialeF.addChild(game.make.sprite(15, 0, 'torcia'));
+            torcia.anchor.y = .5;
+            torcia.scale.setTo(.5,.5);
+            torcia.alpha = .5;
+        })
+        
         maiale4A = game.add.tween(maiale4).to( {x: rametto.x-330}, 2000+500*Math.random()).delay(500);
         maiale5A = game.add.tween(maiale5).to( {x: rametto.x-280}, 2000+500*Math.random()).delay(250);
         maiale6A = game.add.tween(maiale6).to( {x: rametto.x-200}, 2000+500*Math.random()).delay(0);
@@ -390,7 +389,7 @@ var level1A = {
         // Rami
         rami.children.forEach( function(ramo) {
             if (ramo.body.touching.up && ramo.cade==true) {
-                game.time.events.add(Phaser.Timer.SECOND*0.2, cadeRamo, this);
+                game.time.events.add(200, cadeRamo, this);
                 function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
             }
             if (ramo.y > game.world.height + 3000) {

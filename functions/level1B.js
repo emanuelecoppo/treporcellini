@@ -356,7 +356,7 @@ var level1B = {
         // Rami
         rami.children.forEach( function(ramo) {
             if (ramo.body.touching.up && ramo.cade==true) {
-                game.time.events.add(Phaser.Timer.SECOND*0.2, cadeRamo, this);
+                game.time.events.add(200, cadeRamo, this);
                 function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
             }
             if (ramo.y > game.world.height + 3000) {

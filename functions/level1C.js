@@ -99,7 +99,7 @@ var level1C = {
 
         fruits = game.add.group()
         fruits.enableBody = true;
-        fruits.create(tree2.right+40, 980, 'fruit');
+        fruits.create(tree2.right+40, 750, 'fruit');
         fruits.create(tree4.left -60, 800, 'fruit');
         fruits.create(tree5.right+40, 1300, 'fruit');
         fruits.create(463*16, 76*16, 'fruit'); //radice
@@ -408,7 +408,7 @@ var level1C = {
         // Rami
         rami.children.forEach( function(ramo) {
             if (ramo.body.touching.up && ramo.cade==true) {
-                game.time.events.add(Phaser.Timer.SECOND*0.2, cadeRamo, this);
+                game.time.events.add(200, cadeRamo, this);
                 function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
             }
             else if (player.x>ramo.left-50 && player.x<ramo.right+50 && ramo.trap==true) {
