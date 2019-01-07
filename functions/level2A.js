@@ -36,10 +36,10 @@ var level2A = {
         // Nastro
         nastri = game.add.group();
         nastri.enableBody = true;
-        nastro1 = nastri.create(400, 2100, 'nastro');
+        nastro1 = nastri.create(-400, 2100, 'nastro');
         nastro1.scale.x = -1;
-        nastro2 = nastri.create(500+192, 2100, 'nastro');
-        nastro3 = nastri.create(700+192, 2100, 'nastro');
+        nastro2 = nastri.create(-500+192, 2100, 'nastro');
+        nastro3 = nastri.create(-700+192, 2100, 'nastro');
 
         nastri.children.forEach( function(nastro) {
             nastro.animations.add('trasporta', null, 20, true);
