@@ -3,8 +3,8 @@ var level1C = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level1C';
-        playerX = 310;
-        playerY = 1200;
+        if (check1C==true) {playerX = 4200; playerY = 1220;}
+        else {playerX = 310; playerY = 1200;}
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -39,6 +39,12 @@ var level1C = {
         parallax0.fixedToCamera = true;
         parallax1.fixedToCamera = true;
         parallax2.fixedToCamera = true;
+
+        // Checkpoint
+        check = game.add.sprite(3900, 1220, 'checkpoint');
+        check.anchor.setTo(.5);
+        check.scale.setTo(.7);
+        game.physics.arcade.enable(check);
 
         // Trees
         trees = game.add.group();
@@ -312,6 +318,9 @@ var level1C = {
         parallax0.tilePosition.x = 0;
         parallax1.tilePosition.x = -0.5 * game.camera.x;
         parallax2.tilePosition.x = -0.9 * game.camera.x;
+
+        // Checkpoints
+        game.physics.arcade.overlap(player, check, function(){check1C=true} )
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;

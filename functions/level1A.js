@@ -41,17 +41,6 @@ var level1A = {
         parallax1.fixedToCamera = true;
         parallax2.fixedToCamera = true;
 
-        // Stalattiti
-        stalattiti = game.add.group();
-        stalattiti.enableBody = true;
-        stalattiti.create(35*16, 98*16, 'stalattite');
-        stalattiti.create(74*16, 97*16, 'stalattite');
-        stalattiti.create(140*16, 99*16, 'stalattite');
-        stalattiti.create(174*16, 99*16, 'stalattite');
-        stalattiti.create(222*16, 95*16, 'stalattite');
-        stalattiti.setAll('body.immovable', true);
-        stalattiti.setAll('anchor.x', .5);
-
         // Trees
         trees = game.add.group();
         tree1 = trees.create(329*16, 0, 'brown');
@@ -155,6 +144,23 @@ var level1A = {
         player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20, true);
         player.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
 
+        // Soffio
+        soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
+        soffio.anchor.setTo(0,1);
+        soffio.alpha = .2;
+        game.physics.arcade.enable(soffio);
+
+        // Stalattiti
+        stalattiti = game.add.group();
+        stalattiti.enableBody = true;
+        stalattiti.create(35*16, 98*16, 'stalattite');
+        stalattiti.create(74*16, 97*16, 'stalattite');
+        stalattiti.create(140*16, 99*16, 'stalattite');
+        stalattiti.create(174*16, 99*16, 'stalattite');
+        stalattiti.create(222*16, 95*16, 'stalattite');
+        stalattiti.setAll('body.immovable', true);
+        stalattiti.setAll('anchor.x', .5);
+
         // Maiali Fuga
         maialiF = game.add.group();
         maialiF.alpha = 0;
@@ -172,7 +178,7 @@ var level1A = {
             torcia.scale.setTo(.5,.5);
             torcia.alpha = .5;
         })
-        
+
         maiale4A = game.add.tween(maiale4).to( {x: rametto.x-330}, 2000+500*Math.random()).delay(500);
         maiale5A = game.add.tween(maiale5).to( {x: rametto.x-280}, 2000+500*Math.random()).delay(250);
         maiale6A = game.add.tween(maiale6).to( {x: rametto.x-200}, 2000+500*Math.random()).delay(0);
@@ -185,12 +191,6 @@ var level1A = {
         maiale5A.onComplete.add(function() {maiale5.animations.stop(); maiale5.frame = 12});
         maiale6A.onComplete.add(function() {maiale6.animations.stop(); maiale6.frame = 12; player.frame = 11});
         maiale6A.chain(playerA);
-
-        // Soffio
-        soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
-        soffio.anchor.setTo(0,1);
-        soffio.alpha = .2;
-        game.physics.arcade.enable(soffio);
 
         // Sassi
         sassi = game.add.group();
@@ -285,7 +285,17 @@ var level1A = {
         key7.onDown.add(function(){game.state.start('level2B')});
 
         // States
-        function gameOver() {game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});}
+        function gameOver() {
+            game.input.keyboard.stop();
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
+            player.body.velocity.x = 0;
+            player.body.velocity.y = 0;
+            player.animations.stop();
+            game.time.events.add(500, function() {
+                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+            })
+        }
         function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level1B')});}
         if (player.y > game.world.height+200) {gameOver()};
         if (player.x > game.world.width) {nextState()};

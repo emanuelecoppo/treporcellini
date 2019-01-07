@@ -1,6 +1,8 @@
 var gameOver = {
 
     create: function() {
+        game.input.keyboard.start();
+
         game.camera.flash('#000', 100);
         game.stage.backgroundColor = '#000';
         game.world.setBounds(0, 0, 1024, 768);

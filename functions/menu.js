@@ -1,6 +1,12 @@
 var menuState = {
 
     create: function() {
+        game.input.keyboard.start();
+        check1A = false;
+        check1C = false;
+        check1D = false;
+        check2A = false;
+
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#555";
         game.world.setBounds(0, 0, 1024, 768);

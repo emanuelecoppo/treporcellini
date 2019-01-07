@@ -36,10 +36,10 @@ var level2A = {
         // Nastro
         nastri = game.add.group();
         nastri.enableBody = true;
-        nastro1 = nastri.create(-400, 2100, 'nastro');
+        nastro1 = nastri.create(102*32, 58*32, 'nastro');
         nastro1.scale.x = -1;
-        nastro2 = nastri.create(-500+192, 2100, 'nastro');
-        nastro3 = nastri.create(-700+192, 2100, 'nastro');
+        nastro2 = nastri.create(112*32, 58*32, 'nastro');
+        nastro3 = nastri.create(122*32, 58*32, 'nastro');
 
         nastri.children.forEach( function(nastro) {
             nastro.animations.add('trasporta', null, 20, true);
@@ -64,6 +64,40 @@ var level2A = {
         soffio.alpha = .2;
         game.physics.arcade.enable(soffio);
 
+        // Colonne
+        colonne = game.add.group();
+        colonne.enableBody = true;
+        colonne.add(game.add.graphics(105*32, 10*32).beginFill(0x444444).drawRect(0, 0, 80, 10*32).endFill());
+        colonne.add(game.add.graphics(115*32, 10*32).beginFill(0x444444).drawRect(0, 0, 80, 10*32).endFill());
+        colonne.add(game.add.graphics(125*32, 10*32).beginFill(0x444444).drawRect(0, 0, 80, 10*32).endFill());
+
+        // Maiali
+        maiali = game.add.group();
+        maiali.enableBody = true;
+        maiali.create(135*32, 18.5*32, 'lupo');
+        maiali.create(120*32, 18.5*32, 'lupo');
+        maiali.create(105*32, 18.5*32, 'lupo');
+
+        maiali.children.forEach( function(maiale) {
+            maiale.anchor.setTo(.5,.5);
+            maiale.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
+            maiale.frame = 12;
+            maiale.body.setSize(250,100,50,0);
+
+            var torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
+            torcia.anchor.y = .5;
+            torcia.scale.setTo(.5,.5);
+            torcia.alpha = .5;
+
+            maialeA = game.add.tween(maiale).to( {x: maiale.x-20*32}, 5000).delay(1000+2000*Math.random()).start();
+            maialeB = game.add.tween(maiale).to( {x: maiale.x      }, 5000).delay(1000+2000*Math.random());
+            maialeA.onStart.add   (function() {maiale.scale.x=-1; maiale.animations.play('walk')});
+            maialeB.onStart.add   (function() {maiale.scale.x= 1; maiale.animations.play('walk')});
+            maialeA.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 12});
+            maialeB.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 12});
+            maialeA.chain(maialeB, maialeA);
+        })
+
         // Fruits
         fruits = game.add.group()
         fruits.enableBody = true;
@@ -77,6 +111,24 @@ var level2A = {
             fruit.body.drag.x = 1000;
             fruit.body.gravity.y = 600;
             if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
+        })
+
+        // Lanciafiamme
+        maialiF = game.add.group();
+        maialiF.create(125*32, 40*32, 'lupo');
+        maialiF.create(115*32, 40*32, 'lupo');
+        maialiF.create(105*32, 40*32, 'lupo');
+
+        maialiF.children.forEach( function(maialeF) {
+            maialeF.anchor.setTo(.5,0);
+            maialeF.frame = 12;
+
+            fiamma = maialeF.addChild(game.make.sprite(0, 0, 'flame'));
+            fiamma.anchor.setTo(.5, 1);
+            //fiamma.scale.setTo(.5);
+            //game.time.events.loop(2000, function(){fiamma.scale.y = (fiamma.scale.y) ? 0 : 1}, this);
+            fiammaA = game.add.tween(fiamma.scale).to( {y:0, x:0}, 100, sin).delay(1000+1000*Math.random()).start().yoyo(true, 3000+1000*Math.random());
+            fiammaA.chain(fiammaA);
         })
 
         // Sassi
