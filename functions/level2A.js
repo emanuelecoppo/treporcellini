@@ -89,24 +89,6 @@ var level2A = {
         segreto.drawRect(0, 0, 33*16, 15*16);
         segreto.endFill();
 
-        // Maiali
-        maiali = game.add.group();
-        maiali.enableBody = true;
-        maiale1 = maiali.create(205*16, 64*16, 'lupo');
-        game.time.events.loop(2000, function(){maiale1.scale.x*=-1}, game);
-
-        maiali.children.forEach( function(maiale) {
-            maiale.anchor.setTo(.5,.5);
-            maiale.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
-            maiale.frame = 12;
-            maiale.body.setSize(250,100,50,0);
-
-            var torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
-            torcia.anchor.y = .5;
-            torcia.scale.setTo(.5,.5);
-            torcia.alpha = .5;
-        })
-
         // Fame
         barra = game.add.graphics(25, 25);
         barra.lineStyle(2, 0xffffff, .8);
@@ -259,9 +241,6 @@ var level2A = {
             if (facing=='left') {sasso.body.velocity.x -= 5}
             else if (facing=='right') {sasso.body.velocity.x += 5}
         }
-
-        // Maiali
-        game.physics.arcade.overlap(player, maiale1, gameOver, null, this);
 
         // Segreto
         if (player.x > segreto.left && player.y > segreto.top) {segreto.alpha = 0}

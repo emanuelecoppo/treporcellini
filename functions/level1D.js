@@ -54,10 +54,10 @@ var level1D = {
         // Tronchi
         tronchi = game.add.group();
         tronchi.enableBody = true;
-        game.time.events.add(   0, function() {game.time.events.loop(4000, function(){tronchi.create(302*16,waterfall.y,'brown')})}, game);
-        game.time.events.add(2000, function() {game.time.events.loop(4000, function(){tronchi.create(339*16,waterfall.y,'brown')})}, game);
-        game.time.events.add(   0, function() {game.time.events.loop(4000, function(){tronchi.create(395*16,waterfall.y,'brown')})}, game);
-        game.time.events.add(2500, function() {game.time.events.loop(4000, function(){tronchi.create(411*16,waterfall.y,'brown')})}, game);
+        game.time.events.add(   0, function() { game.time.events.loop(4000, function() {tronchi.create(302*16,waterfall.y,'brown')}, this) }, this);
+        game.time.events.add(2000, function() { game.time.events.loop(4000, function() {tronchi.create(339*16,waterfall.y,'brown')}, this) }, this);
+        game.time.events.add(   0, function() { game.time.events.loop(4000, function() {tronchi.create(395*16,waterfall.y,'brown')}, this) }, this);
+        game.time.events.add(2500, function() { game.time.events.loop(4000, function() {tronchi.create(411*16,waterfall.y,'brown')}, this) }, this);
 
         // Fruits
         cespugli = game.add.group();
@@ -134,7 +134,7 @@ var level1D = {
         maiali = game.add.group();
         maiali.enableBody = true;
         maiale1 = maiali.create(205*16, 64*16, 'lupo');
-        game.time.events.loop(2000, function(){maiale1.scale.x*=-1}, game);
+        game.time.events.loop(2000, function(){maiale1.scale.x*=-1}, this);
         maiale4 = maiali.create(game.world.width-1500, 44*16, 'lupo');
         maiale3 = maiali.create(game.world.width-1400, 44*16, 'lupo');
         maiale2 = maiali.create(game.world.width+ 300, 44*16, 'lupo');

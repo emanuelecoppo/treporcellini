@@ -52,6 +52,9 @@ var loadingState = {
         game.load.image('rametto', 'objects/rametto.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
         game.load.image('tronco-stealth', 'objects/tronco-stealth.png');
+        game.load.image('bomb', 'objects/bomb.png');
+        game.load.spritesheet('explosion', 'objects/explosion.png', 64, 64, 23);
+        game.load.spritesheet('explosion-bomb', 'objects/explosion-bomb.png', 64, 64);
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
         game.load.spritesheet('castle', 'tilemaps/castle.png', 32, 32);
