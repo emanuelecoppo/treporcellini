@@ -183,7 +183,7 @@ var level1C = {
 
         mosche.children.forEach( function(mosca) {
             mosca.anchor.setTo(.5,1);
-            mosca.scale.setTo(.2,.2);
+            mosca.scale.setTo(.18,.18);
             game.add.tween(mosca).to( {y: zattera.top}, 1700+250*Math.random(), sin, true, 0, -1, true);
             game.add.tween(mosca).to( {x: mosca.x+15}, 1000+500*Math.random(), sin, true, 0, -1, true);
         })

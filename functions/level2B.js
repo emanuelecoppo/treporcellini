@@ -1,5 +1,9 @@
 var level2B = {
 
+    preload: function() {
+        game.time.advancedTiming = true;
+    },
+
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level2B';
@@ -38,34 +42,37 @@ var level2B = {
         boss.body.height = 768;
         boss.body.immovable = true;
         boss.vite = 3;
+        timeDelay = 0;
 
         // Weapon
-        weapon = game.add.weapon(4, 'bomb');
-        weapon.trackSprite(boss, 0, 0, true);
-        weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-        weapon.bulletLifespan = 5000;
-        weapon.bulletCollideWorldBounds = true;
-        weapon.autofire = true;
-        weapon.fireRateVariance = 500;
-        weapon.bulletSpeed = -400;
-        weapon.bulletSpeedVariance = 100;
-        weapon.fireAngle = 45;
-        weapon.bulletAngleVariance = 30;
-        weapon.bulletGravity.y = 500;
+        arma = game.add.weapon(4, 'bomb');
+        arma.trackSprite(boss, 0, 0, true);
+        arma.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+        arma.bulletLifespan = 4000;
+        arma.bulletCollideWorldBounds = true;
+        arma.autofire = false;
+        game.time.events.add(3000, function() {arma.autofire=true} );
+        arma.fireRateVariance = 500;
+        arma.bulletSpeed = -475;
+        arma.bulletSpeedVariance = 100;
+        arma.fireAngle = 45;
+        arma.bulletAngleVariance = 30;
+        arma.bulletGravity.y = 500;
 
-        weapon.bullets.children.forEach( function(bomb) {
+        arma.bullets.forEach( function(bomb) {
             bomb.anchor.setTo(.5);
             bomb.scale.setTo(.5);
             bomb.body.drag.x = 150;
             bomb.body.bounce.x = .5;
         })
-        // Explosion
+
+        // Explosions
         explosions = game.add.group();
 
         // Fruits
         fruits = game.add.group()
         fruits.enableBody = true;
-        game.time.events.loop(15000, function() {fruits.create(5*32, -10,'fruit')} );
+        game.time.events.loop(15000, function() {fruits.create(5*32, -10,'fruit')}, this);
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
@@ -171,7 +178,9 @@ var level2B = {
         key7.onDown.add(function(){game.state.start('level2B')});
 
         // States
-        function gameOver() {game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});}
+        function gameOver() {
+            game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')})
+        }
         function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
         if (player.x > game.world.width) {nextState()}
 
@@ -187,7 +196,7 @@ var level2B = {
 
         // Collisions
         game.physics.arcade.collide(player, [boundL, boundR, boss]);
-        game.physics.arcade.collide([player, fruits, weapon.bullets], [ground]);
+        game.physics.arcade.collide([player, fruits, arma.bullets], [ground]);
         sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
@@ -267,78 +276,43 @@ var level2B = {
         }
 
         // Weapon
-        game.physics.arcade.overlap(player, weapon.bullets, hitBomb, null, this)
+        game.physics.arcade.overlap(player, arma.bullets, hitBomb, null, this)
         function hitBomb(player, bomb) {
             if (bomb.body.velocity.y>0) {gameOver()}
         }
-        game.physics.arcade.overlap(soffio, weapon.bullets, soffiaBomb, null, this)
+        game.physics.arcade.overlap(soffio, arma.bullets, soffiaBomb, null, this)
         function soffiaBomb(soffio, bomb) {
             if (facing=='left') {bomb.body.velocity.x -= 5}
             else if (facing=='right') {bomb.body.velocity.x += 5}
         }
 
         // Explosion
-        // weapon.onKill.add(function(bomb) {
-            //game.camera.shake(.005, 500, true, Phaser.Camera.SHAKE_HORIZONTAL);
-            // getExplosion(bomb.x, bomb.y)
-        // })
-
-        // function getExplosion(x, y) {
-        //     var explosion = explosions.getFirstDead();
-        //     if (explosion===null) {
-        //         explosion = game.add.sprite(0, 0, 'explosion');
-        //         explosion.anchor.setTo(.5);
-        //         explosion.scale.setTo(2);
-        //         game.physics.arcade.enable(explosion);
-        //         explode = explosion.animations.add('explode', null, 20, false);
-        //         explode.killOnComplete = true;
-        //         explosions.add(explosion);
-        //     }
-        //     explosion.revive();
-        //     explosion.x = x; explosion.y = y;
-        //     explosion.animations.play('explode');
-        // }
-
-        // function getExplosion(x, y) {
-        //     var explosion = explosions.getFirstDead();
-        //
-        //     if (explosion === null) {
-        //         explosion = game.add.sprite(0, 0, 'explosion');
-        //         explosion.anchor.setTo(0.5, 0.5);
-        //         var animation = explosion.animations.add('boom', null, 20, false);
-        //         animation.killOnComplete = true;
-        //
-        //         explosions.add(explosion);
-        //     }
-        //     explosion.revive();
-        //     explosion.x = x;
-        //     explosion.y = y;
-        //     explosion.animations.play('boom');
-        //     return explosion;
-        // }
-
-        // weapon.onKill.add(getExplosion);
-        // function getExplosion(bomb) {
-        //     var explosion = bomb.addChild(game.make.sprite(bomb.x, bomb.y, 'explosion'));
-        //     explosion.anchor.setTo(.5);
-        //     explosion.scale.setTo(2);
-        //     game.physics.arcade.enable(explosion);
-        //     explode = explosion.animations.add('explode');
-        //     explosions.add(explosion);
-        //     explosion.animations.play('explode', 20, false);
-        //
-        //     explode.onComplete.add(function(){explosion.destroy()})
-        // }
-
+        arma.onKill.addOnce(function(bomb) {
+            game.camera.shake(.005, 500, true, Phaser.Camera.SHAKE_HORIZONTAL);
+            getExplosion(bomb.x, bomb.y)
+        })
+        function getExplosion(x, y) {
+            explosion = game.add.sprite(x, y, 'explosion');
+            explosion.anchor.setTo(.5);
+            explosion.scale.setTo(2);
+            game.physics.arcade.enable(explosion);
+            explosion.animations.add('explode');
+            explosions.add(explosion);
+            explosions.forEachDead(function(killed) {killed.destroy()});
+            explosion.animations.play('explode', 20, false, true);
+        }
         if (boss.vite>0) {game.physics.arcade.overlap(player, explosions, gameOver, null, this)}
 
-        if (boss.vite==3) {weapon.fireRate = 4000}
-        else if (boss.vite==2) {weapon.fireRate = 3000}
-        else if (boss.vite==1) {weapon.fireRate = 2000}
-        else if (boss.vite==0) {weapon.autofire = false; weapon.killAll(); boss.body.height = 0}
+        // Boss
+        if (boss.vite==3) {arma.fireRate = 3000}
+        else if (boss.vite==2) {arma.fireRate = 2000}
+        else if (boss.vite==1) {arma.fireRate = 1000}
+        else if (boss.vite<=0) {arma.autofire = false; arma.killAll(); boss.body.height = 0; boss.angle = -90;}
 
         game.physics.arcade.overlap(boss, explosions, hitBoss, null, this);
-        function hitBoss() {boss.vite --}
+        function hitBoss() {
+            if (game.time.now > timeDelay) {boss.vite --; timeDelay = game.time.now + 2000}
+        }
 
         // Vola
         if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
@@ -346,7 +320,7 @@ var level2B = {
 
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
-        //weapon.debug(10, 100);
-        //game.debug.body(boss);
+        game.debug.text('Vite Boss = ' + boss.vite, 10, 90);
+        game.debug.text('FPS: ' + game.time.fps, 10, 120);
     }
 }

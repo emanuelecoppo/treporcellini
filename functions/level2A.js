@@ -33,6 +33,22 @@ var level2A = {
         mappa.setCollisionBetween(1, 6);
         ground = mappa.createLayer('ground');
 
+        // Nastro
+        nastri = game.add.group();
+        nastri.enableBody = true;
+        nastro1 = nastri.create(400, 2100, 'nastro');
+        nastro1.scale.x = -1;
+        nastro2 = nastri.create(500+192, 2100, 'nastro');
+        nastro3 = nastri.create(700+192, 2100, 'nastro');
+
+        nastri.children.forEach( function(nastro) {
+            nastro.animations.add('trasporta', null, 20, true);
+            nastro.animations.play('trasporta');
+            nastro.body.drag.x = 1000;
+            nastro.body.immovable = true;
+            nastro.body.moves = false;
+        })
+
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
         game.physics.arcade.enable(player);
@@ -170,7 +186,7 @@ var level2A = {
         game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
 
         // Collisions
-        game.physics.arcade.collide([player, fruits], [ground]);
+        game.physics.arcade.collide([player, fruits], [ground, nastri]);
         sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
@@ -249,6 +265,13 @@ var level2A = {
         // Lava
         game.physics.arcade.overlap(player, lava, gameOver, null, this);
         if (player.x > 65*32 && lavaTrigger==0) {lavaAlza.start(); lavaTrigger++}
+
+        // Nastro
+        nastri.children.forEach(function(nastro) {
+            if (nastro1.body.touching.up) {player.body.gravity.x = 5000}
+            else if (nastro2.body.touching.up || nastro3.body.touching.up) {player.body.gravity.x = -5000}
+            else {player.body.gravity.x = 0}
+        })
 
         // Vola
         if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
