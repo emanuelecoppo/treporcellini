@@ -3,7 +3,7 @@ var level1C = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level1C';
-        if (check1C==true) {playerX = 4200; playerY = 1220;}
+        if (check1C==true) {playerX = 243*16; playerY = 1220;}
         else {playerX = 310; playerY = 1200;}
 
         game.camera.flash('#000', 500);
@@ -41,10 +41,12 @@ var level1C = {
         parallax2.fixedToCamera = true;
 
         // Checkpoint
-        check = game.add.sprite(3900, 1220, 'checkpoint');
-        check.anchor.setTo(.5);
+        check = game.add.sprite(243*16, 79*16, 'checkpoint');
+        check.anchor.setTo(.5,1);
         check.scale.setTo(.7);
         game.physics.arcade.enable(check);
+        if (check1C==true) {check.frame=1}
+        else {check.frame=0}
 
         // Trees
         trees = game.add.group();
@@ -299,7 +301,16 @@ var level1C = {
         key7.onDown.add(function(){game.state.start('level2B')});
 
         // States
-        function gameOver() {game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});}
+        function gameOver() {
+            game.input.keyboard.stop();
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
+            player.body.velocity.x = 0;
+            player.animations.stop();
+            game.time.events.add(500, function() {
+                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+            })
+        }
         function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level1D')});}
         if (player.y > game.world.height+200) {gameOver()};
         if (player.x > game.world.width) {nextState()}
@@ -320,7 +331,8 @@ var level1C = {
         parallax2.tilePosition.x = -0.9 * game.camera.x;
 
         // Checkpoints
-        game.physics.arcade.overlap(player, check, function(){check1C=true} )
+        game.physics.arcade.overlap(player, check, checkpoint, null, this);
+        function checkpoint() {check.frame=1; check1C=true}
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;

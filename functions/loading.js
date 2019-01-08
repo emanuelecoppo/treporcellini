@@ -48,7 +48,8 @@ var loadingState = {
         game.load.image('blue', 'objects/blue.png');
         game.load.image('brown', 'objects/brown.png');
         game.load.image('stalattite', 'objects/stalattite.png');
-        game.load.image('checkpoint', 'objects/checkpoint.png');
+        game.load.image('checkpoint2', 'objects/checkpoint2.png');
+        game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
         game.load.image('rametto', 'objects/rametto.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
         game.load.image('tronco-stealth', 'objects/tronco-stealth.png');

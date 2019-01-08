@@ -3,8 +3,8 @@ var level2A = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level2A';
-        playerX = 22*32;
-        playerY = 68*32;
+        if (check2A==true) {playerX = 88*32; playerY = 18*32;}
+        else {playerX = 22*32; playerY = 68*32;}
         lavaTrigger = 0;
 
         game.camera.flash('#000', 500);
@@ -26,6 +26,14 @@ var level2A = {
         key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
         key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
         key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
+
+        // Checkpoint
+        check = game.add.sprite(88*32, 20*32, 'checkpoint');
+        check.anchor.setTo(.5,1);
+        check.scale.setTo(.7);
+        game.physics.arcade.enable(check);
+        if (check2A==true) {check.frame=1}
+        else {check.frame=0}
 
         // Tilemap
         mappa = game.add.tilemap('level2A');
@@ -228,7 +236,16 @@ var level2A = {
         key7.onDown.add(function(){game.state.start('level2B')});
 
         // States
-        function gameOver() {game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});}
+        function gameOver() {
+            game.input.keyboard.stop();
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
+            player.body.velocity.x = 0;
+            player.animations.stop();
+            game.time.events.add(500, function() {
+                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+            })
+        }
         function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
         if (player.x<130*32 && player.y>game.world.height) {gameOver()};
         if (player.x>130*32 && player.y>game.world.height) {nextState()}
@@ -241,6 +258,10 @@ var level2A = {
         game.physics.arcade.collide([player, fruits], [ground, nastri]);
         sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
+
+        // Checkpoints
+        game.physics.arcade.overlap(player, check, checkpoint, null, this);
+        function checkpoint() {check.frame=1; check2A=true}
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;

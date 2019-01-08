@@ -3,8 +3,8 @@ var level1A = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level1A';
-        playerX = 75;//5400
-        playerY = 1720;//1200
+        if (check1A==true) {playerX = 304*16; playerY = 79*16;}
+        else {playerX = 75; playerY = 1720;}
         fuga = 0;
 
         game.camera.flash('#000', 500);
@@ -40,6 +40,14 @@ var level1A = {
         parallax0.fixedToCamera = true;
         parallax1.fixedToCamera = true;
         parallax2.fixedToCamera = true;
+
+        // Checkpoint
+        check = game.add.sprite(304*16, 82*16, 'checkpoint');
+        check.anchor.setTo(.5,1);
+        check.scale.setTo(.7);
+        game.physics.arcade.enable(check);
+        if (check1A==true) {check.frame=1}
+        else {check.frame=0}
 
         // Trees
         trees = game.add.group();
@@ -290,7 +298,6 @@ var level1A = {
             cursors.right.isDown = false;
             cursors.left.isDown = false;
             player.body.velocity.x = 0;
-            player.body.velocity.y = 0;
             player.animations.stop();
             game.time.events.add(500, function() {
                 game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
@@ -314,6 +321,10 @@ var level1A = {
         parallax0.tilePosition.x = 0;
         parallax1.tilePosition.x = -0.5 * game.camera.x;
         parallax2.tilePosition.x = -0.9 * game.camera.x;
+
+        // Checkpoints
+        game.physics.arcade.overlap(player, check, checkpoint, null, this);
+        function checkpoint() {check.frame=1; check1A=true}
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;

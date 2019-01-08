@@ -179,9 +179,16 @@ var level2B = {
 
         // States
         function gameOver() {
-            game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')})
+            game.input.keyboard.stop();
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
+            player.body.velocity.x = 0;
+            player.animations.stop();
+            game.time.events.add(500, function() {
+                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+            })
         }
-        function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
+        function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('menuState')});}
         if (player.x > game.world.width) {nextState()}
 
         // Camera
