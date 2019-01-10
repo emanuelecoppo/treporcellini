@@ -61,7 +61,7 @@ var level2B = {
 
         arma.bullets.forEach( function(bomb) {
             bomb.anchor.setTo(.5);
-            bomb.scale.setTo(.5);
+            bomb.scale.setTo(.05);
             bomb.body.drag.x = 150;
             bomb.body.bounce.x = .5;
         })

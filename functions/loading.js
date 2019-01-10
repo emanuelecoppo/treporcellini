@@ -53,7 +53,7 @@ var loadingState = {
         game.load.image('rametto', 'objects/rametto.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
         game.load.image('tronco-stealth', 'objects/tronco-stealth.png');
-        game.load.image('bomb', 'objects/bomb.png');
+        game.load.image('bomb', 'objects/bomba.png');
         game.load.spritesheet('explosion', 'objects/explosion.png', 64, 64, 23);
         game.load.spritesheet('nastro', 'objects/nastro.png', 192, 64, 8);
         game.load.image('flame', 'objects/flame.png');
