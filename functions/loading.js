@@ -35,6 +35,7 @@ var loadingState = {
         game.load.image('tana', 'background/tana.png');
         game.load.image('intro', 'background/intro.png');
         game.load.image('waterfall', 'background/waterfall.png');
+
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 100, 100);
         game.load.image('soffio', 'characters/soffio.png');
@@ -57,6 +58,7 @@ var loadingState = {
         game.load.spritesheet('explosion', 'objects/explosion.png', 64, 64, 23);
         game.load.spritesheet('nastro', 'objects/nastro.png', 192, 64, 8);
         game.load.image('flame', 'objects/flame.png');
+        game.load.image('cartello', 'objects/cartello.png');
 
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
