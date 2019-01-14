@@ -6,7 +6,7 @@ var bootState = {
     },
 
     create: function() {
-        game.stage.backgroundColor = "#555";
+        game.stage.backgroundColor = "#000";
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
@@ -21,7 +21,7 @@ var loadingState = {
         loadingBar.x = game.world.centerX - loadingBar.width/2;
         loadingBar.y = game.world.centerY - loadingBar.height/2;
         game.load.setPreloadSprite(loadingBar);
-        game.add.text(game.world.centerX, game.world.centerY + 50, 'Loading...', {font: "25px Arial", fill:'#fff'}).anchor.setTo(.5,.5);
+        game.add.text(game.world.centerX, game.world.centerY + 50, 'Caricamento...', {font: "25px Arial", fill:'#fff'}).anchor.setTo(.5,.5);
 
         game.load.baseURL = 'assets/';
         // Graphics
@@ -41,7 +41,6 @@ var loadingState = {
         game.load.image('render5', 'graphics/render5.png');
         game.load.image('render6', 'graphics/render6.png');
         game.load.image('render7', 'graphics/render7.png');
-
         // Background
         game.load.image('parallax0', 'background/parallax0.png');
         game.load.image('parallax1', 'background/parallax1.png');
@@ -51,9 +50,10 @@ var loadingState = {
         game.load.image('tana', 'background/tana.png');
         game.load.image('intro', 'background/intro.png');
         game.load.image('waterfall', 'background/waterfall.png');
-
         // Characters
-        game.load.spritesheet('lupo', 'characters/lupo.png', 100, 100);
+        game.load.spritesheet('lupo-old', 'characters/lupo-old.png', 100, 100);
+        game.load.spritesheet('lupo', 'characters/lupo.png', 64, 90);
+        game.load.spritesheet('mamma', 'characters/mamma.png', 61.5, 100);
         game.load.image('soffio', 'characters/soffio.png');
         game.load.image('torcia', 'characters/torcia.png');
         game.load.image('flies', 'characters/flies.png');
@@ -75,11 +75,9 @@ var loadingState = {
         game.load.spritesheet('nastro', 'objects/nastro.png', 192, 64, 8);
         game.load.image('flame', 'objects/flame.png');
         game.load.image('cartello', 'objects/cartello.png');
-
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
         game.load.spritesheet('castle', 'tilemaps/castle.png', 32, 32);
-        game.load.tilemap('intro', 'tilemaps/intro.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1A', 'tilemaps/level1A.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1B', 'tilemaps/level1B.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level1C', 'tilemaps/level1C.json', null, Phaser.Tilemap.TILED_JSON);
@@ -91,7 +89,7 @@ var loadingState = {
     },
 
     create: function() {
-        game.stage.backgroundColor = "#555";
+        game.stage.backgroundColor = "#000";
         game.camera.fade('#000', 100);
         game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
     }

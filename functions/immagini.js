@@ -1,7 +1,6 @@
 var immaginiState = {
 
     create: function() {
-        game.input.keyboard.start();
         var current = 3;
         var time = 5000;
 

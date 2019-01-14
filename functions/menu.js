@@ -9,7 +9,7 @@ var menuState = {
         autoriN = 1;
 
         game.camera.flash('#000', 500);
-        game.stage.backgroundColor = "#555";
+        game.stage.backgroundColor = "#000";
         game.world.setBounds(0, 0, 1024, 768);
         currentFame = 250;
 
@@ -33,6 +33,7 @@ var menuState = {
         frecciaDX = game.add.graphics(914, 303).beginFill(0xffff00, 0).drawRect(0, 0, 27, 45).endFill();
 
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
         key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
         key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
         key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
@@ -67,6 +68,7 @@ var menuState = {
             game.camera.onFadeComplete.add( function() {game.state.start('immaginiState')} );
         }
 
+        key0.onDown.add(function(){game.state.start('intro')});
         key1.onDown.add(function(){game.state.start('level1A')});
         key2.onDown.add(function(){game.state.start('level1B')});
         key3.onDown.add(function(){game.state.start('level1C')});

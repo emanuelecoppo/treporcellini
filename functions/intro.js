@@ -2,87 +2,60 @@ var intro = {
 
     create: function() {
         game.camera.flash('#000', 500);
-        game.stage.backgroundColor = "#222";
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.plugins.add(Phaser.Plugin.ArcadeSlopes);
+        game.stage.backgroundColor = "#000";
         game.world.setBounds(0, 0, 1024, 768);
+        game.add.sprite(0, 0, 'intro');
 
-        // Background
-        bg = game.add.sprite(0, 0, 'intro');
-
-        // Mamma
-        mamma = game.add.sprite(0, 30*16, 'lupo');
-        game.physics.arcade.enable(mamma);
-        mamma.anchor.setTo(.5,.5);
-        mamma.scale.setTo(1,1);
-        mamma.body.setSize(40,100,40,-3);
-        mamma.animations.add('walk', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
-        mamma.body.gravity.y = 2000;
-
-        // Lupo
-        lupo = game.add.sprite(0, 30*16, 'lupo');
-        game.physics.arcade.enable(lupo);
-        lupo.anchor.setTo(.5,.5);
-        lupo.scale.setTo(1,1);
-        lupo.body.setSize(40,100,40,-3);
-        lupo.animations.add('walk', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
-        lupo.body.gravity.y = 2000;
-
-        // Tana
-        tana = game.add.sprite(-230, -25, 'tana');
-        tana.scale.setTo(.9,.9);
-
-        // Slopes
-        mappa = game.add.tilemap('intro');
-        mappa.addTilesetImage('slopes-green', 'slopes-green');
-        mappa.setCollisionBetween(1, 38);
-        ground = mappa.createLayer('ground');
-        game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
-        game.slopes.enable([lupo, mamma]);
-        game.slopes.preferY = true;
-
-        tana.alpha = 0;
-        ground.alpha = 0;
+        // Lupi
+        mamma = game.add.sprite(-50, 700, 'mamma');
+        mamma.anchor.setTo(.5,1);
+        mamma.animations.add('walk', null, 20, true);
+        player = game.add.sprite(-50, 700, 'lupo');
+        player.anchor.setTo(.5,1);
+        player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
+        player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Text
-        style = {font:'20px Arial', fill:'#fff'};
-        text1 = mamma.addChild(game.add.text(0, -120, 'Lorem ipsum\nsit dolor amet.', style));
-        text2 = lupo.addChild (game.add.text(0, -120, 'Che fai, mamma?!\nParli in latino?', style));
-        text3 = mamma.addChild(game.add.text(0, -120, 'Scusatemi, è tutta colpa\ndel programmatore.', style));
-        text4 = lupo.addChild (game.add.text(0, -120, '\nAddio!', style));
-        text1.anchor.x=.5; text2.anchor.x=.5; text3.anchor.x=.5; text4.anchor.x=.5;
-        text1.alpha=0; text2.alpha=0; text3.alpha=0; text4.alpha=0;
+        style = {font:'20px Arial', fill:'#fff', align:'center'};
+        style2= {font:'20px Arial', fill:'#fff', align:'left'};
+        text1 = mamma.addChild(game.add.text (  0,-180, "Piccoli, dobbiamo andare,\nnon c'è più tempo.", style));
+        text2 = player.addChild(game.add.text(120, -80, "Mamma,\nma io ho paura.", style2));
+        text3 = mamma.addChild(game.add.text (  0,-180, "Devi essere coraggioso.\nVeloci, entrate nella grotta.", style));
+        text4 = player.addChild(game.add.text(  0,-180, "\nTu non vieni?", style));
+        text5 = player.addChild(game.add.text(120, -80, "Mamma, perché\nnon vieni?!", style2));
+        text6 = mamma.addChild(game.add.text (  0,-180, "Non vi preoccupate,\nvi raggiungerò subito.", style));
+        mamma.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
+        player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
 
         // Tween
+        mammaA = game.add.tween(mamma).to( {x: 450}, 2000).delay(1000).start();
+        playerA = game.add.tween(player).to( {x: 550}, 2000).delay(1000).start();
+        mammaA.onStart.add(function() {mamma.animations.play('walk')});
+        playerA.onStart.add(function() {player.animations.play('right')});
+        mammaA.onComplete.add(function() {mamma.animations.stop(); mamma.frame = 0});
+        playerA.onComplete.add(function() {player.animations.stop(); player.frame = 11});
+
         textA = game.add.tween(text1).to( {alpha: 1}, 250).delay(1000);
         textB = game.add.tween(text2).to( {alpha: 1}, 250).delay(3000);
-        textC = game.add.tween(text3).to( {alpha: 1}, 250).delay(3000);
+        textC = game.add.tween(text3).to( {alpha: 1}, 250).delay(2000);
         textD = game.add.tween(text4).to( {alpha: 1}, 250).delay(3000);
+        textE = game.add.tween(text5).to( {alpha: 1}, 250).delay(2000);
+        textF = game.add.tween(text6).to( {alpha: 1}, 250).delay(2000);
         textB.onStart.add(function() {text1.alpha = 0});
         textC.onStart.add(function() {text2.alpha = 0});
         textD.onStart.add(function() {text3.alpha = 0});
+        textE.onStart.add(function() {text4.alpha = 0});
+        textF.onStart.add(function() {text5.alpha = 0});
 
-        mammaA = game.add.tween(mamma).to( {x: 450}, 2000, 'Linear').delay(2000);
-        mammaA.onStart.add   (function() {mamma.animations.play('walk')});
-        mammaA.onComplete.add(function() {mamma.animations.stop(); mamma.frame = 12});
-        mammaA.start();
+        playerB = game.add.tween(player).to( {x: 1100}, 2000).delay(3000);
+        playerB.onStart.add(function() {player.animations.play('right'); text6.alpha = 0});
+        playerB.onComplete.add(changeState);
 
-        lupoA = game.add.tween(lupo).to( {x: 550 }, 2000, 'Linear').delay(2000);
-        lupoB = game.add.tween(lupo).to( {x: 1024}, 2500, 'Linear').delay(2000);
-        lupoA.onStart.add   (function() {lupo.animations.play('walk')});
-        lupoB.onStart.add   (function() {lupo.animations.play('walk'); text4.alpha = 0;});
-        lupoA.onComplete.add(function() {lupo.animations.stop(); lupo.frame = 11});
-        lupoB.onComplete.add(changeState);
-        lupoA.chain(textA, textB, textC, textD, lupoB);
-        lupoA.start();
+        playerA.chain(textA, textB, textC, textD, textE, textF, playerB);
 
         function changeState() {
             game.camera.fade('#000', 500);
             game.camera.onFadeComplete.add( function() {game.state.start('level1A')} );
         }
-    },
-
-    update: function() {
-        game.physics.arcade.collide([lupo, mamma], [ground]);
     },
 }
