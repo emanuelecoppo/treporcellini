@@ -64,7 +64,7 @@ var menuState = {
 
         function startGame() {
             game.camera.fade('#000', 500);
-            game.camera.onFadeComplete.add( function() {game.state.start('intro')} );
+            game.camera.onFadeComplete.add( function() {game.state.start('immaginiState')} );
         }
 
         key1.onDown.add(function(){game.state.start('level1A')});

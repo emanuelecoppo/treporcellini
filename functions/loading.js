@@ -26,14 +26,22 @@ var loadingState = {
         game.load.baseURL = 'assets/';
         // Graphics
         game.load.image('pause', 'graphics/pause.png');
-        game.load.image('autori1', 'graphics/autori1.png');
-        game.load.image('autori2', 'graphics/autori2.png');
-        game.load.image('autori3', 'graphics/autori3.png');
+        // game.load.image('autori1', 'graphics/autori1.png');
+        // game.load.image('autori2', 'graphics/autori2.png');
+        // game.load.image('autori3', 'graphics/autori3.png');
         game.load.image('autori1-bg', 'graphics/autori1-bg.png');
         game.load.image('autori2-bg', 'graphics/autori2-bg.png');
         game.load.image('autori3-bg', 'graphics/autori3-bg.png');
         game.load.image('autori-bg', 'graphics/autori-bg.png');
         game.load.image('copertina', 'graphics/copertina.png');
+        game.load.image('render1', 'graphics/render1.png');
+        game.load.image('render2', 'graphics/render2.png');
+        game.load.image('render3', 'graphics/render3.png');
+        game.load.image('render4', 'graphics/render4.png');
+        game.load.image('render5', 'graphics/render5.png');
+        game.load.image('render6', 'graphics/render6.png');
+        game.load.image('render7', 'graphics/render7.png');
+
         // Background
         game.load.image('parallax0', 'background/parallax0.png');
         game.load.image('parallax1', 'background/parallax1.png');
