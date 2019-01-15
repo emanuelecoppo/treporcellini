@@ -476,7 +476,7 @@ var level1A = {
 
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
-        //game.debug.body(player);
+        game.debug.body(player, 'rgba(0,255,0,.1)');
         //game.debug.body(maiale1); game.debug.body(maiale2); game.debug.body(maiale3);
     }
 }
