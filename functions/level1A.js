@@ -3,7 +3,7 @@ var level1A = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level1A';
-        if (check1A==true) {playerX = 304*16; playerY = 79*16;}
+        if (1==1/*check1A==true*/) {playerX = 304*16; playerY = 79*16;}
         else {playerX = 75; playerY = 1720;}
         fuga = 0;
         dialogo = 0;
@@ -100,7 +100,6 @@ var level1A = {
 
         cespugli.children.forEach( function(cespuglio) {
             cespuglio.anchor.setTo(.5,1);
-            cespuglio.scale.setTo(.5,.5);
             fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
         })
         fruits.children.forEach( function(fruit) {
@@ -121,24 +120,22 @@ var level1A = {
         // Maiali Tronco
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(352*16, 71*16, 'maiale-torcia'); maiale1.scale.x = -1;
-        maiale2 = maiali.create(375*16, 71*16, 'maiale-torcia'); maiale2.scale.x = -1;
-        maiale3 = maiali.create(391*16, 71*16, 'maiale-torcia'); maiale3.scale.x = 1;
+        maiale1 = maiali.create(352*16, 75*16, 'maiale-torcia'); maiale1.scale.x = -1;
+        maiale2 = maiali.create(375*16, 75*16, 'maiale-torcia'); maiale2.scale.x = -1;
+        maiale3 = maiali.create(391*16, 75*16, 'maiale-torcia'); maiale3.scale.x = 1;
 
         maiali.children.forEach( function(maiale) {
-            maiale.anchor.setTo(.5,.5);
+            maiale.anchor.setTo(.5,1);
             maiale.frame = 12;
             maiale.body.offset.x = 50;
 
-            var torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
-            torcia.anchor.y = .5;
-            torcia.scale.setTo(.5,.5);
-            torcia.alpha = .5;
+            var torcia = maiale.addChild(game.make.sprite(30, -46, 'torcia'));
+            torcia.anchor.setTo(.11,.528);
             game.physics.arcade.enable(torcia);
 
             torciaA = game.add.tween(torcia).to( {angle: 55}, 750, sin).delay(500+1500*Math.random()).start();
             torciaB = game.add.tween(torcia).to( {angle:  0}, 750, sin).delay(500+1500*Math.random());
-            torciaA.onStart.add(function() {game.add.tween(maiale.body).to({width:180}, 750, sin).start(); game.add.tween(maiale.body.offset).to({y:100}, 750, sin).start() });
+            torciaA.onStart.add(function() {game.add.tween(maiale.body).to({width:180}, 750, sin).start(); game.add.tween(maiale.body.offset).to({y:125}, 750, sin).start() });
             torciaB.onStart.add(function() {game.add.tween(maiale.body).to({width:250}, 750, sin).start(); game.add.tween(maiale.body.offset).to({y:  0}, 750, sin).start() });
             torciaA.chain(torciaB, torciaA);
         })
@@ -149,16 +146,14 @@ var level1A = {
         // Safe Area
         safe = game.add.group();
         safe.enableBody = true;
-        safe.add(game.add.graphics(350*16+25, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 18*16-50, 6*16));
-        safe.add(game.add.graphics(373*16+25, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 20*16-50, 6*16));
-        safe.add(game.add.graphics(398*16+25, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 12*16-50, 6*16));
-        safe.alpha = 0;
+        safe.add(game.add.graphics(350*16+15, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 18*16-30, 6*16));
+        safe.add(game.add.graphics(373*16+15, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 20*16-30, 6*16));
+        safe.add(game.add.graphics(398*16+15, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 12*16-30, 6*16));
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
-        player.scale.setTo(.9,.9);
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
@@ -183,19 +178,17 @@ var level1A = {
         // Maiali Fuga
         maialiF = game.add.group();
         maialiF.alpha = 0;
-        maiale4 = maialiF.create(390*16, 79*16, 'maiale-torcia');
-        maiale5 = maialiF.create(390*16, 79*16, 'maiale-torcia');
-        maiale6 = maialiF.create(390*16, 79*16, 'maiale-torcia');
+        maiale4 = maialiF.create(390*16, 82*16, 'maiale-torcia');
+        maiale5 = maialiF.create(390*16, 82*16, 'maiale-torcia');
+        maiale6 = maialiF.create(390*16, 82*16, 'maiale-torcia');
 
         maialiF.children.forEach( function(maialeF) {
-            maialeF.anchor.setTo(.5,.5);
+            maialeF.anchor.setTo(.5,1);
             maialeF.frame = 12;
-            maialeF.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
+            maialeF.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
 
-            var torcia = maialeF.addChild(game.make.sprite(15, 0, 'torcia'));
-            torcia.anchor.y = .5;
-            torcia.scale.setTo(.5,.5);
-            torcia.alpha = .5;
+            var torcia = maialeF.addChild(game.make.sprite(30, -46, 'torcia'));
+            torcia.anchor.setTo(.11,.528);
         })
 
         maiale4A = game.add.tween(maiale4).to( {x: rametto.x-330}, 2000+500*Math.random()).delay(500);
@@ -477,6 +470,6 @@ var level1A = {
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
         game.debug.body(player, 'rgba(0,255,0,.1)');
-        //game.debug.body(maiale1); game.debug.body(maiale2); game.debug.body(maiale3);
+        game.debug.body(maiale1); game.debug.body(maiale2); game.debug.body(maiale3);
     }
 }

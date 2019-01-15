@@ -26,9 +26,6 @@ var loadingState = {
         game.load.baseURL = 'assets/';
         // Graphics
         game.load.image('pause', 'graphics/pause.png');
-        // game.load.image('autori1', 'graphics/autori1.png');
-        // game.load.image('autori2', 'graphics/autori2.png');
-        // game.load.image('autori3', 'graphics/autori3.png');
         game.load.image('autori1-bg', 'graphics/autori1-bg.png');
         game.load.image('autori2-bg', 'graphics/autori2-bg.png');
         game.load.image('autori3-bg', 'graphics/autori3-bg.png');
@@ -42,14 +39,15 @@ var loadingState = {
         game.load.image('giorno1', 'background/giorno1.png');
         game.load.image('giorno2', 'background/giorno2.png');
         game.load.image('grotta-bg', 'background/grotta-bg.png');
-        game.load.image('grottaP', 'background/grottaP.png');
         game.load.image('intro', 'background/intro.png');
         game.load.image('waterfall', 'background/waterfall.png');
         game.load.image('fortezza-bg', 'background/fortezza-bg.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 64, 90);
         game.load.spritesheet('mamma', 'characters/mamma.png', 61.5, 100);
-        game.load.spritesheet('maiale-torcia', 'characters/maiale-torcia.png', 81.5, 130);
+        game.load.spritesheet('maiale', 'characters/maiale.png', 75, 120);
+        game.load.spritesheet('maiale-torcia', 'characters/maiale-torcia.png', 75, 120);
+        game.load.spritesheet('maiale-lanciafiamme', 'characters/maiale-lanciafiamme.png', 119.5, 120);
         game.load.image('soffio', 'characters/soffio.png');
         game.load.image('torcia', 'characters/torcia.png');
         game.load.image('flies', 'characters/flies.png');
