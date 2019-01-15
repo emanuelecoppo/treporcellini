@@ -35,20 +35,15 @@ var intro = {
         mammaA.onComplete.add(function() {mamma.animations.stop(); mamma.frame = 0});
         playerA.onComplete.add(function() {player.animations.stop(); player.frame = 11});
 
-        textA = game.add.tween(text1).to( {alpha: 1}, 250).delay(1000);
-        textB = game.add.tween(text2).to( {alpha: 1}, 250).delay(3000);
-        textC = game.add.tween(text3).to( {alpha: 1}, 250).delay(2000);
-        textD = game.add.tween(text4).to( {alpha: 1}, 250).delay(3000);
-        textE = game.add.tween(text5).to( {alpha: 1}, 250).delay(2000);
-        textF = game.add.tween(text6).to( {alpha: 1}, 250).delay(2000);
-        textB.onStart.add(function() {text1.alpha = 0});
-        textC.onStart.add(function() {text2.alpha = 0});
-        textD.onStart.add(function() {text3.alpha = 0});
-        textE.onStart.add(function() {text4.alpha = 0});
-        textF.onStart.add(function() {text5.alpha = 0});
+        textA = game.add.tween(text1).to( {alpha: 1}, 250).yoyo(true, 3000).delay(1000);
+        textB = game.add.tween(text2).to( {alpha: 1}, 250).yoyo(true, 2000);
+        textC = game.add.tween(text3).to( {alpha: 1}, 250).yoyo(true, 3000);
+        textD = game.add.tween(text4).to( {alpha: 1}, 250).yoyo(true, 2000);
+        textE = game.add.tween(text5).to( {alpha: 1}, 250).yoyo(true, 2000);
+        textF = game.add.tween(text6).to( {alpha: 1}, 250).yoyo(true, 3000);
 
-        playerB = game.add.tween(player).to( {x: 1100}, 2000).delay(3000);
-        playerB.onStart.add(function() {player.animations.play('right'); text6.alpha = 0});
+        playerB = game.add.tween(player).to( {x: 1100}, 2000);
+        playerB.onStart.add(function() {player.animations.play('right')});
         playerB.onComplete.add(changeState);
 
         playerA.chain(textA, textB, textC, textD, textE, textF, playerB);

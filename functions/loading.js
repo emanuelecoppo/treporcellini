@@ -34,26 +34,22 @@ var loadingState = {
         game.load.image('autori3-bg', 'graphics/autori3-bg.png');
         game.load.image('autori-bg', 'graphics/autori-bg.png');
         game.load.image('copertina', 'graphics/copertina.png');
-        game.load.image('render1', 'graphics/render1.png');
-        game.load.image('render2', 'graphics/render2.png');
-        game.load.image('render3', 'graphics/render3.png');
-        game.load.image('render4', 'graphics/render4.png');
-        game.load.image('render5', 'graphics/render5.png');
-        game.load.image('render6', 'graphics/render6.png');
-        game.load.image('render7', 'graphics/render7.png');
         // Background
-        game.load.image('parallax0', 'background/parallax0.png');
-        game.load.image('parallax1', 'background/parallax1.png');
-        game.load.image('parallax2', 'background/parallax2.png');
-        game.load.image('grottaBg', 'background/grottaBg.png');
+        game.load.image('notte0', 'background/notte0.png');
+        game.load.image('notte1', 'background/notte1.png');
+        game.load.image('notte2', 'background/notte2.png');
+        game.load.image('giorno0', 'background/giorno0.png');
+        game.load.image('giorno1', 'background/giorno1.png');
+        game.load.image('giorno2', 'background/giorno2.png');
+        game.load.image('grotta-bg', 'background/grotta-bg.png');
         game.load.image('grottaP', 'background/grottaP.png');
-        game.load.image('tana', 'background/tana.png');
         game.load.image('intro', 'background/intro.png');
         game.load.image('waterfall', 'background/waterfall.png');
+        game.load.image('fortezza-bg', 'background/fortezza-bg.png');
         // Characters
-        game.load.spritesheet('lupo-old', 'characters/lupo-old.png', 100, 100);
         game.load.spritesheet('lupo', 'characters/lupo.png', 64, 90);
         game.load.spritesheet('mamma', 'characters/mamma.png', 61.5, 100);
+        game.load.spritesheet('maiale-torcia', 'characters/maiale-torcia.png', 81.5, 130);
         game.load.image('soffio', 'characters/soffio.png');
         game.load.image('torcia', 'characters/torcia.png');
         game.load.image('flies', 'characters/flies.png');
@@ -84,8 +80,16 @@ var loadingState = {
         game.load.tilemap('level1D', 'tilemaps/level1D.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level2A', 'tilemaps/level2A.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level2B', 'tilemaps/level2B.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.image('level1A', 'tilemaps/level1A.png');
         // Img
-        game.load.image('menu', 'img/menu.jpg');
+        game.load.image('render1', 'img/render1.png');
+        game.load.image('render2', 'img/render2.png');
+        game.load.image('render3', 'img/render3.png');
+        game.load.image('render4', 'img/render4.png');
+        game.load.image('render5', 'img/render5.png');
+        game.load.image('render6', 'img/render6.png');
+        game.load.image('render7', 'img/render7.png');
+        game.load.image('render8', 'img/render8.png');
     },
 
     create: function() {

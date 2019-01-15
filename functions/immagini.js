@@ -29,8 +29,8 @@ var immaginiState = {
             if (renderA.alpha==0) {renderA.loadTexture('render' + current)}
             else {renderB.loadTexture('render' + current)}
             current++;
-            if (current > 8) {game.time.events.add(time, startGame, this)}
-            if (current <=8) {game.time.events.add(time, fadePicture, this)}
+            if (current > 9) {game.time.events.add(time, startGame, this)}
+            if (current <=9) {game.time.events.add(time, fadePicture, this)}
         }
 
         function startGame() {

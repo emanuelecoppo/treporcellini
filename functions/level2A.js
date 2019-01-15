@@ -13,6 +13,7 @@ var level2A = {
 
         /// World
         game.world.setBounds(0, 0, 153*32, 77*32);
+        fort=game.add.sprite(0,game.world.height,'fortezza-bg').anchor.setTo(0,1);
 
         // Controllli
         cursors = game.input.keyboard.createCursorKeys();
@@ -62,9 +63,9 @@ var level2A = {
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
         player.scale.setTo(.9,.9);
-        player.body.setSize(40,100,40,-3);
-        player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20, true);
-        player.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
+        player.body.setSize(pW,pH,pX,pY);
+        player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
+        player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));

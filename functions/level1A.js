@@ -6,6 +6,9 @@ var level1A = {
         if (check1A==true) {playerX = 304*16; playerY = 79*16;}
         else {playerX = 75; playerY = 1720;}
         fuga = 0;
+        dialogo = 0;
+        style = {font:'20px Arial', fill:'#fff', align:'center'};
+        style2= {font:'20px Arial', fill:'#fff', align:'right'};
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -34,12 +37,11 @@ var level1A = {
         key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
         // Background
-        parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax0');
-        parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax1');
-        parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax2');
-        parallax0.fixedToCamera = true;
-        parallax1.fixedToCamera = true;
-        parallax2.fixedToCamera = true;
+        parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte0');
+        parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte1');
+        parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte2');
+        parallax0.fixedToCamera = true; parallax1.fixedToCamera = true; parallax2.fixedToCamera = true;
+        grottaBg = game.add.sprite(0, game.world.height, 'grotta-bg').anchor.setTo(0,1);
 
         // Checkpoint
         check = game.add.sprite(304*16, 82*16, 'checkpoint');
@@ -73,8 +75,17 @@ var level1A = {
         })
 
         // Water
-        waterGrotta = game.add.sprite(0, game.world.height-25, 'blue');
-        waterGrotta.scale.setTo(game.world.width, 25);
+        waterGrotta = game.add.sprite(0, game.world.height-15, 'blue');
+        waterGrotta.scale.setTo(game.world.width, 15);
+
+        // Cartello
+        cartello = game.add.sprite(500, 2000, 'cartello');
+        cartello.anchor.setTo(.5);
+        cartello.scale.setTo(.2);
+        game.physics.arcade.enable(cartello);
+        hint = cartello.addChild(game.add.text (0, -200, "Prova a spostare questo ostacolo,\npremi S per soffiare.", style));
+        hint.alpha = 0; hint.anchor.x=.5;
+        hint.setScaleMinMax(1, 1);
 
         // Fruits
         cespugli = game.add.group();
@@ -110,9 +121,9 @@ var level1A = {
         // Maiali Tronco
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(352*16, 72*16, 'lupo'); maiale1.scale.x = -1;
-        maiale2 = maiali.create(375*16, 72*16, 'lupo'); maiale2.scale.x = -1;
-        maiale3 = maiali.create(391*16, 72*16, 'lupo'); maiale3.scale.x = 1;
+        maiale1 = maiali.create(352*16, 71*16, 'maiale-torcia'); maiale1.scale.x = -1;
+        maiale2 = maiali.create(375*16, 71*16, 'maiale-torcia'); maiale2.scale.x = -1;
+        maiale3 = maiali.create(391*16, 71*16, 'maiale-torcia'); maiale3.scale.x = 1;
 
         maiali.children.forEach( function(maiale) {
             maiale.anchor.setTo(.5,.5);
@@ -148,9 +159,9 @@ var level1A = {
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
         player.scale.setTo(.9,.9);
-        player.body.setSize(40,100,40,-3);
-        player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20, true);
-        player.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
+        player.body.setSize(pW,pH,pX,pY);
+        player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
+        player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
@@ -172,9 +183,9 @@ var level1A = {
         // Maiali Fuga
         maialiF = game.add.group();
         maialiF.alpha = 0;
-        maiale4 = maialiF.create(390*16, 79*16, 'lupo');
-        maiale5 = maialiF.create(390*16, 79*16, 'lupo');
-        maiale6 = maialiF.create(390*16, 79*16, 'lupo');
+        maiale4 = maialiF.create(390*16, 79*16, 'maiale-torcia');
+        maiale5 = maialiF.create(390*16, 79*16, 'maiale-torcia');
+        maiale6 = maialiF.create(390*16, 79*16, 'maiale-torcia');
 
         maialiF.children.forEach( function(maialeF) {
             maialeF.anchor.setTo(.5,.5);
@@ -221,6 +232,17 @@ var level1A = {
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
         game.slopes.enable([player, fruits, sassi]);
         game.slopes.preferY = true;
+        //mappa.alpha=.5; ground.alpha=.5;
+        //game.add.sprite(0,game.world.height,'level1A').anchor.setTo(0,1);
+
+        // Dialogo
+        text1 = player.addChild(game.add.text(-150, -40, "Perché la mamma\nnon è ancora arrivata?", style2));
+        text2 = player.addChild(game.add.text(   0,-120, "Non ti preoccupare, vedrai\nche ci raggiungerà.", style));
+        player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
+        textA = game.add.tween(text1).to( {alpha: 1}, 250).yoyo(true, 3000).delay(1000);
+        textB = game.add.tween(text2).to( {alpha: 1}, 250).yoyo(true, 3000);
+        textB.onComplete.add(function() {game.input.keyboard.start()});
+        textA.chain(textB);
 
         // Fame
         barra = game.add.graphics(25, 25);
@@ -294,10 +316,9 @@ var level1A = {
 
         // States
         function gameOver() {
+            game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
-            cursors.right.isDown = false;
-            cursors.left.isDown = false;
-            player.body.velocity.x = 0;
+            cursors.isDown = false;
             player.animations.stop();
             game.time.events.add(500, function() {
                 game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
@@ -354,7 +375,7 @@ var level1A = {
         // Jump
         spacebar.onDown.add(jumpFunction);
         function jumpFunction() {
-            if (player.body.touching.down) {player.body.velocity.y = -jump;}
+            if (player.body.touching.down || player.body.blocked.down) {player.body.velocity.y = -jump;}
         }
 
         // Soffio
@@ -432,6 +453,22 @@ var level1A = {
             maiale4A.start(); maiale5A.start(); maiale6A.start();
             fuga ++;
         }
+
+        // Dialogo
+        if (player.x>=1725 && player.x<=1825 && dialogo==0) {
+            game.input.keyboard.stop();
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
+            player.body.velocity.x = 0;
+            player.animations.stop();
+            player.frame = 11;
+            textA.start();
+            dialogo ++;
+        }
+
+        // Cartello
+        if (game.physics.arcade.overlap(player, cartello)) {game.add.tween(hint).to( {alpha: 1}, 50).start()}
+        else {game.add.tween(hint).to( {alpha: 0}, 50).start()}
 
         // Vola
         if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};

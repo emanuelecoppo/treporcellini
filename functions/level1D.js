@@ -34,12 +34,10 @@ var level1D = {
         key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
         // Background
-        parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax0');
-        parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax1');
-        parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'parallax2');
-        parallax0.fixedToCamera = true;
-        parallax1.fixedToCamera = true;
-        parallax2.fixedToCamera = true;
+        parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno0');
+        parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno1');
+        parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno2');
+        parallax0.fixedToCamera = true; parallax1.fixedToCamera = true; parallax2.fixedToCamera = true;
 
         // Checkpoint
         check = game.add.sprite(220*16, 48*16, 'checkpoint');
@@ -101,9 +99,9 @@ var level1D = {
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
         player.scale.setTo(.9,.9);
-        player.body.setSize(40,100,40,-3);
-        player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20, true);
-        player.animations.add('right', [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 20, true);
+        player.body.setSize(pW,pH,pX,pY);
+        player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
+        player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
