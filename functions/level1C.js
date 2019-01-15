@@ -135,7 +135,6 @@ var level1C = {
         player = game.add.sprite(playerX, playerY, 'lupo');
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
-        player.scale.setTo(.9,.9);
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
@@ -208,25 +207,22 @@ var level1C = {
         // Maiali
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(549*16, 75*16, 'lupo');
+        maiale1 = maiali.create(549*16, 78*16, 'maiale-torcia');
 
         maiali.children.forEach( function(maiale) {
-            maiale.anchor.setTo(.5,.5);
-            maiale.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
-            maiale.frame = 12;
-            maiale.body.setSize(250,100,50,0);
+            maiale.anchor.setTo(.5,1);
+            maiale.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
+            maiale.body.setSize(250,120,50,0);
 
-            var torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
-            torcia.anchor.y = .5;
-            torcia.scale.setTo(.5,.5);
-            torcia.alpha = .5;
+            var torcia = maiale.addChild(game.make.sprite(30, -46, 'torcia'));
+            torcia.anchor.setTo(.11,.528);
 
             maialeA = game.add.tween(maiale).to( {x: maiale.x-40*16}, 5000).delay(2000).start();
             maialeB = game.add.tween(maiale).to( {x: maiale.x      }, 5000).delay(2000);
             maialeA.onStart.add   (function() {maiale.scale.x=-1; maiale.animations.play('walk')});
             maialeB.onStart.add   (function() {maiale.scale.x= 1; maiale.animations.play('walk')});
-            maialeA.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 12});
-            maialeB.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 12});
+            maialeA.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 0});
+            maialeB.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 0});
             maialeA.chain(maialeB, maialeA);
         })
 

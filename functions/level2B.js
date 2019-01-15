@@ -78,7 +78,6 @@ var level2B = {
         player = game.add.sprite(playerX, playerY, 'lupo');
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
-        player.scale.setTo(.9,.9);
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);

@@ -146,9 +146,9 @@ var level1A = {
         // Safe Area
         safe = game.add.group();
         safe.enableBody = true;
-        safe.add(game.add.graphics(350*16+15, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 18*16-30, 6*16));
-        safe.add(game.add.graphics(373*16+15, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 20*16-30, 6*16));
-        safe.add(game.add.graphics(398*16+15, troncoS.y).lineStyle(1,0xffffff,.5).drawRect(0, 0, 12*16-30, 6*16));
+        safe.add(game.add.graphics(350*16+15, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 18*16-30, 6*16));
+        safe.add(game.add.graphics(373*16+15, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 20*16-30, 6*16));
+        safe.add(game.add.graphics(398*16+15, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 12*16-30, 6*16));
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
@@ -226,7 +226,7 @@ var level1A = {
         game.slopes.enable([player, fruits, sassi]);
         game.slopes.preferY = true;
         //mappa.alpha=.5; ground.alpha=.5;
-        //game.add.sprite(0,game.world.height,'level1A').anchor.setTo(0,1);
+        game.add.sprite(0,game.world.height,'level1A').anchor.setTo(0,1);
 
         // Dialogo
         text1 = player.addChild(game.add.text(-150, -40, "Perché la mamma\nnon è ancora arrivata?", style2));
@@ -470,6 +470,6 @@ var level1A = {
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
         game.debug.body(player, 'rgba(0,255,0,.1)');
-        game.debug.body(maiale1); game.debug.body(maiale2); game.debug.body(maiale3);
+        //game.debug.body(maiale1); game.debug.body(maiale2); game.debug.body(maiale3);
     }
 }

@@ -99,7 +99,6 @@ var level1B = {
         player = game.add.sprite(playerX, playerY, 'lupo');
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
-        player.scale.setTo(.9,.9);
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
@@ -144,22 +143,20 @@ var level1B = {
         // Maiali
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(-120,66*16, 'lupo');
-        maiale2 = maiali.create(-95, 66*16, 'lupo');
-        maiale3 = maiali.create(-45, 66*16, 'lupo');
+        maiale1 = maiali.create(-120,69*16, 'maiale-torcia');
+        maiale2 = maiali.create(-95, 69*16, 'maiale-torcia');
+        maiale3 = maiali.create(-45, 69*16, 'maiale-torcia');
 
         maiali.children.forEach( function(maiale) {
-            maiale.anchor.setTo(.5,.5);
-            maiale.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
+            maiale.anchor.setTo(.5,1);
+            maiale.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
             maiale.animations.play('walk');
 
-            torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
-            torcia.anchor.y = .5;
-            torcia.scale.setTo(.5,.5);
-            torcia.alpha = .5;
+            var torcia = maiale.addChild(game.make.sprite(30, -46, 'torcia'));
+            torcia.anchor.setTo(.11,.528);
 
-            torciaA = game.add.tween(torcia).to( {angle: 10+10*Math.random()}, 500+500*Math.random(), sin).delay(250*Math.random());
-            torciaB = game.add.tween(torcia).to( {angle:-10-10*Math.random()}, 500+500*Math.random(), sin).delay(250*Math.random());
+            torciaA = game.add.tween(torcia).to( {angle: 5+10*Math.random()}, 250+500*Math.random(), sin).delay(250*Math.random());
+            torciaB = game.add.tween(torcia).to( {angle:-5-10*Math.random()}, 250+500*Math.random(), sin).delay(250*Math.random());
             torciaA.chain(torciaB, torciaA);
             torciaA.start();
         })

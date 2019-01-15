@@ -98,7 +98,6 @@ var level1D = {
         player = game.add.sprite(playerX, playerY, 'lupo');
         game.physics.arcade.enable(player);
         player.anchor.setTo(.5,.5);
-        player.scale.setTo(.9,.9);
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
@@ -139,39 +138,40 @@ var level1D = {
         // Maiali
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(205*16, 64*16, 'lupo');
+        maiale1 = maiali.create(205*16, 67*16, 'maiale-torcia');
         game.time.events.loop(2000, function(){maiale1.scale.x*=-1}, this);
-        maiale4 = maiali.create(game.world.width-1500, 44*16, 'lupo');
-        maiale3 = maiali.create(game.world.width-1400, 44*16, 'lupo');
-        maiale2 = maiali.create(game.world.width+ 300, 44*16, 'lupo');
+        maiale4 = maiali.create(game.world.width-1500, 47*16, 'maiale-torcia');
+        maiale3 = maiali.create(game.world.width-1400, 47*16, 'maiale-torcia');
+        maiale2 = maiali.create(game.world.width+ 300, 47*16, 'maiale-torcia');
         maiale2.scale.x=-1; maiale2.alpha=0; maiale3.alpha=0; maiale4.alpha=0;
 
         maiali.children.forEach( function(maiale) {
-            maiale.anchor.setTo(.5,.5);
-            maiale.animations.add('walk', [12,13,14,15,16,17,18,19,20,21,22,23], 10, true);
-            maiale.frame = 12;
-            maiale.body.setSize(250,100,50,0);
+            maiale.anchor.setTo(.5,1);
+            maiale.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
+            maiale.body.setSize(250,120,50,0);
 
-            var torcia = maiale.addChild(game.make.sprite(15, 0, 'torcia'));
-            torcia.anchor.y = .5;
-            torcia.scale.setTo(.5,.5);
-            torcia.alpha = .5;
+            var torcia = maiale.addChild(game.make.sprite(30, -46, 'torcia'));
+            torcia.anchor.setTo(.11,.528);
         })
 
-        maiale2A = game.add.tween(maiale2).to( {x: 517*16}, 1500).delay(   0); maiale2A.onStart.add(function() {maiale2.animations.play('walk')});
-        maiale3A = game.add.tween(maiale3).to( {x: 470*16}, 1500).delay(1000); maiale3A.onStart.add(function() {maiale3.animations.play('walk')});
-        maiale4A = game.add.tween(maiale4).to( {x: 468*16}, 1500).delay(1000); maiale4A.onStart.add(function() {maiale4.animations.play('walk')});
-
-        playerA =  game.add.tween(player).to(  {x: 492*16}, 1000).delay( 200); playerA.onStart.add(function() {player.animations.play('left')});
-
-        maiale2B = game.add.tween(maiale2).to( {x: 496*16}, 1500).delay(1500); maiale2B.onStart.add(function() {maiale2.animations.play('walk')});
-        maiale3B = game.add.tween(maiale3).to( {x: 488*16}, 1500).delay(1500); maiale3B.onStart.add(function() {maiale3.animations.play('walk')});
-        maiale4B = game.add.tween(maiale4).to( {x: 488*16}, 1500).delay(1500); maiale4B.onStart.add(function() {maiale4.animations.play('walk')});
-
-        maiale2A.onComplete.add(function() {maiale2.animations.stop(); maiale2.frame = 12; playerA.start()});
-        maiale3A.onComplete.add(function() {maiale3.animations.stop(); maiale3.frame = 12});
-        maiale4A.onComplete.add(function() {maiale4.animations.stop(); maiale4.frame = 12});
+        maiale2A = game.add.tween(maiale2).to( {x: 517*16}, 1500).delay(   0);
+        maiale3A = game.add.tween(maiale3).to( {x: 470*16}, 1500).delay(1000);
+        maiale4A = game.add.tween(maiale4).to( {x: 468*16}, 1500).delay(1000);
+        maiale2A.onStart.add(function() {maiale2.animations.play('walk')});
+        maiale3A.onStart.add(function() {maiale3.animations.play('walk')});
+        maiale4A.onStart.add(function() {maiale4.animations.play('walk')});
+        maiale2A.onComplete.add(function() {maiale2.animations.stop(); maiale2.frame = 0; playerA.start()});
+        maiale3A.onComplete.add(function() {maiale3.animations.stop(); maiale3.frame = 0});
+        maiale4A.onComplete.add(function() {maiale4.animations.stop(); maiale4.frame = 0});
+        playerA =  game.add.tween(player).to(  {x: 492*16}, 1000).delay( 200);
+        playerA.onStart.add(function() {player.animations.play('left')});
         playerA.onComplete.add(function()  {player.animations.stop();  player.frame = 11; maiale2B.start(); maiale3B.start(); maiale4B.start()});
+        maiale2B = game.add.tween(maiale2).to( {x: 496*16}, 1500).delay(1500);
+        maiale3B = game.add.tween(maiale3).to( {x: 488*16}, 1500).delay(1500);
+        maiale4B = game.add.tween(maiale4).to( {x: 488*16}, 1500).delay(1500);
+        maiale2B.onStart.add(function() {maiale2.animations.play('walk')});
+        maiale3B.onStart.add(function() {maiale3.animations.play('walk')});
+        maiale4B.onStart.add(function() {maiale4.animations.play('walk')});
 
         // Fame
         barra = game.add.graphics(25, 25);
