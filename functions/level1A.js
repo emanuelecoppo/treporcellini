@@ -3,7 +3,7 @@ var level1A = {
     create: function() {
         game.input.keyboard.start();
         currentLevel = 'level1A';
-        if (1==1/*check1A==true*/) {playerX = 304*16; playerY = 79*16;}
+        if (1==2/*check1A==true*/) {playerX = 304*16; playerY = 79*16;}
         else {playerX = 75; playerY = 1720;}
         fuga = 0;
         dialogo = 0;
