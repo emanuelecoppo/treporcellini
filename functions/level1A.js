@@ -2,7 +2,11 @@ var level1A = {
 
     create: function() {
         currentLevel = 'level1A';
+<<<<<<< HEAD
         if (check1A==true) {playerX = 304*16; playerY = 79*16;}
+=======
+        if (1==2/*check1A==true*/) {playerX = 304*16; playerY = 79*16;}
+>>>>>>> 0c4151ea288b67f7393a11d218c2cef95ccbec0c
         else {playerX = 75; playerY = 1720;}
         fuga = 0;
         dialogo = 0;
