@@ -1,6 +1,24 @@
 var intro = {
 
     create: function() {
+        // Controllli
+        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
+        key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        key0.onDown.add(function(){game.state.start('intro')});
+        key1.onDown.add(function(){game.state.start('level1A')});
+        key2.onDown.add(function(){game.state.start('level1B')});
+        key3.onDown.add(function(){game.state.start('level1C')});
+        key4.onDown.add(function(){game.state.start('level1D')});
+        key5.onDown.add(function(){game.state.start('level2A')});
+        key6.onDown.add(function(){game.state.start('level2B')});
+
+        game.input.keyboard.start();
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.world.setBounds(0, 0, 1024, 768);
@@ -16,16 +34,14 @@ var intro = {
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Text
-        style = {font:'20px Arial', fill:'#fff', align:'center'};
-        style2= {font:'20px Arial', fill:'#fff', align:'left'};
-        text1 = mamma.addChild(game.add.text (  0,-180, "Piccoli, dobbiamo andare,\nnon c'è più tempo.", style));
-        text2 = player.addChild(game.add.text(120, -80, "Mamma,\nma io ho paura.", style2));
-        text3 = mamma.addChild(game.add.text (  0,-180, "Devi essere coraggioso.\nVeloci, entrate nella grotta.", style));
-        text4 = player.addChild(game.add.text(  0,-180, "\nTu non vieni?", style));
-        text5 = player.addChild(game.add.text(120, -80, "Mamma, perché\nnon vieni?!", style2));
-        text6 = mamma.addChild(game.add.text (  0,-180, "Non vi preoccupate,\nvi raggiungerò subito.", style));
-        mamma.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
-        player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
+        text1 = mamma.addChild(game.add.text (  0,-180, "Piccoli, dobbiamo andare,\nnon c'è più tempo.", styleC));
+        text2 = player.addChild(game.add.text(120, -80, "Mamma,\nma io ho paura.", styleL));
+        text3 = mamma.addChild(game.add.text (  0,-180, "Devi essere coraggioso.\nVeloci, entrate nella grotta.", styleC));
+        text4 = player.addChild(game.add.text(  0,-180, "\nTu non vieni?", styleC));
+        text5 = player.addChild(game.add.text(120, -80, "Mamma, perché\nnon vieni?!", styleL));
+        text6 = mamma.addChild(game.add.text (  0,-180, "Non vi preoccupate,\nvi raggiungerò subito.", styleC));
+        mamma.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5; text.lineSpacing=-5})
+        player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5; text.lineSpacing=-5})
 
         // Tween
         mammaA = game.add.tween(mamma).to( {x: 450}, 2000).delay(1000).start();

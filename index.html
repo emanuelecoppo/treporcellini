@@ -20,10 +20,18 @@
     <style>
 		body {margin: 0; background-color: #000;}
 		canvas {margin:0;}
+		@font-face {
+			font-family: 'DIN';
+			src: url('assets/font/DINPro.otf');
+			font-style: normal;
+			font-weight: 400;
+		}
     </style>
 
 </head>
 <body>
+
+<div style="font-family:'DIN'; opacity:0;">.</div>
 
 <script>
 
@@ -31,15 +39,16 @@
 	var currentFame = 250;
 	var playerX;
 	var playerY;
-	pW=37; pH=90; pX=14; pY=0; // Player Body Size
-
+	pW=24; pH=87; pX=22; pY=3; // Player Body Size
 	sin = Phaser.Easing.Sinusoidal.InOut;
-
 	var currentLevel;
 	var check1A = false;
 	var check1C = false;
 	var check1D = false;
 	var check2A = false;
+	styleC = {font:'20px DIN', fill:'#fff', align:'center'};
+	styleL = {font:'20px DIN', fill:'#fff', align:'left'};
+	styleR = {font:'20px DIN', fill:'#fff', align:'right'};
 
 	var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'game');
 
@@ -55,7 +64,6 @@
 	game.state.add('level2A', level2A);
 	game.state.add('level2B', level2B);
 	game.state.add('gameOver', gameOver);
-
 	game.state.start('bootState');
 
 </script>

@@ -1,32 +1,42 @@
 var level2A = {
 
     create: function() {
-        game.input.keyboard.start();
         currentLevel = 'level2A';
         if (check2A==true) {playerX = 88*32; playerY = 18*32;}
         else {playerX = 22*32; playerY = 68*32;}
         lavaTrigger = 0;
 
         game.camera.flash('#000', 500);
-        game.stage.backgroundColor = "#333";
+        game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
-
-        /// World
-        game.world.setBounds(0, 0, 153*32, 77*32);
-        fort=game.add.sprite(0,game.world.height,'fortezza-bg').anchor.setTo(0,1);
+        game.input.keyboard.start();
 
         // Controllli
         cursors = game.input.keyboard.createCursorKeys();
-        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        destra = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        sinistra = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        soffia = game.input.keyboard.addKey(Phaser.Keyboard.E);
+        vola = game.input.keyboard.addKey(Phaser.Keyboard.F);
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
         key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
         key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
         key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
         key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
         key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
         key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
-        key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
+        key0.onDown.add(function(){game.state.start('intro')});
+        key1.onDown.add(function(){game.state.start('level1A')});
+        key2.onDown.add(function(){game.state.start('level1B')});
+        key3.onDown.add(function(){game.state.start('level1C')});
+        key4.onDown.add(function(){game.state.start('level1D')});
+        key5.onDown.add(function(){game.state.start('level2A')});
+        key6.onDown.add(function(){game.state.start('level2B')});
+
+        /// World
+        game.world.setBounds(0, 0, 153*32, 77*32);
+        fort=game.add.sprite(0,game.world.height,'fortezza-bg').anchor.setTo(0,1);
 
         // Checkpoint
         check = game.add.sprite(88*32, 20*32, 'checkpoint');
@@ -147,10 +157,9 @@ var level2A = {
         })
 
         // Lava
-        lava = game.add.graphics(60*32, 64*32);
-        lava.beginFill(0x990000, 1);
-        lava.drawRect(0, 0, 22*32, 70*32);
-        lava.endFill();
+        lava = game.add.tileSprite(60*32, 63*32, 22*32, 70*32, 'lava');
+        lava.animations.add('waves', [0,1,2,3,4,5,6,7,8,7,6,5,4,3,2,1]);
+        lava.animations.play('waves', 10, true);
         game.physics.arcade.enable(lava);
         lavaAlza = game.add.tween(lava).to( {y: 21*32}, 15000, sin);
 
@@ -221,15 +230,6 @@ var level2A = {
     },
 
     update: function() {
-        // Shortcuts
-        key1.onDown.add(function(){game.state.start('level1A')});
-        key2.onDown.add(function(){game.state.start('level1B')});
-        key3.onDown.add(function(){game.state.start('level1C')});
-        key4.onDown.add(function(){game.state.start('level1D')});
-        key5.onDown.add(function(){game.state.start('level1E')});
-        key6.onDown.add(function(){game.state.start('level2A')});
-        key7.onDown.add(function(){game.state.start('level2B')});
-
         // States
         function gameOver() {
             game.input.keyboard.stop();
@@ -294,7 +294,7 @@ var level2A = {
         }
 
         // Soffio
-        if (s.isDown) {
+        if (soffia.isDown) {
             soffio.revive();
             if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
             else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
@@ -342,7 +342,7 @@ var level2A = {
         })
 
         // Vola
-        if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
+        if (vola.isDown) {player.body.gravity.y = 0};
 
     },
 

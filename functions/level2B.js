@@ -1,18 +1,37 @@
 var level2B = {
 
-    preload: function() {
-        game.time.advancedTiming = true;
-    },
-
     create: function() {
-        game.input.keyboard.start();
         currentLevel = 'level2B';
         playerX = 5*32;
         playerY = 0;
 
         game.camera.flash('#000', 500);
-        game.stage.backgroundColor = "#333";
+        game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.input.keyboard.start();
+
+        // Controllli
+        cursors = game.input.keyboard.createCursorKeys();
+        destra = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        sinistra = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        soffia = game.input.keyboard.addKey(Phaser.Keyboard.E);
+        vola = game.input.keyboard.addKey(Phaser.Keyboard.F);
+        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
+        key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        key0.onDown.add(function(){game.state.start('intro')});
+        key1.onDown.add(function(){game.state.start('level1A')});
+        key2.onDown.add(function(){game.state.start('level1B')});
+        key3.onDown.add(function(){game.state.start('level1C')});
+        key4.onDown.add(function(){game.state.start('level1D')});
+        key5.onDown.add(function(){game.state.start('level2A')});
+        key6.onDown.add(function(){game.state.start('level2B')});
 
         /// World
         game.world.setBounds(0, 0, 1024, 768);
@@ -167,15 +186,6 @@ var level2B = {
     },
 
     update: function() {
-        // Shortcuts
-        key1.onDown.add(function(){game.state.start('level1A')});
-        key2.onDown.add(function(){game.state.start('level1B')});
-        key3.onDown.add(function(){game.state.start('level1C')});
-        key4.onDown.add(function(){game.state.start('level1D')});
-        key5.onDown.add(function(){game.state.start('level1E')});
-        key6.onDown.add(function(){game.state.start('level2A')});
-        key7.onDown.add(function(){game.state.start('level2B')});
-
         // States
         function gameOver() {
             game.input.keyboard.stop();
@@ -242,7 +252,7 @@ var level2B = {
         }
 
         // Soffio
-        if (s.isDown) {
+        if (soffia.isDown) {
             soffio.revive();
             if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
             else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
@@ -321,12 +331,11 @@ var level2B = {
         }
 
         // Vola
-        if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
+        if (vola.isDown) {player.body.gravity.y = 0};
     },
 
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
         game.debug.text('Vite Boss = ' + boss.vite, 10, 90);
-        game.debug.text('FPS: ' + game.time.fps, 10, 120);
     }
 }

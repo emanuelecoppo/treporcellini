@@ -1,19 +1,40 @@
 var level1A = {
 
     create: function() {
-        game.input.keyboard.start();
         currentLevel = 'level1A';
-        if (1==1/*check1A==true*/) {playerX = 304*16; playerY = 79*16;}
+        if (check1A==true) {playerX = 304*16; playerY = 79*16;}
         else {playerX = 75; playerY = 1720;}
         fuga = 0;
         dialogo = 0;
-        style = {font:'20px Arial', fill:'#fff', align:'center'};
-        style2= {font:'20px Arial', fill:'#fff', align:'right'};
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.plugins.add(Phaser.Plugin.ArcadeSlopes);
+        game.input.keyboard.start();
+
+        // Controllli
+        cursors = game.input.keyboard.createCursorKeys();
+        destra = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        sinistra = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        soffia = game.input.keyboard.addKey(Phaser.Keyboard.E);
+        vola = game.input.keyboard.addKey(Phaser.Keyboard.F);
+        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
+        key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        key0.onDown.add(function(){game.state.start('intro')});
+        key1.onDown.add(function(){game.state.start('level1A')});
+        key2.onDown.add(function(){game.state.start('level1B')});
+        key3.onDown.add(function(){game.state.start('level1C')});
+        key4.onDown.add(function(){game.state.start('level1D')});
+        key5.onDown.add(function(){game.state.start('level2A')});
+        key6.onDown.add(function(){game.state.start('level2B')});
 
         // World
         game.world.setBounds(0, 0, 480*16-50, 130*16);
@@ -22,19 +43,6 @@ var level1A = {
         game.physics.arcade.enable([boundL, boundR]);
         boundL.body.immovable = true;
         boundR.body.immovable = true;
-
-        // Controllli
-        cursors = game.input.keyboard.createCursorKeys();
-        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
-        key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
-        key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
-        key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
-        key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
-        key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
-        key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
-        key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
         // Background
         parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte0');
@@ -83,7 +91,7 @@ var level1A = {
         cartello.anchor.setTo(.5);
         cartello.scale.setTo(.2);
         game.physics.arcade.enable(cartello);
-        hint = cartello.addChild(game.add.text (0, -200, "Prova a spostare questo ostacolo,\npremi S per soffiare.", style));
+        hint = cartello.addChild(game.add.text (0, -200, "Prova a spostare questo ostacolo,\npremi S per soffiare.", styleC));
         hint.alpha = 0; hint.anchor.x=.5;
         hint.setScaleMinMax(1, 1);
 
@@ -229,12 +237,13 @@ var level1A = {
         game.add.sprite(0,game.world.height,'level1A').anchor.setTo(0,1);
 
         // Dialogo
-        text1 = player.addChild(game.add.text(-150, -40, "Perché la mamma\nnon è ancora arrivata?", style2));
-        text2 = player.addChild(game.add.text(   0,-120, "Non ti preoccupare, vedrai\nche ci raggiungerà.", style));
-        player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
+        text1 = game.add.text(-150, -40, "Perché la mamma\nnon è ancora arrivata?", styleL);
+        text2 = game.add.text(   0,-120, "Non ti preoccupare, vedrai\nche ci raggiungerà.", styleC);
+        // player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
+        text1.anchor.x=.5; text1.alpha=0; text2.anchor.x=.5; text2.alpha=0;
         textA = game.add.tween(text1).to( {alpha: 1}, 250).yoyo(true, 3000).delay(1000);
         textB = game.add.tween(text2).to( {alpha: 1}, 250).yoyo(true, 3000);
-        textB.onComplete.add(function() {game.input.keyboard.start()});
+        // textB.onComplete.add(function() {game.input.keyboard.start()});
         textA.chain(textB);
 
         // Fame
@@ -298,15 +307,6 @@ var level1A = {
     },
 
     update: function() {
-        // Shortcuts
-        key1.onDown.add(function(){game.state.start('level1A')});
-        key2.onDown.add(function(){game.state.start('level1B')});
-        key3.onDown.add(function(){game.state.start('level1C')});
-        key4.onDown.add(function(){game.state.start('level1D')});
-        key5.onDown.add(function(){game.state.start('level1E')});
-        key6.onDown.add(function(){game.state.start('level2A')});
-        key7.onDown.add(function(){game.state.start('level2B')});
-
         // States
         function gameOver() {
             game.physics.arcade.isPaused = true;
@@ -372,7 +372,7 @@ var level1A = {
         }
 
         // Soffio
-        if (s.isDown) {
+        if (soffia.isDown) {
             soffio.revive();
             if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
             else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
@@ -437,8 +437,7 @@ var level1A = {
         // Inizio Fuga
         if (player.x >= rametto.x && fuga==0) {
             game.input.keyboard.stop();
-            cursors.right.isDown = false;
-            cursors.left.isDown = false;
+            cursors.isDown = false;
             player.body.velocity.x = 0;
             player.animations.stop();
             player.frame = 12;
@@ -448,13 +447,15 @@ var level1A = {
         }
 
         // Dialogo
+        text1.x=player.x-150; text1.y=player.y-40;
+        text2.x=player.x; text2.y=player.y-120;
         if (player.x>=1725 && player.x<=1825 && dialogo==0) {
-            game.input.keyboard.stop();
-            cursors.right.isDown = false;
-            cursors.left.isDown = false;
-            player.body.velocity.x = 0;
-            player.animations.stop();
-            player.frame = 11;
+            //game.input.keyboard.stop();
+            //cursors.right.isDown = false;
+            //cursors.left.isDown = false;
+            //player.body.velocity.x = 0;
+            //player.animations.stop();
+            //player.frame = 11;
             textA.start();
             dialogo ++;
         }
@@ -464,12 +465,12 @@ var level1A = {
         else {game.add.tween(hint).to( {alpha: 0}, 50).start()}
 
         // Vola
-        if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
+        if (vola.isDown) {player.body.gravity.y = 0};
     },
 
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
-        game.debug.body(player, 'rgba(0,255,0,.1)');
+        //game.debug.body(player, 'rgba(0,255,0,.1)');
         //game.debug.body(maiale1); game.debug.body(maiale2); game.debug.body(maiale3);
     }
 }

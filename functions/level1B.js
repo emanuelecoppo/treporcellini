@@ -1,7 +1,6 @@
 var level1B = {
 
     create: function() {
-        game.input.keyboard.start();
         currentLevel = 'level1B';
         playerX = 482;
         playerY = 1095;
@@ -10,6 +9,30 @@ var level1B = {
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.plugins.add(Phaser.Plugin.ArcadeSlopes);
+        game.input.keyboard.start();
+
+        // Controllli
+        cursors = game.input.keyboard.createCursorKeys();
+        destra = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        sinistra = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        soffia = game.input.keyboard.addKey(Phaser.Keyboard.E);
+        vola = game.input.keyboard.addKey(Phaser.Keyboard.F);
+        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
+        key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        key0.onDown.add(function(){game.state.start('intro')});
+        key1.onDown.add(function(){game.state.start('level1A')});
+        key2.onDown.add(function(){game.state.start('level1B')});
+        key3.onDown.add(function(){game.state.start('level1C')});
+        key4.onDown.add(function(){game.state.start('level1D')});
+        key5.onDown.add(function(){game.state.start('level2A')});
+        key6.onDown.add(function(){game.state.start('level2B')});
 
         /// World
         game.world.setBounds(0, 0, 400*16-50, 100*16);
@@ -18,19 +41,6 @@ var level1B = {
         game.physics.arcade.enable([boundL, boundR]);
         boundL.body.immovable = true;
         boundR.body.immovable = true;
-
-        // Controllli
-        cursors = game.input.keyboard.createCursorKeys();
-        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
-        key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
-        key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
-        key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
-        key4 = game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
-        key5 = game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
-        key6 = game.input.keyboard.addKey(Phaser.Keyboard.SIX);
-        key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
         // Background
         parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte0');
@@ -66,10 +76,6 @@ var level1B = {
             ramo.body.immovable = true;
             ramo.body.maxVelocity.y = 800;
         })
-
-        // Water (dietro)
-        waterPonte = game.add.sprite(0, game.world.height-10*16, 'blue');
-        waterPonte.scale.setTo(game.world.width, 10*16);
 
         // Fruits
         cespugli = game.add.group();
@@ -124,12 +130,9 @@ var level1B = {
         // Fango
         fango = game.add.group();
         fango.enableBody = true;
-        fango.alpha = .95;
-        fango.create( 41*16, 75*16, 'brown');
-        fango.create(210*16, 67*16, 'brown');
+        fango.add(game.add.tileSprite( 41*16, 75*16, 15*16, 6*16, 'fango'));
+        fango.add(game.add.tileSprite(210*16, 67*16, 15*16, 6*16, 'fango'));
         fango.setAll('body.immovable', true);
-        fango.setAll('scale.x', 15*16);
-        fango.setAll('scale.y', 5*16);
 
         // Slopes
         mappa = game.add.tilemap('level1B');
@@ -228,15 +231,6 @@ var level1B = {
     },
 
     update: function() {
-        // Shortcuts
-        key1.onDown.add(function(){game.state.start('level1A')});
-        key2.onDown.add(function(){game.state.start('level1B')});
-        key3.onDown.add(function(){game.state.start('level1C')});
-        key4.onDown.add(function(){game.state.start('level1D')});
-        key5.onDown.add(function(){game.state.start('level1E')});
-        key6.onDown.add(function(){game.state.start('level2A')});
-        key7.onDown.add(function(){game.state.start('level2B')});
-
         // States
         function gameOver() {
             game.input.keyboard.stop();
@@ -319,7 +313,7 @@ var level1B = {
         }
 
         // Soffio
-        if (s.isDown) {
+        if (soffia.isDown) {
             soffio.revive();
             if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
             else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
@@ -371,7 +365,7 @@ var level1B = {
         })
 
         // Vola
-        if (game.input.keyboard.addKey(Phaser.Keyboard.F).isDown) {player.body.gravity.y = 0};
+        if (vola.isDown) {player.body.gravity.y = 0};
 
     },
 

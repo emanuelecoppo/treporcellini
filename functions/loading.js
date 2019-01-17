@@ -26,9 +26,7 @@ var loadingState = {
         game.load.baseURL = 'assets/';
         // Graphics
         game.load.image('pause', 'graphics/pause.png');
-        game.load.image('autori1-bg', 'graphics/autori1-bg.png');
-        game.load.image('autori2-bg', 'graphics/autori2-bg.png');
-        game.load.image('autori3-bg', 'graphics/autori3-bg.png');
+        game.load.image('autori', 'graphics/autori.png');
         game.load.image('autori-bg', 'graphics/autori-bg.png');
         game.load.image('copertina', 'graphics/copertina.png');
         // Background
@@ -59,7 +57,6 @@ var loadingState = {
         game.load.image('blue', 'objects/blue.png');
         game.load.image('brown', 'objects/brown.png');
         game.load.image('stalattite', 'objects/stalattite.png');
-        game.load.image('checkpoint2', 'objects/checkpoint2.png');
         game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
         game.load.image('rametto', 'objects/rametto.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
@@ -69,6 +66,9 @@ var loadingState = {
         game.load.spritesheet('nastro', 'objects/nastro.png', 192, 64, 8);
         game.load.image('flame', 'objects/flame.png');
         game.load.image('cartello', 'objects/cartello.png');
+        game.load.spritesheet('water', 'objects/water.png', 50, 240);
+        game.load.spritesheet('lava', 'objects/lava.png', 50, 56*32);
+        game.load.image('fango', 'objects/fango.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
         game.load.spritesheet('castle', 'tilemaps/castle.png', 32, 32);
@@ -88,6 +88,14 @@ var loadingState = {
         game.load.image('render6', 'img/render6.png');
         game.load.image('render7', 'img/render7.png');
         game.load.image('render8', 'img/render8.png');
+        game.load.image('render1t', 'img/render1t.png');
+        game.load.image('render2t', 'img/render2t.png');
+        game.load.image('render3t', 'img/render3t.png');
+        game.load.image('render4t', 'img/render4t.png');
+        game.load.image('render5t', 'img/render5t.png');
+        game.load.image('render6t', 'img/render6t.png');
+        game.load.image('render7t', 'img/render7t.png');
+        game.load.image('render8t', 'img/render8t.png');
     },
 
     create: function() {
