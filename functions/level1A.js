@@ -83,8 +83,11 @@ var level1A = {
         })
 
         // Water
-        waterGrotta = game.add.sprite(0, game.world.height-15, 'blue');
-        waterGrotta.scale.setTo(game.world.width, 15);
+        water = game.add.tileSprite(0, game.world.height-15, 3500, 15, 'water');
+        game.physics.arcade.enable(water);
+        water.body.immovable = true;
+        water.animations.add('waves', [0,1,2,3,4,5,6,7,8,7,6,5,4,3,2,1]);
+        water.animations.play('waves', 8, true);
 
         // Cartello
         cartello = game.add.sprite(500, 2000, 'cartello');
@@ -111,7 +114,6 @@ var level1A = {
             fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
         })
         fruits.children.forEach( function(fruit) {
-            fruit.scale.setTo(.1,.1);
             fruit.body.drag.x = 1000;
             fruit.body.gravity.y = 600;
             if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
@@ -233,7 +235,7 @@ var level1A = {
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
         game.slopes.enable([player, fruits, sassi]);
         game.slopes.preferY = true;
-        //mappa.alpha=.5; ground.alpha=.5;
+        //ground.alpha=.5;
         game.add.sprite(0,game.world.height,'level1A').anchor.setTo(0,1);
 
         // Dialogo
@@ -301,7 +303,7 @@ var level1A = {
         }
         function backMenu() {
             game.paused = false;
-            game.camera.fade('#000', 500);
+            game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
         }
     },
@@ -311,13 +313,14 @@ var level1A = {
         function gameOver() {
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
-            cursors.isDown = false;
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
             player.animations.stop();
-            game.time.events.add(500, function() {
-                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+            game.time.events.add(1500, function() {
+                game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
-        function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level1B')});}
+        function nextState() {game.camera.fade(0x000000,500); game.camera.onFadeComplete.add(function(){game.state.start('level1B')});}
         if (player.y > game.world.height+200) {gameOver()};
         if (player.x > game.world.width) {nextState()};
 
@@ -437,7 +440,8 @@ var level1A = {
         // Inizio Fuga
         if (player.x >= rametto.x && fuga==0) {
             game.input.keyboard.stop();
-            cursors.isDown = false;
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
             player.body.velocity.x = 0;
             player.animations.stop();
             player.frame = 12;

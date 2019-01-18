@@ -51,7 +51,7 @@ var immaginiState = {
         }
 
         function startGame() {
-            game.camera.fade('#000', 500);
+            game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('intro')} );
         }
     },

@@ -29,6 +29,7 @@ var loadingState = {
         game.load.image('autori', 'graphics/autori.png');
         game.load.image('autori-bg', 'graphics/autori-bg.png');
         game.load.image('copertina', 'graphics/copertina.png');
+        game.load.image('gameover', 'graphics/gameover.png');
         // Background
         game.load.image('notte0', 'background/notte0.png');
         game.load.image('notte1', 'background/notte1.png');
@@ -40,6 +41,8 @@ var loadingState = {
         game.load.image('intro', 'background/intro.png');
         game.load.image('waterfall', 'background/waterfall.png');
         game.load.image('fortezza-bg', 'background/fortezza-bg.png');
+        game.load.image('cascata-bg', 'background/cascata-bg.png');
+        game.load.image('boss-bg', 'background/boss-bg.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 64, 90);
         game.load.spritesheet('mamma', 'characters/mamma.png', 61.5, 100);
@@ -49,7 +52,7 @@ var loadingState = {
         game.load.image('soffio', 'characters/soffio.png');
         game.load.image('torcia', 'characters/torcia.png');
         game.load.image('flies', 'characters/flies.png');
-        game.load.image('boss', 'characters/boss.png');
+        game.load.spritesheet('boss', 'characters/boss.png', 1184/4, 450);
         // Objects
         game.load.image('fruit', 'objects/fruit.png');
         game.load.image('sasso', 'objects/sasso.png');
@@ -79,6 +82,7 @@ var loadingState = {
         game.load.tilemap('level2A', 'tilemaps/level2A.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.tilemap('level2B', 'tilemaps/level2B.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('level1A', 'tilemaps/level1A.png');
+        game.load.image('level1B', 'tilemaps/level1B.png');
         // Img
         game.load.image('render1', 'img/render1.png');
         game.load.image('render2', 'img/render2.png');
@@ -96,11 +100,13 @@ var loadingState = {
         game.load.image('render6t', 'img/render6t.png');
         game.load.image('render7t', 'img/render7t.png');
         game.load.image('render8t', 'img/render8t.png');
+        game.load.image('intermezzo', 'img/intermezzo.png');
+        game.load.image('finale', 'img/finale.png');
     },
 
     create: function() {
         game.stage.backgroundColor = "#000";
-        game.camera.fade('#000', 100);
+        game.camera.fade(0x000000, 100);
         game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
     }
 }

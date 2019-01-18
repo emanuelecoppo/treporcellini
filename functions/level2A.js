@@ -122,7 +122,6 @@ var level2A = {
         fruits.create( 63*32,  13*32, 'fruit'); //lava
 
         fruits.children.forEach( function(fruit) {
-            fruit.scale.setTo(.1,.1);
             fruit.body.drag.x = 1000;
             fruit.body.gravity.y = 600;
             if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
@@ -224,7 +223,7 @@ var level2A = {
         }
         function backMenu() {
             game.paused = false;
-            game.camera.fade('#000', 500);
+            game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
         }
     },
@@ -238,10 +237,10 @@ var level2A = {
             player.body.velocity.x = 0;
             player.animations.stop();
             game.time.events.add(500, function() {
-                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+                game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
-        function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
+        function nextState() {game.camera.fade(0x000000,500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
         if (player.x<130*32 && player.y>game.world.height) {gameOver()};
         if (player.x>130*32 && player.y>game.world.height) {nextState()}
 

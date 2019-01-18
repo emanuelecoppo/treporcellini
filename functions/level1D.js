@@ -48,6 +48,7 @@ var level1D = {
         parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno1');
         parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno2');
         parallax0.fixedToCamera = true; parallax1.fixedToCamera = true; parallax2.fixedToCamera = true;
+        game.add.sprite(0, 0, 'cascata-bg');
 
         // Checkpoint
         check = game.add.sprite(220*16, 48*16, 'checkpoint');
@@ -98,7 +99,6 @@ var level1D = {
             fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
         })
         fruits.children.forEach( function(fruit) {
-            fruit.scale.setTo(.1,.1);
             fruit.body.drag.x = 1000;
             fruit.body.gravity.y = 600;
             if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
@@ -238,7 +238,7 @@ var level1D = {
         }
         function backMenu() {
             game.paused = false;
-            game.camera.fade('#000', 500);
+            game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
         }
     },
@@ -252,10 +252,10 @@ var level1D = {
             player.body.velocity.x = 0;
             player.animations.stop();
             game.time.events.add(500, function() {
-                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+                game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
-        function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level2A')});}
+        function nextState() {game.camera.fade(0x000000,500); game.camera.onFadeComplete.add(function(){game.state.start('intermezzoState')});}
         if (player.y > game.world.height+200) {gameOver()};
         if (player.x > game.world.width) {nextState()}
         maiale2B.onComplete.add(nextState);

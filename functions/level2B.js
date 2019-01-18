@@ -4,6 +4,7 @@ var level2B = {
         currentLevel = 'level2B';
         playerX = 5*32;
         playerY = 0;
+        crollo = 0;
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -40,6 +41,7 @@ var level2B = {
         game.physics.arcade.enable([boundL, boundR]);
         boundL.body.immovable = true;
         boundR.body.immovable = true;
+        game.add.sprite(0,0,'boss-bg');
 
         // Controllli
         cursors = game.input.keyboard.createCursorKeys();
@@ -55,38 +57,20 @@ var level2B = {
         key7 = game.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
 
         // Boss
-        boss = game.add.sprite(900, 300, 'boss');
-        boss.anchor.setTo(.5,.5);
+        boss = game.add.sprite(1024, 21*32, 'boss');
+        boss.animations.add('boss', [0,1,2,3,2,1], 20, true);
+        boss.animations.play('boss')
+        boss.anchor.setTo(1);
         game.physics.arcade.enable(boss);
-        boss.body.height = 768;
+        boss.body.setSize(240, boss.height, boss.width-240, 0)
         boss.body.immovable = true;
         boss.vite = 3;
         timeDelay = 0;
 
-        // Weapon
-        arma = game.add.weapon(4, 'bomb');
-        arma.trackSprite(boss, 0, 0, true);
-        arma.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-        arma.bulletLifespan = 4000;
-        arma.bulletCollideWorldBounds = true;
-        arma.autofire = false;
-        game.time.events.add(3000, function() {arma.autofire=true} );
-        arma.fireRateVariance = 500;
-        arma.bulletSpeed = -475;
-        arma.bulletSpeedVariance = 100;
-        arma.fireAngle = 45;
-        arma.bulletAngleVariance = 30;
-        arma.bulletGravity.y = 500;
-
-        arma.bullets.forEach( function(bomb) {
-            bomb.anchor.setTo(.5);
-            bomb.scale.setTo(.05);
-            bomb.body.drag.x = 150;
-            bomb.body.bounce.x = .5;
-        })
-
-        // Explosions
-        explosions = game.add.group();
+        bossRed = boss.addChild(game.make.sprite(0,0,'boss'));
+        bossRed.anchor.setTo(1);
+        bossRed.tint = 0xff0000;
+        bossRed.alpha = 0;
 
         // Fruits
         fruits = game.add.group()
@@ -107,16 +91,26 @@ var level2B = {
         soffio.alpha = .2;
         game.physics.arcade.enable(soffio);
 
-        // Sassi
-        sassi = game.add.group();
-        sassi.enableBody = true;
-        sassi.create(42*16, 65*16, 'sasso').scale.setTo(1.3,1.3);
+        // Weapon
+        arma = game.add.weapon(4, 'bomb');
+        arma.trackSprite(boss, -boss.width, 117-boss.height, true);
+        arma.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+        arma.bulletLifespan = 4000;
+        arma.bulletCollideWorldBounds = true;
+        arma.autofire = false;
+        game.time.events.add(3000, function() {arma.autofire=true} );
+        arma.fireRateVariance = 500;
+        arma.bulletSpeed = -400;
+        arma.bulletSpeedVariance = 150;
+        arma.fireAngle = 45;
+        arma.bulletAngleVariance = 30;
+        arma.bulletGravity.y = 500;
 
-        sassi.children.forEach( function(sasso) {
-            sasso.anchor.setTo(.5,.5);
-            sasso.body.gravity.y = 1000;
-            sasso.body.drag.x = 200;
-            sasso.body.maxVelocity.x = 100;
+        arma.bullets.forEach( function(bomb) {
+            bomb.anchor.setTo(.5);
+            bomb.scale.setTo(.05);
+            bomb.body.drag.x = 150;
+            bomb.body.bounce.x = .5;
         })
 
         // Tilemap
@@ -124,6 +118,10 @@ var level2B = {
         mappa.addTilesetImage('castle', 'castle');
         mappa.setCollisionBetween(1, 6);
         ground = mappa.createLayer('ground');
+        //ground.alpha=.1;
+
+        // Explosions
+        explosions = game.add.group();
 
         // Fame
         barra = game.add.graphics(25, 25);
@@ -180,7 +178,7 @@ var level2B = {
         }
         function backMenu() {
             game.paused = false;
-            game.camera.fade('#000', 500);
+            game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
         }
     },
@@ -194,11 +192,9 @@ var level2B = {
             player.body.velocity.x = 0;
             player.animations.stop();
             game.time.events.add(500, function() {
-                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+                game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
-        function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('menuState')});}
-        if (player.x > game.world.width) {nextState()}
 
         // Camera
         if (player.x > 230*16) {
@@ -213,8 +209,6 @@ var level2B = {
         // Collisions
         game.physics.arcade.collide(player, [boundL, boundR, boss]);
         game.physics.arcade.collide([player, fruits, arma.bullets], [ground]);
-        sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
-        sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;
@@ -238,7 +232,7 @@ var level2B = {
             player.animations.play('right')
             facing = 'right';
         }
-        else {
+        else if (crollo==0) {
             if (facing == 'left') {player.frame = 11}
             else if (facing == 'right') {player.frame = 12}
         }
@@ -269,7 +263,6 @@ var level2B = {
 
         // Fruits
         fruits.children.forEach( function(fruit) {
-            fruit.scale.setTo(.1,.1);
             fruit.body.drag.x = 1000;
             fruit.body.gravity.y = 600;
             if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
@@ -284,22 +277,15 @@ var level2B = {
             }
         }
 
-        // Sasso
-        game.physics.arcade.overlap(soffio, sassi, soffiaSasso, null, this);
-        function soffiaSasso(soffio, sasso) {
-            if (facing=='left') {sasso.body.velocity.x -= 5}
-            else if (facing=='right') {sasso.body.velocity.x += 5}
-        }
-
         // Weapon
-        game.physics.arcade.overlap(player, arma.bullets, hitBomb, null, this)
-        function hitBomb(player, bomb) {
-            if (bomb.body.velocity.y>0) {gameOver()}
-        }
+        // game.physics.arcade.overlap(player, arma.bullets, hitBomb, null, this)
+        // function hitBomb(player, bomb) {
+        //     if (bomb.body.velocity.y>0) {gameOver()}
+        // }
         game.physics.arcade.overlap(soffio, arma.bullets, soffiaBomb, null, this)
         function soffiaBomb(soffio, bomb) {
-            if (facing=='left') {bomb.body.velocity.x -= 5}
-            else if (facing=='right') {bomb.body.velocity.x += 5}
+            if (facing=='left') {bomb.body.velocity.x -= 7}
+            else if (facing=='right') {bomb.body.velocity.x += 7}
         }
 
         // Explosion
@@ -323,11 +309,56 @@ var level2B = {
         if (boss.vite==3) {arma.fireRate = 3000}
         else if (boss.vite==2) {arma.fireRate = 2000}
         else if (boss.vite==1) {arma.fireRate = 1000}
-        else if (boss.vite<=0) {arma.autofire = false; arma.killAll(); boss.body.height = 0; boss.angle = -90;}
+        else if (boss.vite<=0 && crollo==0) {
+            crollo ++;
+            arma.autofire = false;
+            arma.killAll();
+            game.input.keyboard.stop();
+            cursors.right.isDown = false;
+            cursors.left.isDown = false;
+            soffia.isDown = false;
+            player.body.velocity.x = 0;
+            player.animations.stop();
+            player.frame = 12;
+            playerA = game.add.tween(player).to({x:1054}, 2000).delay(2000).start();
+            playerA.onStart.add(function(){player.animations.play('right')});
+            game.time.events.add(4000, function() {game.camera.fade(0xffffff, 2000)}, this);
+            game.camera.onFadeComplete.add(function(){game.state.start('finaleState')});
+            game.camera.shake(0, 10000, true, Phaser.Camera.SHAKE_HORIZONTAL);
+            game.add.tween(game.camera).to({shakeIntensity:0.02}, 500).yoyo(true, 250).loop(true).start();
+
+            // rainParticle = game.add.bitmapData();
+            // rainParticle.ctx.rect(0, 0, 3, 3);
+            // rainParticle.ctx.fillStyle = '#82826c';
+            // rainParticle.ctx.fill();
+            // rain = game.add.emitter(1024*Math.random(), 0, 10);
+            // rain.width = 200;
+            // rain.makeParticles(rainParticle);
+            // rain.setYSpeed(500, 700);
+            // rain.setXSpeed(-5, 5);
+            // rain.setRotation(-45, 45);
+            // rain.minParticleScale = 1;
+            // rain.maxParticleScale = 2;
+            // rain.start(true, 0, null, 10);
+
+            game.time.events.loop(500, crolloExplosions, this);
+        }
+
+        function crolloExplosions() {
+            explosion = explosions.create(1024*Math.random(), 768*Math.random(), 'explosion');
+            explosion.scale.setTo(2);
+            explosion.animations.add('explode');
+            explosion.animations.play('explode', 20, false, true);
+            explosion.animations.killOnComplete = true;
+        }
 
         game.physics.arcade.overlap(boss, explosions, hitBoss, null, this);
         function hitBoss() {
-            if (game.time.now > timeDelay) {boss.vite --; timeDelay = game.time.now + 2000}
+            if (game.time.now > timeDelay) {
+                game.add.tween(bossRed).to({alpha:1}, 250).start().yoyo(true).repeat(2);
+                boss.vite --;
+                timeDelay = game.time.now + 2000;
+            }
         }
 
         // Vola
@@ -336,6 +367,7 @@ var level2B = {
 
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
+        //game.debug.body(boss);
         game.debug.text('Vite Boss = ' + boss.vite, 10, 90);
     }
 }

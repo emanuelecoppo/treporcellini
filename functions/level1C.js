@@ -129,7 +129,6 @@ var level1C = {
             fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
         })
         fruits.children.forEach( function(fruit) {
-            fruit.scale.setTo(.1,.1);
             fruit.body.drag.x = 1000;
             fruit.body.gravity.y = 600;
             if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
@@ -173,7 +172,6 @@ var level1C = {
         zattera.body.bounce.x = 0.5;
         zattera.body.drag.x = 50;
         zattera.body.maxVelocity.x = 125;
-        zattera.scale.setTo(.2,.2);
         game.add.tween(zattera).to( {y: zattera.y+5}, 1000, sin, true, 0, -1, true);
 
         // Water
@@ -183,7 +181,6 @@ var level1C = {
         waterD.animations.add('waves', [0,1,2,3,4,5,6,7,8,7,6,5,4,3,2,1]);
         water.animations.play('waves', 8, true);
         waterD.animations.play('waves', 8, true);
-
 
         // Fango
         fango = game.add.group();
@@ -293,7 +290,7 @@ var level1C = {
         }
         function backMenu() {
             game.paused = false;
-            game.camera.fade('#000', 500);
+            game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
         }
     },
@@ -307,10 +304,10 @@ var level1C = {
             player.body.velocity.x = 0;
             player.animations.stop();
             game.time.events.add(500, function() {
-                game.camera.fade('#000',100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
+                game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
-        function nextState() {game.camera.fade('#000',500); game.camera.onFadeComplete.add(function(){game.state.start('level1D')});}
+        function nextState() {game.camera.fade(0x000000,500); game.camera.onFadeComplete.add(function(){game.state.start('level1D')});}
         if (player.y > game.world.height+200) {gameOver()};
         if (player.x > game.world.width) {nextState()}
 

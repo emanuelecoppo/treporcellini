@@ -36,10 +36,10 @@ var menuState = {
         copertinaB = game.add.tween(copertina).to( {y:0}, 1000, sin);
 
         buttons = game.add.group();
-        gioca = buttons.add(game.add.graphics(72, 326).beginFill(0xffff00, 0).drawRect(0, 0, 91, 37).endFill());
-        comandi = buttons.add(game.add.graphics(72, 375).beginFill(0xffff00, 0).drawRect(0, 0, 121, 37).endFill());
-        autori = buttons.add(game.add.graphics(72, 424).beginFill(0xffff00, 0).drawRect(0, 0, 97, 37).endFill());
-        indietro = game.add.graphics(70, 622).beginFill(0xffff00, 0).drawRect(0, 0, 90, 38).endFill();
+        gioca = buttons.add(game.add.graphics(72, 326).beginFill(0xffffff, 0).drawRect(0, 0, 91, 37).endFill());
+        crediti = buttons.add(game.add.graphics(72, 375).beginFill(0xffffff, 0).drawRect(0, 0, 121, 37).endFill());
+        autori = buttons.add(game.add.graphics(72, 424).beginFill(0xffffff, 0).drawRect(0, 0, 97, 37).endFill());
+        indietro = game.add.graphics(70, 622).beginFill(0xffffff, 0).drawRect(0, 0, 90, 38).endFill();
 
         autori.events.onInputDown.add(function() {copertinaA.start()});
         indietro.events.onInputDown.add(function() {copertinaB.start()});
@@ -50,14 +50,20 @@ var menuState = {
         enter.onDown.add(startGame);
         gioca.events.onInputDown.add(startGame);
 
-        if (copertina.y==0) {buttons.setAll('inputEnabled', true)}
+        if (copertina.y==0) {buttons.setAll('inputEnabled', true); buttons.setAll('input.useHandCursor', true)}
         else {buttons.setAll('inputEnabled', false)}
 
-        if (!copertina.y==0) {indietro.inputEnabled=true}
+        if (!copertina.y==0) {indietro.inputEnabled=true; indietro.input.useHandCursor=true}
         else {indietro.inputEnabled=false}
 
+        // buttons.children.forEach(function(button) {
+        //     if (button.input.pointerOver()) {button.alpha = .3}
+        //     else {button.alpha = 0}
+        //     //button.blendMode = PIXI.blendModes.SCREEN;
+        // })
+
         function startGame() {
-            game.camera.fade('#000', 500);
+            game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('immaginiState')} );
         }
     }
