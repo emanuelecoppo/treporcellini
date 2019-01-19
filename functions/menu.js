@@ -5,6 +5,7 @@ var menuState = {
         check1C = false;
         check1D = false;
         check2A = false;
+        dialogoBoss = 0;
 
         // Controllli
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -29,19 +30,20 @@ var menuState = {
         game.world.setBounds(0, 0, 1024, 768);
         currentFame = 250;
 
-        autori = game.add.sprite(0, 0, 'autori');
+        sotto = game.add.sprite(0, 0, '');
         copertina = game.add.sprite(0, 0, 'copertina');
 
         copertinaA = game.add.tween(copertina).to( {y:-768}, 1000, sin);
         copertinaB = game.add.tween(copertina).to( {y:0}, 1000, sin);
 
         buttons = game.add.group();
-        gioca = buttons.add(game.add.graphics(72, 326).beginFill(0xffffff, 0).drawRect(0, 0, 91, 37).endFill());
-        crediti = buttons.add(game.add.graphics(72, 375).beginFill(0xffffff, 0).drawRect(0, 0, 121, 37).endFill());
-        autori = buttons.add(game.add.graphics(72, 424).beginFill(0xffffff, 0).drawRect(0, 0, 97, 37).endFill());
-        indietro = game.add.graphics(70, 622).beginFill(0xffffff, 0).drawRect(0, 0, 90, 38).endFill();
+        autori = buttons.add(game.add.graphics(72, 326).beginFill(0xffffff, 0).drawRect(0, 0, 91, 37).endFill());
+        crediti = buttons.add(game.add.graphics(72, 375).beginFill(0xffffff, 0).drawRect(0, 0, 91, 37).endFill());
+        gioca = buttons.add(game.add.graphics(72, 424).beginFill(0xffffff, 0).drawRect(0, 0, 91, 37).endFill());
+        indietro = game.add.graphics(74, 617).beginFill(0xffffff, 0).drawRect(0, 0, 98, 38).endFill();
 
-        autori.events.onInputDown.add(function() {copertinaA.start()});
+        autori.events.onInputDown.add(function() {copertinaA.start(); sotto.loadTexture('autori')});
+        crediti.events.onInputDown.add(function() {copertinaA.start(); sotto.loadTexture('crediti')});
         indietro.events.onInputDown.add(function() {copertinaB.start()});
     },
 

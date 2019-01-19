@@ -109,10 +109,11 @@ var level1B = {
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Soffio
-        soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
+        soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
         soffio.anchor.setTo(0,1);
-        soffio.alpha = .2;
+        soffio.animations.add('soffia', [0,1,2,3,4,5,6], 20, true);
         game.physics.arcade.enable(soffio);
+        soffio.body.setSize(110,90,50,15)
 
         // Sassi
         sassi = game.add.group();
@@ -316,10 +317,11 @@ var level1B = {
         // Soffio
         if (soffia.isDown) {
             soffio.revive();
-            if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
-            else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
+            soffio.animations.play('soffia');
+            if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
+            else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
         }
-        else {soffio.kill();}
+        else {soffio.kill()}
 
         // Fame
         fame.width -= .025;

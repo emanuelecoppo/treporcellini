@@ -27,7 +27,7 @@ var loadingState = {
         // Graphics
         game.load.image('pause', 'graphics/pause.png');
         game.load.image('autori', 'graphics/autori.png');
-        game.load.image('autori-bg', 'graphics/autori-bg.png');
+        game.load.image('crediti', 'graphics/crediti.png');
         game.load.image('copertina', 'graphics/copertina.png');
         game.load.image('gameover', 'graphics/gameover.png');
         // Background
@@ -49,10 +49,10 @@ var loadingState = {
         game.load.spritesheet('maiale', 'characters/maiale.png', 75, 120);
         game.load.spritesheet('maiale-torcia', 'characters/maiale-torcia.png', 75, 120);
         game.load.spritesheet('maiale-lanciafiamme', 'characters/maiale-lanciafiamme.png', 119.5, 120);
-        game.load.image('soffio', 'characters/soffio.png');
+        game.load.spritesheet('soffio', 'characters/soffio.png', 200, 125);
         game.load.image('torcia', 'characters/torcia.png');
         game.load.image('flies', 'characters/flies.png');
-        game.load.spritesheet('boss', 'characters/boss.png', 1184/4, 450);
+        game.load.image('boss', 'characters/boss.png');
         // Objects
         game.load.image('fruit', 'objects/fruit.png');
         game.load.image('sasso', 'objects/sasso.png');
@@ -60,18 +60,19 @@ var loadingState = {
         game.load.image('blue', 'objects/blue.png');
         game.load.image('brown', 'objects/brown.png');
         game.load.image('stalattite', 'objects/stalattite.png');
-        game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
         game.load.image('rametto', 'objects/rametto.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
-        game.load.image('tronco-stealth', 'objects/tronco-stealth.png');
+        game.load.image('tronco-cavo', 'objects/tronco-cavo.png');
+        game.load.image('tronco-cavo-sopra', 'objects/tronco-cavo-sopra.png');
         game.load.image('bomb', 'objects/bomba.png');
+        game.load.image('cartello', 'objects/cartello.png');
+        game.load.image('flame', 'objects/flame.png');
+        game.load.image('fango', 'objects/fango.png');
+        game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
         game.load.spritesheet('explosion', 'objects/explosion.png', 64, 64, 23);
         game.load.spritesheet('nastro', 'objects/nastro.png', 192, 64, 8);
-        game.load.image('flame', 'objects/flame.png');
-        game.load.image('cartello', 'objects/cartello.png');
         game.load.spritesheet('water', 'objects/water.png', 50, 240);
         game.load.spritesheet('lava', 'objects/lava.png', 50, 56*32);
-        game.load.image('fango', 'objects/fango.png');
         // Tilemaps
         game.load.spritesheet('slopes-green', 'tilemaps/slopes-green.png', 16, 16);
         game.load.spritesheet('castle', 'tilemaps/castle.png', 32, 32);
@@ -83,6 +84,8 @@ var loadingState = {
         game.load.tilemap('level2B', 'tilemaps/level2B.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('level1A', 'tilemaps/level1A.png');
         game.load.image('level1B', 'tilemaps/level1B.png');
+        game.load.image('level1C', 'tilemaps/level1C.png');
+        game.load.image('level2A', 'tilemaps/level2A.png');
         // Img
         game.load.image('render1', 'img/render1.png');
         game.load.image('render2', 'img/render2.png');
@@ -102,6 +105,15 @@ var loadingState = {
         game.load.image('render8t', 'img/render8t.png');
         game.load.image('intermezzo', 'img/intermezzo.png');
         game.load.image('finale', 'img/finale.png');
+        // Music
+        game.load.audio('immaginiMusic', 'music/immagini.wav');
+        game.load.audio('bossMusic', 'music/boss.wav');
+        game.load.audio('gameoverMusic', 'music/gameover.wav');
+        game.load.audio('fortezzaMusic', 'music/fortezza.wav');
+        game.load.audio('marcia', 'music/marcia.wav');
+        // SFX
+        game.load.audio('explosionSFX', 'sfx/explosion.wav');
+
     },
 
     create: function() {

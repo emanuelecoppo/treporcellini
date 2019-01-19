@@ -40,8 +40,8 @@ var intro = {
         text4 = player.addChild(game.add.text(  0,-180, "\nTu non vieni?", styleC));
         text5 = player.addChild(game.add.text(120, -80, "Mamma, perché\nnon vieni?!", styleL));
         text6 = mamma.addChild(game.add.text (  0,-180, "Non vi preoccupate,\nvi raggiungerò subito.", styleC));
-        mamma.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5; text.lineSpacing=-5})
-        player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5; text.lineSpacing=-5})
+        mamma.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5; text.lineSpacing=interlinea})
+        player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5; text.lineSpacing=interlinea})
 
         // Tween
         mammaA = game.add.tween(mamma).to( {x: 450}, 2000).delay(1000).start();

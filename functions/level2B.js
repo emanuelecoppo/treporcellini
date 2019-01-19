@@ -5,11 +5,19 @@ var level2B = {
         playerX = 5*32;
         playerY = 0;
         crollo = 0;
+        sfxTrigger = 0;
+        game.input.keyboard.stop();
+
+        // Sound
+        music = game.add.audio('bossMusic').play();
+        music.fadeIn(2000);
+        music.loopFull();
+        explosionSFX = game.add.audio('explosionSFX', 0.2);
+        explosionSFX.allowMultiple = true;
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.input.keyboard.start();
 
         // Controllli
         cursors = game.input.keyboard.createCursorKeys();
@@ -58,8 +66,8 @@ var level2B = {
 
         // Boss
         boss = game.add.sprite(1024, 21*32, 'boss');
-        boss.animations.add('boss', [0,1,2,3,2,1], 20, true);
-        boss.animations.play('boss')
+        //boss.animations.add('boss', [0,1,2,3,2,1], 20, true);
+        //boss.animations.play('boss')
         boss.anchor.setTo(1);
         game.physics.arcade.enable(boss);
         boss.body.setSize(240, boss.height, boss.width-240, 0)
@@ -86,10 +94,11 @@ var level2B = {
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Soffio
-        soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
+        soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
         soffio.anchor.setTo(0,1);
-        soffio.alpha = .2;
+        soffio.animations.add('soffia', [0,1,2,3,4,5,6], 20, true);
         game.physics.arcade.enable(soffio);
+        soffio.body.setSize(110,90,50,15)
 
         // Weapon
         arma = game.add.weapon(4, 'bomb');
@@ -98,7 +107,6 @@ var level2B = {
         arma.bulletLifespan = 4000;
         arma.bulletCollideWorldBounds = true;
         arma.autofire = false;
-        game.time.events.add(3000, function() {arma.autofire=true} );
         arma.fireRateVariance = 500;
         arma.bulletSpeed = -400;
         arma.bulletSpeedVariance = 150;
@@ -118,10 +126,31 @@ var level2B = {
         mappa.addTilesetImage('castle', 'castle');
         mappa.setCollisionBetween(1, 6);
         ground = mappa.createLayer('ground');
-        //ground.alpha=.1;
 
         // Explosions
         explosions = game.add.group();
+
+        // Dialogo
+        if (dialogoBoss==0) {
+            text1 = boss.addChild(  game.add.text(-40,-530, "Oh oh... Ma guarda chi si vede.\nAvete perso la mammina?", styleC));
+            text2 = player.addChild(game.add.text(-90, -40, "Chi è?!\nNon vedo!", styleR));
+            text3 = player.addChild(game.add.text(  0,-120, "È un grosso guaio!\nAnzi, grasso.", styleC));
+            text4 = boss.addChild(  game.add.text(-40,-530, "COME OSI??!!\nMORITE SPORCHI LUPI!", styleC));
+            text1.alpha=0; text1.anchor.x= 1; text1.lineSpacing=interlinea;
+            text2.alpha=0; text2.anchor.x=.5; text2.lineSpacing=interlinea;
+            text3.alpha=0; text3.anchor.x=.5; text3.lineSpacing=interlinea;
+            text4.alpha=0; text4.anchor.x= 1; text4.lineSpacing=interlinea;
+            textA = game.add.tween(text1).to( {alpha: 1}, 250).yoyo(true, 3000).delay(2000).start();
+            textB = game.add.tween(text2).to( {alpha: 1}, 250).yoyo(true, 2000);
+            textC = game.add.tween(text3).to( {alpha: 1}, 250).yoyo(true, 3000);
+            textD = game.add.tween(text4).to( {alpha: 1}, 250).yoyo(true, 3000);
+            textD.onComplete.add(function() {game.input.keyboard.start(); arma.autofire=true; dialogoBoss++});
+            textA.chain(textB, textC, textD);
+        }
+        else {
+            game.input.keyboard.start();
+            game.time.events.add(2000, function() {arma.autofire=true});
+        }
 
         // Fame
         barra = game.add.graphics(25, 25);
@@ -177,6 +206,7 @@ var level2B = {
             tornaMenu.input.useHandCursor = (game.paused) ? true : false;
         }
         function backMenu() {
+            music.fadeOut(500-100);
             game.paused = false;
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
@@ -186,6 +216,7 @@ var level2B = {
     update: function() {
         // States
         function gameOver() {
+            music.fadeOut(500-100);
             game.input.keyboard.stop();
             cursors.right.isDown = false;
             cursors.left.isDown = false;
@@ -248,10 +279,11 @@ var level2B = {
         // Soffio
         if (soffia.isDown) {
             soffio.revive();
-            if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
-            else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
+            soffio.animations.play('soffia');
+            if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
+            else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
         }
-        else {soffio.kill();}
+        else {soffio.kill()}
 
         // Fame
         fame.width -= .025;
@@ -278,10 +310,6 @@ var level2B = {
         }
 
         // Weapon
-        // game.physics.arcade.overlap(player, arma.bullets, hitBomb, null, this)
-        // function hitBomb(player, bomb) {
-        //     if (bomb.body.velocity.y>0) {gameOver()}
-        // }
         game.physics.arcade.overlap(soffio, arma.bullets, soffiaBomb, null, this)
         function soffiaBomb(soffio, bomb) {
             if (facing=='left') {bomb.body.velocity.x -= 7}
@@ -294,15 +322,24 @@ var level2B = {
             getExplosion(bomb.x, bomb.y)
         })
         function getExplosion(x, y) {
+            sfxTrigger = 1;
             explosion = game.add.sprite(x, y, 'explosion');
             explosion.anchor.setTo(.5);
             explosion.scale.setTo(2);
             game.physics.arcade.enable(explosion);
-            explosion.animations.add('explode');
+            boom = explosion.animations.add('explode');
             explosions.add(explosion);
             explosions.forEachDead(function(killed) {killed.destroy()});
             explosion.animations.play('explode', 20, false, true);
         }
+        function crolloExplosions() {
+            explosion = explosions.create(1024*Math.random(), 768*Math.random(), 'explosion');
+            explosion.scale.setTo(2);
+            explosion.animations.add('explode');
+            explosion.animations.play('explode', 20, false, true);
+            explosion.animations.killOnComplete = true;
+        }
+        if (sfxTrigger==1) { explosionSFX.play(); sfxTrigger=0}
         if (boss.vite>0) {game.physics.arcade.overlap(player, explosions, gameOver, null, this)}
 
         // Boss
@@ -310,6 +347,8 @@ var level2B = {
         else if (boss.vite==2) {arma.fireRate = 2000}
         else if (boss.vite==1) {arma.fireRate = 1000}
         else if (boss.vite<=0 && crollo==0) {
+            game.time.events.loop(1000, function() {explosionSFX.play()})
+            game.time.events.loop(1300, function() {explosionSFX.play()})
             crollo ++;
             arma.autofire = false;
             arma.killAll();
@@ -322,36 +361,12 @@ var level2B = {
             player.frame = 12;
             playerA = game.add.tween(player).to({x:1054}, 2000).delay(2000).start();
             playerA.onStart.add(function(){player.animations.play('right')});
-            game.time.events.add(4000, function() {game.camera.fade(0xffffff, 2000)}, this);
+            game.time.events.add(4000, function() {game.camera.fade(0xffffff, 2000); music.fadeOut(2000-100)}, this);
             game.camera.onFadeComplete.add(function(){game.state.start('finaleState')});
             game.camera.shake(0, 10000, true, Phaser.Camera.SHAKE_HORIZONTAL);
             game.add.tween(game.camera).to({shakeIntensity:0.02}, 500).yoyo(true, 250).loop(true).start();
-
-            // rainParticle = game.add.bitmapData();
-            // rainParticle.ctx.rect(0, 0, 3, 3);
-            // rainParticle.ctx.fillStyle = '#82826c';
-            // rainParticle.ctx.fill();
-            // rain = game.add.emitter(1024*Math.random(), 0, 10);
-            // rain.width = 200;
-            // rain.makeParticles(rainParticle);
-            // rain.setYSpeed(500, 700);
-            // rain.setXSpeed(-5, 5);
-            // rain.setRotation(-45, 45);
-            // rain.minParticleScale = 1;
-            // rain.maxParticleScale = 2;
-            // rain.start(true, 0, null, 10);
-
             game.time.events.loop(500, crolloExplosions, this);
         }
-
-        function crolloExplosions() {
-            explosion = explosions.create(1024*Math.random(), 768*Math.random(), 'explosion');
-            explosion.scale.setTo(2);
-            explosion.animations.add('explode');
-            explosion.animations.play('explode', 20, false, true);
-            explosion.animations.killOnComplete = true;
-        }
-
         game.physics.arcade.overlap(boss, explosions, hitBoss, null, this);
         function hitBoss() {
             if (game.time.now > timeDelay) {
@@ -368,6 +383,6 @@ var level2B = {
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
         //game.debug.body(boss);
-        game.debug.text('Vite Boss = ' + boss.vite, 10, 90);
+        //game.debug.text('Vite Boss = ' + boss.vite, 10, 90);
     }
 }

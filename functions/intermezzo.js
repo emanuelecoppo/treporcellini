@@ -1,7 +1,9 @@
 var intermezzoState = {
 
     create: function() {
-        game.camera.flash(0xffffff, 1000);
+        music = game.add.audio('marcia', .5).play();
+
+        game.camera.flash(0x000000, 1000);
         game.stage.backgroundColor = "#000";
         game.world.setBounds(0, 0, 1024, 768);
 

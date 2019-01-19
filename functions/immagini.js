@@ -5,6 +5,8 @@ var immaginiState = {
         var time = 5000;
         var delay = 1000;
 
+        music = game.add.audio('immaginiMusic').play();
+
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.world.setBounds(0, 0, 1024, 768);
@@ -51,6 +53,7 @@ var immaginiState = {
         }
 
         function startGame() {
+            music.fadeOut(500-100);
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('intro')} );
         }

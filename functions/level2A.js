@@ -3,8 +3,12 @@ var level2A = {
     create: function() {
         currentLevel = 'level2A';
         if (check2A==true) {playerX = 88*32; playerY = 18*32;}
-        else {playerX = 22*32; playerY = 68*32;}
+        else {playerX = 25*32; playerY = 68*32;}
         lavaTrigger = 0;
+
+        music = game.add.audio('fortezzaMusic').play();
+        music.fadeIn(5000);
+        music.loopFull();
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -36,7 +40,7 @@ var level2A = {
 
         /// World
         game.world.setBounds(0, 0, 153*32, 77*32);
-        fort=game.add.sprite(0,game.world.height,'fortezza-bg').anchor.setTo(0,1);
+        game.add.sprite(0,game.world.height,'fortezza-bg').anchor.setTo(0,1);
 
         // Checkpoint
         check = game.add.sprite(88*32, 20*32, 'checkpoint');
@@ -45,28 +49,6 @@ var level2A = {
         game.physics.arcade.enable(check);
         if (check2A==true) {check.frame=1}
         else {check.frame=0}
-
-        // Tilemap
-        mappa = game.add.tilemap('level2A');
-        mappa.addTilesetImage('castle', 'castle');
-        mappa.setCollisionBetween(1, 6);
-        ground = mappa.createLayer('ground');
-
-        // Nastro
-        nastri = game.add.group();
-        nastri.enableBody = true;
-        nastro1 = nastri.create(102*32, 58*32, 'nastro');
-        nastro1.scale.x = -1;
-        nastro2 = nastri.create(112*32, 58*32, 'nastro');
-        nastro3 = nastri.create(122*32, 58*32, 'nastro');
-
-        nastri.children.forEach( function(nastro) {
-            nastro.animations.add('trasporta', null, 20, true);
-            nastro.animations.play('trasporta');
-            nastro.body.drag.x = 1000;
-            nastro.body.immovable = true;
-            nastro.body.moves = false;
-        })
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
@@ -77,10 +59,11 @@ var level2A = {
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Soffio
-        soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
+        soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
         soffio.anchor.setTo(0,1);
-        soffio.alpha = .2;
+        soffio.animations.add('soffia', [0,1,2,3,4,5,6], 20, true);
         game.physics.arcade.enable(soffio);
+        soffio.body.setSize(110,90,50,15)
 
         // Colonne
         colonne = game.add.group();
@@ -127,17 +110,13 @@ var level2A = {
             if (fruit.cespuglio==true) {fruit.body.gravity.y = 0}
         })
 
-        // Lanciafiamme
-        maialiF = game.add.group();
-        maialiF.create(125*32, 40*32, 'maiale-torcia');
-        maialiF.create(115*32, 40*32, 'maiale-torcia');
-        maialiF.create(105*32, 40*32, 'maiale-torcia');
+        // Fiamme
+        fiamme = game.add.group();
+        fiamme.create(125*32, 40*32, 'maiale-torcia');
+        fiamme.create(115*32, 40*32, 'maiale-torcia');
+        fiamme.create(105*32, 40*32, 'maiale-torcia');
 
-        maialiF.children.forEach( function(maialeF) {
-            maialeF.anchor.setTo(.5,0);
-            maialeF.frame = 0;
-
-            fiamma = maialeF.addChild(game.make.sprite(0, 0, 'flame'));
+        fiamme.children.forEach( function(fiamma) {
             fiamma.anchor.setTo(.5, 1);
             fiammaA = game.add.tween(fiamma.scale).to( {y:0, x:0}, 100, sin).delay(1000+1000*Math.random()).start().yoyo(true, 3000+1000*Math.random());
             fiammaA.chain(fiammaA);
@@ -155,18 +134,20 @@ var level2A = {
             sasso.body.maxVelocity.x = 100;
         })
 
+        // Tilemap
+        mappa = game.add.tilemap('level2A');
+        mappa.addTilesetImage('castle', 'castle');
+        mappa.setCollisionBetween(1, 6);
+        ground = mappa.createLayer('ground');
+        ground.alpha = 0;
+        game.add.sprite(0,game.world.height,'level2A').anchor.setTo(0,1);
+
         // Lava
         lava = game.add.tileSprite(60*32, 63*32, 22*32, 70*32, 'lava');
         lava.animations.add('waves', [0,1,2,3,4,5,6,7,8,7,6,5,4,3,2,1]);
         lava.animations.play('waves', 10, true);
         game.physics.arcade.enable(lava);
         lavaAlza = game.add.tween(lava).to( {y: 21*32}, 15000, sin);
-
-        // Segreti
-        segreto = game.add.graphics(454*16, 61*16);
-        segreto.beginFill(0x21572f, 1);
-        segreto.drawRect(0, 0, 33*16, 15*16);
-        segreto.endFill();
 
         // Fame
         barra = game.add.graphics(25, 25);
@@ -222,6 +203,7 @@ var level2A = {
             tornaMenu.input.useHandCursor = (game.paused) ? true : false;
         }
         function backMenu() {
+            music.fadeOut(500-100);
             game.paused = false;
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
@@ -231,6 +213,7 @@ var level2A = {
     update: function() {
         // States
         function gameOver() {
+            music.fadeOut(500-100);
             game.input.keyboard.stop();
             cursors.right.isDown = false;
             cursors.left.isDown = false;
@@ -240,7 +223,7 @@ var level2A = {
                 game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
-        function nextState() {game.camera.fade(0x000000,500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
+        function nextState() {music.fadeOut(500-100); game.camera.fade(0x000000,500); game.camera.onFadeComplete.add(function(){game.state.start('level2B')});}
         if (player.x<130*32 && player.y>game.world.height) {gameOver()};
         if (player.x>130*32 && player.y>game.world.height) {nextState()}
 
@@ -249,7 +232,7 @@ var level2A = {
         game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
 
         // Collisions
-        game.physics.arcade.collide([player, fruits], [ground, nastri]);
+        game.physics.arcade.collide([player, fruits], [ground]);
         sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
@@ -295,11 +278,12 @@ var level2A = {
         // Soffio
         if (soffia.isDown) {
             soffio.revive();
-            if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
-            else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
+            soffio.animations.play('soffia');
+            if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
+            else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
         }
-        else {soffio.kill();}
-
+        else {soffio.kill()}
+        
         // Fame
         fame.width -= .025;
         currentFame = fame.width;
@@ -325,20 +309,9 @@ var level2A = {
             else if (facing=='right') {sasso.body.velocity.x += 5}
         }
 
-        // Segreto
-        if (player.x > segreto.left && player.y > segreto.top) {segreto.alpha = 0}
-        else {segreto.alpha = 1}
-
         // Lava
         game.physics.arcade.overlap(player, lava, gameOver, null, this);
         if (player.x > 65*32 && lavaTrigger==0) {lavaAlza.start(); lavaTrigger++}
-
-        // Nastro
-        nastri.children.forEach(function(nastro) {
-            if (nastro1.body.touching.up) {player.body.gravity.x = 5000}
-            else if (nastro2.body.touching.up || nastro3.body.touching.up) {player.body.gravity.x = -5000}
-            else {player.body.gravity.x = 0}
-        })
 
         // Vola
         if (vola.isDown) {player.body.gravity.y = 0};

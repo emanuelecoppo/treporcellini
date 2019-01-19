@@ -124,8 +124,7 @@ var level1A = {
         rametto.anchor.x = .5;
 
         // Tronco Stealth (1)
-        troncoS = game.add.sprite(350*16, 76*16, 'brown');
-        troncoS.scale.setTo(60*16, 100);
+        troncoS = game.add.sprite(350*16-2, 75*16-4, 'tronco-cavo');
 
         // Maiali Tronco
         maiali = game.add.group();
@@ -151,7 +150,7 @@ var level1A = {
         })
 
         // Tronco Stealth (2)
-        game.add.sprite(troncoS.x, troncoS.y, 'tronco-stealth');
+        troncoSS = game.add.sprite(troncoS.x, troncoS.y, 'tronco-cavo-sopra');
 
         // Safe Area
         safe = game.add.group();
@@ -169,10 +168,11 @@ var level1A = {
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
 
         // Soffio
-        soffio = player.addChild(game.make.sprite(0, 0, 'soffio'));
+        soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
         soffio.anchor.setTo(0,1);
-        soffio.alpha = .2;
+        soffio.animations.add('soffia', [0,1,2,3,4,5,6], 20, true);
         game.physics.arcade.enable(soffio);
+        soffio.body.setSize(110,90,50,15)
 
         // Stalattiti
         stalattiti = game.add.group();
@@ -377,10 +377,11 @@ var level1A = {
         // Soffio
         if (soffia.isDown) {
             soffio.revive();
-            if (facing=='left') {soffio.x = -25; soffio.scale.setTo(-.2,.2)}
-            else if (facing=='right') {soffio.x = 25; soffio.scale.setTo(.2,.2)}
+            soffio.animations.play('soffia');
+            if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
+            else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
         }
-        else {soffio.kill();}
+        else {soffio.kill()}
 
         // Fame
         fame.width -= .025;
@@ -475,6 +476,7 @@ var level1A = {
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
         //game.debug.body(player, 'rgba(0,255,0,.1)');
+        //game.debug.body(soffio, 'rgba(0,255,0,.2)');
         //game.debug.body(maiale1); game.debug.body(maiale2); game.debug.body(maiale3);
     }
 }
