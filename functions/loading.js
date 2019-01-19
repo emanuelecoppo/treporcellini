@@ -43,6 +43,7 @@ var loadingState = {
         game.load.image('fortezza-bg', 'background/fortezza-bg.png');
         game.load.image('cascata-bg', 'background/cascata-bg.png');
         game.load.image('boss-bg', 'background/boss-bg.png');
+        game.load.image('tree', 'background/tree.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 64, 90);
         game.load.spritesheet('mamma', 'characters/mamma.png', 61.5, 100);
@@ -57,10 +58,10 @@ var loadingState = {
         game.load.image('fruit', 'objects/fruit.png');
         game.load.image('sasso', 'objects/sasso.png');
         game.load.image('zattera', 'objects/zattera.png');
-        game.load.image('blue', 'objects/blue.png');
         game.load.image('brown', 'objects/brown.png');
         game.load.image('stalattite', 'objects/stalattite.png');
         game.load.image('rametto', 'objects/rametto.png');
+        game.load.image('ramo', 'objects/ramo.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
         game.load.image('tronco-cavo', 'objects/tronco-cavo.png');
         game.load.image('tronco-cavo-sopra', 'objects/tronco-cavo-sopra.png');
@@ -69,8 +70,7 @@ var loadingState = {
         game.load.image('flame', 'objects/flame.png');
         game.load.image('fango', 'objects/fango.png');
         game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
-        game.load.spritesheet('explosion', 'objects/explosion.png', 64, 64, 23);
-        game.load.spritesheet('nastro', 'objects/nastro.png', 192, 64, 8);
+        game.load.spritesheet('explosion', 'objects/explosion.png', 2784/13, 150);
         game.load.spritesheet('water', 'objects/water.png', 50, 240);
         game.load.spritesheet('lava', 'objects/lava.png', 50, 56*32);
         // Tilemaps

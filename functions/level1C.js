@@ -43,9 +43,9 @@ var level1C = {
         boundR.body.immovable = true;
 
         // Background
-        parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte0');
-        parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte1');
-        parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'notte2');
+        parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno0');
+        parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno1');
+        parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno2');
         parallax0.fixedToCamera = true;
         parallax1.fixedToCamera = true;
         parallax2.fixedToCamera = true;
@@ -60,20 +60,19 @@ var level1C = {
 
         // Trees
         trees = game.add.group();
-        tree1 = trees.create( 20*16, 0, 'brown'); //inizio
-        tree2 = trees.create( 55*16, 0, 'brown'); //inizio
-        tree3 = trees.create( 85*16, 0, 'brown'); //inizio
-        tree4 = trees.create(143*16, 0, 'brown'); //sasso
-        tree5 = trees.create(220*16, 0, 'brown'); //burrone
-        tree6 = trees.create(285*16, 0, 'brown'); //inizio lago
-        tree7 = trees.create(358*16, 0, 'brown'); //trap
-        tree8 = trees.create(410*16, 0, 'brown'); //trap
-        tree9 = trees.create(514*16, 0, 'brown'); //maiale
-        tree10= trees.create(543*16, 0, 'brown'); //maiale
+        tree1 = trees.create( 20*16, 78*16, 'tree'); //inizio
+        tree2 = trees.create( 55*16, 80*16, 'tree'); //inizio
+        tree3 = trees.create( 85*16, 80*16, 'tree'); //inizio
+        tree4 = trees.create(143*16, 0, 'tree'); //sasso
+        tree5 = trees.create(220*16, 0, 'tree'); //burrone
+        tree6 = trees.create(285*16, 0, 'tree'); //inizio lago
+        tree7 = trees.create(358*16, 0, 'tree'); //lago
+        tree8 = trees.create(410*16, 0, 'tree'); //lago
+        tree9 = trees.create(514*16, 0, 'tree'); //maiale
+        tree10= trees.create(543*16, 0, 'tree'); //maiale
         tree11= trees.create(game.world.width-300, 0, 'brown'); //fine
         trees.setAll('anchor.x', .5);
-        trees.setAll('scale.x', 6*16);
-        trees.setAll('scale.y', game.world.height);
+        trees.setAll('anchor.y', 1);
 
         // Rami
         rami = game.add.group();
@@ -89,9 +88,9 @@ var level1C = {
         rami.create( tree4.left -50, 55*16, 'brown');
         rami.create( tree5.left -50, 55*16, 'brown').cade=true
         rami.create( tree5.right+50, 88*16, 'brown'); //fruit
-        rami.create( tree7.left -50, 45*16, 'brown').trap=true;
-        rami.create( tree7.right+50, 60*16, 'brown').trap=true;
-        rami.create( tree8.left -50, 55*16, 'brown').trap=true;
+        rami.create( tree7.left -50, 45*16, 'brown');
+        rami.create( tree7.right+50, 60*16, 'brown');
+        rami.create( tree8.left -50, 55*16, 'brown');
         rami.create( tree9.left -50, 67*16, 'brown').cade=true;
         rami.create( tree9.right+50, 55*16, 'brown').cade=true;
         rami.create(tree10.right+50, 67*16, 'brown').cade=true;
@@ -125,7 +124,6 @@ var level1C = {
 
         cespugli.children.forEach( function(cespuglio) {
             cespuglio.anchor.setTo(.5,1);
-            //cespuglio.scale.setTo(.5,.5);
             fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
         })
         fruits.children.forEach( function(fruit) {
@@ -157,14 +155,14 @@ var level1C = {
         // Sassi
         sassi = game.add.group();
         sassi.enableBody = true;
-        sassi.create(122*16, 65*16, 'sasso');
+        sassi.create(122*16, 65*16, 'sasso').scale.setTo(.75);
 
         sassi.children.forEach( function(sasso) {
-            sasso.anchor.setTo(.5,.5);
+            sasso.anchor.setTo(.5,1);
             sasso.body.gravity.y = 1000;
             sasso.body.drag.x = 200;
             sasso.body.maxVelocity.x = 100;
-            sasso.scale.setTo(1,1);
+            sasso.body.setSize(150,140,5,5);
         })
 
         // Zattera
@@ -213,6 +211,7 @@ var level1C = {
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
         game.slopes.enable([player, fruits, sassi, zattera]);
         game.slopes.preferY = true;
+        ground.alpha = 0;
         game.add.sprite(0,game.world.height, 'level1C').anchor.setTo(0,1);
 
         // Maiali
@@ -431,15 +430,11 @@ var level1C = {
                 game.time.events.add(200, cadeRamo, this);
                 function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
             }
-            else if (player.x>ramo.left-50 && player.x<ramo.right+50 && ramo.trap==true) {
-                ramo.body.gravity.y = 800;
-            }
-            if (ramo.y > game.world.height+3000 && !ramo.trap==true) {
+            if (ramo.y > game.world.height+3000) {
                 ramo.body.gravity.y = 0;
                 ramo.body.velocity.y = 0;
                 ramo.body.y = ramo.posY;
             }
-            if (game.physics.arcade.collide(player, ramo) && ramo.trap==true) {gameOver()}
         })
 
         // Mosche & Maiali

@@ -325,19 +325,17 @@ var level2B = {
             sfxTrigger = 1;
             explosion = game.add.sprite(x, y, 'explosion');
             explosion.anchor.setTo(.5);
-            explosion.scale.setTo(2);
             game.physics.arcade.enable(explosion);
-            boom = explosion.animations.add('explode');
+            explosion.body.setSize(110,110,50,20)
+            explosion.animations.add('explode', [0,1,2,3,4,5,6,7,8,9]);
             explosions.add(explosion);
             explosions.forEachDead(function(killed) {killed.destroy()});
-            explosion.animations.play('explode', 20, false, true);
+            explosion.animations.play('explode', 10, false, true);
         }
         function crolloExplosions() {
             explosion = explosions.create(1024*Math.random(), 768*Math.random(), 'explosion');
-            explosion.scale.setTo(2);
-            explosion.animations.add('explode');
-            explosion.animations.play('explode', 20, false, true);
-            explosion.animations.killOnComplete = true;
+            explosion.animations.add('explode', [0,1,2,3,4,5,6,7,8,9]);
+            explosion.animations.play('explode', 10, false, true);
         }
         if (sfxTrigger==1) { explosionSFX.play(); sfxTrigger=0}
         if (boss.vite>0) {game.physics.arcade.overlap(player, explosions, gameOver, null, this)}
@@ -384,5 +382,6 @@ var level2B = {
         game.debug.spriteCoords(player, 10, 762);
         //game.debug.body(boss);
         //game.debug.text('Vite Boss = ' + boss.vite, 10, 90);
+        // explosions.children.forEach(function(exp) {game.debug.body(exp, 'rgba(0,255,0,0.1)');})
     }
 }

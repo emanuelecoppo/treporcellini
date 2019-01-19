@@ -91,7 +91,6 @@ var level1B = {
 
         cespugli.children.forEach( function(cespuglio) {
             cespuglio.anchor.setTo(.5,1);
-            cespuglio.scale.setTo(.5,.5);
             fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
         })
         fruits.children.forEach( function(fruit) {
@@ -115,18 +114,6 @@ var level1B = {
         game.physics.arcade.enable(soffio);
         soffio.body.setSize(110,90,50,15)
 
-        // Sassi
-        sassi = game.add.group();
-        sassi.enableBody = true;
-
-        sassi.children.forEach( function(sasso) {
-            sasso.anchor.setTo(.5,.5);
-            sasso.body.gravity.y = 1000;
-            sasso.body.drag.x = 200;
-            sasso.body.maxVelocity.x = 100;
-            sasso.scale.setTo(1,1);
-        })
-
         // Fango
         fango = game.add.group();
         fango.enableBody = true;
@@ -140,10 +127,10 @@ var level1B = {
         mappa.setCollisionBetween(1, 38);
         ground = mappa.createLayer('ground');
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
-        game.slopes.enable([player, fruits, sassi]);
+        game.slopes.enable([player, fruits]);
         game.slopes.preferY = true;
+        ground.alpha = 0;
         game.add.sprite(0,game.world.height,'level1B').anchor.setTo(0,1);
-
 
         // Maiali
         maiali = game.add.group();
@@ -264,8 +251,6 @@ var level1B = {
         game.physics.arcade.collide(player, [boundL, boundR]);
         game.physics.arcade.collide([player, fruits], [ground, rami]);
         game.physics.arcade.collide([player, maiali], ponte);
-        sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
-        sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
         // Parallax
         parallax0.tilePosition.x = 0;
@@ -345,13 +330,6 @@ var level1B = {
         game.physics.arcade.overlap(soffio, fruits, soffioCespuglio, null, this);
         function soffioCespuglio(soffio, fruit) {
             fruit.body.gravity.y = 600;
-        }
-
-        // Sasso
-        game.physics.arcade.overlap(soffio, sassi, soffiaSasso, null, this);
-        function soffiaSasso(soffio, sasso) {
-            if (facing=='left') {sasso.body.velocity.x -= 5}
-            else if (facing=='right') {sasso.body.velocity.x += 5}
         }
 
         // Rami

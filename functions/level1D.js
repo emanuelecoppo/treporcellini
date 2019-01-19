@@ -44,10 +44,6 @@ var level1D = {
         boundR.body.immovable = true;
 
         // Background
-        parallax0 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno0');
-        parallax1 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno1');
-        parallax2 = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'giorno2');
-        parallax0.fixedToCamera = true; parallax1.fixedToCamera = true; parallax2.fixedToCamera = true;
         game.add.sprite(0, 0, 'cascata-bg');
 
         // Checkpoint
@@ -95,7 +91,6 @@ var level1D = {
 
         cespugli.children.forEach( function(cespuglio) {
             cespuglio.anchor.setTo(.5,1);
-            cespuglio.scale.setTo(.5,.5);
             fruits.create(cespuglio.centerX-20, cespuglio.centerY-10, 'fruit').cespuglio = true;
         })
         fruits.children.forEach( function(fruit) {
@@ -122,13 +117,14 @@ var level1D = {
         // Sassi
         sassi = game.add.group();
         sassi.enableBody = true;
-        sassi.create(42*16, 65*16, 'sasso').scale.setTo(1.3,1.3);
+        sassi.create(42*16, 65*16, 'sasso');
 
         sassi.children.forEach( function(sasso) {
-            sasso.anchor.setTo(.5,.5);
+            sasso.anchor.setTo(.5,1);
             sasso.body.gravity.y = 1000;
             sasso.body.drag.x = 200;
             sasso.body.maxVelocity.x = 100;
+            sasso.body.setSize(150,140,5,5);
         })
 
         // Segreti
@@ -151,18 +147,15 @@ var level1D = {
         maiali.enableBody = true;
         maiale1 = maiali.create(205*16, 67*16, 'maiale-torcia');
         game.time.events.loop(2000, function(){maiale1.scale.x*=-1}, this);
-        maiale4 = maiali.create(game.world.width-1500, 47*16, 'maiale-torcia');
-        maiale3 = maiali.create(game.world.width-1400, 47*16, 'maiale-torcia');
-        maiale2 = maiali.create(game.world.width+ 300, 47*16, 'maiale-torcia');
+        maiale4 = maiali.create(game.world.width-1500, 47*16, 'maiale-lanciafiamme');
+        maiale3 = maiali.create(game.world.width-1400, 47*16, 'maiale-lanciafiamme');
+        maiale2 = maiali.create(game.world.width+ 300, 47*16, 'maiale-lanciafiamme');
         maiale2.scale.x=-1; maiale2.alpha=0; maiale3.alpha=0; maiale4.alpha=0;
 
         maiali.children.forEach( function(maiale) {
             maiale.anchor.setTo(.5,1);
             maiale.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
             maiale.body.setSize(250,120,50,0);
-
-            var torcia = maiale.addChild(game.make.sprite(30, -46, 'torcia'));
-            torcia.anchor.setTo(.11,.528);
         })
 
         maiale2A = game.add.tween(maiale2).to( {x: 517*16}, 1500).delay(   0);
@@ -278,9 +271,6 @@ var level1D = {
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
         // Parallax
-        parallax0.tilePosition.x = 0;
-        parallax1.tilePosition.x = -0.5 * game.camera.x;
-        parallax2.tilePosition.x = -0.9 * game.camera.x;
         waterfall.tilePosition.y += 2;
 
         // Checkpoints
@@ -400,5 +390,6 @@ var level1D = {
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
         //game.debug.body(maiale1);
+        //game.debug.body(sasso1);
     }
 }

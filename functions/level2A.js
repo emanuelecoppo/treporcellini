@@ -65,37 +65,6 @@ var level2A = {
         game.physics.arcade.enable(soffio);
         soffio.body.setSize(110,90,50,15)
 
-        // Colonne
-        colonne = game.add.group();
-        colonne.enableBody = true;
-        colonne.add(game.add.graphics(105*32, 10*32).beginFill(0x444444).drawRect(0, 0, 80, 10*32).endFill());
-        colonne.add(game.add.graphics(115*32, 10*32).beginFill(0x444444).drawRect(0, 0, 80, 10*32).endFill());
-        colonne.add(game.add.graphics(125*32, 10*32).beginFill(0x444444).drawRect(0, 0, 80, 10*32).endFill());
-
-        // Maiali
-        maiali = game.add.group();
-        maiali.enableBody = true;
-        maiali.create(135*32, 20*32, 'maiale-torcia');
-        maiali.create(120*32, 20*32, 'maiale-torcia');
-        maiali.create(105*32, 20*32, 'maiale-torcia');
-
-        maiali.children.forEach( function(maiale) {
-            maiale.anchor.setTo(.5,1);
-            maiale.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
-            maiale.body.setSize(250,120,50,0);
-
-            var torcia = maiale.addChild(game.make.sprite(30, -46, 'torcia'));
-            torcia.anchor.setTo(.11,.528);
-
-            maialeA = game.add.tween(maiale).to( {x: maiale.x-20*32}, 5000).delay(1000+2000*Math.random()).start();
-            maialeB = game.add.tween(maiale).to( {x: maiale.x      }, 5000).delay(1000+2000*Math.random());
-            maialeA.onStart.add   (function() {maiale.scale.x=-1; maiale.animations.play('walk')});
-            maialeB.onStart.add   (function() {maiale.scale.x= 1; maiale.animations.play('walk')});
-            maialeA.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 0});
-            maialeB.onComplete.add(function() {maiale.animations.stop(); maiale.frame = 0});
-            maialeA.chain(maialeB, maialeA);
-        })
-
         // Fruits
         fruits = game.add.group()
         fruits.enableBody = true;
@@ -112,9 +81,9 @@ var level2A = {
 
         // Fiamme
         fiamme = game.add.group();
-        fiamme.create(125*32, 40*32, 'maiale-torcia');
-        fiamme.create(115*32, 40*32, 'maiale-torcia');
-        fiamme.create(105*32, 40*32, 'maiale-torcia');
+        fiamme.create(125*32, 40*32, 'flame');
+        fiamme.create(115*32, 40*32, 'flame');
+        fiamme.create(105*32, 40*32, 'flame');
 
         fiamme.children.forEach( function(fiamma) {
             fiamma.anchor.setTo(.5, 1);
@@ -125,13 +94,14 @@ var level2A = {
         // Sassi
         sassi = game.add.group();
         sassi.enableBody = true;
-        sassi.create(18*32, 68*32, 'brown').scale.setTo(100,70);
+        sassi.create(18*32, 68*32, 'sasso').scale.setTo(.75);
 
         sassi.children.forEach( function(sasso) {
-            sasso.anchor.setTo(.5,.5);
+            sasso.anchor.setTo(.5,1);
             sasso.body.gravity.y = 1000;
             sasso.body.drag.x = 200;
             sasso.body.maxVelocity.x = 100;
+            sasso.body.setSize(150,140,5,5);
         })
 
         // Tilemap
@@ -283,7 +253,7 @@ var level2A = {
             else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
         }
         else {soffio.kill()}
-        
+
         // Fame
         fame.width -= .025;
         currentFame = fame.width;
@@ -320,6 +290,5 @@ var level2A = {
 
     render: function() {
         game.debug.spriteCoords(player, 10, 762);
-        //game.debug.body(maiale1);
     }
 }

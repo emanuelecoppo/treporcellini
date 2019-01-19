@@ -217,14 +217,14 @@ var level1A = {
         // Sassi
         sassi = game.add.group();
         sassi.enableBody = true;
-        sassi.create(245*16, 105*16, 'sasso');
+        sassi.create(245*16, 105*16, 'sasso').scale.setTo(.75);
 
         sassi.children.forEach( function(sasso) {
-            sasso.anchor.setTo(.5,.5);
+            sasso.anchor.setTo(.5,1);
             sasso.body.gravity.y = 1000;
             sasso.body.drag.x = 200;
             sasso.body.maxVelocity.x = 100;
-            sasso.scale.setTo(1,1);
+            sasso.body.setSize(150,140,5,5);
         })
 
         // Slopes
@@ -235,7 +235,7 @@ var level1A = {
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
         game.slopes.enable([player, fruits, sassi]);
         game.slopes.preferY = true;
-        //ground.alpha=.5;
+        ground.alpha = 0;
         game.add.sprite(0,game.world.height,'level1A').anchor.setTo(0,1);
 
         // Dialogo
