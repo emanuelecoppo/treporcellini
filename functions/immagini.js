@@ -2,13 +2,14 @@ var immaginiState = {
 
     create: function() {
         var current = 3;
-        var time = 5000;
+        var time = 5650;
         var delay = 1000;
 
         music = game.add.audio('immaginiMusic').play();
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
+        game.stage.disableVisibilityChange = true;
         game.world.setBounds(0, 0, 1024, 768);
 
         renderB = game.add.sprite(0, 0, 'render2');
@@ -16,11 +17,11 @@ var immaginiState = {
         renderA = game.add.sprite(0, 0, 'render1');
         textA = game.add.sprite(0, 0, 'render1t'); textA.alpha=0;
 
-        skip = game.add.text (750, 700, "Premi Enter per saltare", styleR); skip.alpha = 0;
+        // skip = game.add.text (750, 700, "Premi Enter per saltare", styleR); skip.alpha = 0;
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         enter.onDown.add(startGame);
 
-        game.add.tween(skip).to( {alpha: 1}, 500, sin).delay(delay*2).yoyo(true, delay*3).start();
+        // game.add.tween(skip).to( {alpha: 1}, 500, sin).delay(delay*2).yoyo(true, delay*3).start();
         game.add.tween(textA).to( {alpha: 1}, 250).delay(delay).start();
         game.time.events.add(time, fadePicture, this);
 
@@ -53,8 +54,8 @@ var immaginiState = {
         }
 
         function startGame() {
-            music.fadeOut(500-100);
-            game.camera.fade(0x000000, 500);
+            music.fadeOut(1500-100);
+            game.camera.fade(0x000000, 1500);
             game.camera.onFadeComplete.add( function() {game.state.start('intro')} );
         }
     },

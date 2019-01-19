@@ -11,8 +11,8 @@ var gameOver = {
         currentFame = 250;
 
         game.add.sprite(0, 0, 'gameover');
-        continua = game.add.graphics(439, 217).beginFill(0xffffff, 0).drawRect(0, 0, 190, 33).endFill();
-        tornaMenu = game.add.graphics(460, 266).beginFill(0xffffff, 0).drawRect(0, 0, 142, 33).endFill();
+        continua = game.add.graphics(484, 217).beginFill(0xffffff, 0).drawRect(0, 0, 93, 33).endFill();
+        tornaMenu = game.add.graphics(458, 266).beginFill(0xffffff, 0).drawRect(0, 0, 146, 33).endFill();
 
         game.time.events.add(1000, function() {
             continua.inputEnabled = true;

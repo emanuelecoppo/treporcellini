@@ -119,6 +119,12 @@ var level2A = {
         game.physics.arcade.enable(lava);
         lavaAlza = game.add.tween(lava).to( {y: 21*32}, 15000, sin);
 
+        blocco = game.add.graphics(59*32, 58*32).beginFill('#000', 1).drawRect(0, 0, 32, 5*32).endFill();
+        game.physics.arcade.enable(blocco);
+        blocco.body.immovable = true;
+        blocco.body.offset.y = -200;
+        blocco.alpha = 0;
+
         // Fame
         barra = game.add.graphics(25, 25);
         barra.lineStyle(2, 0xffffff, .8);
@@ -184,12 +190,12 @@ var level2A = {
         // States
         function gameOver() {
             music.fadeOut(500-100);
+            game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
             cursors.left.isDown = false;
-            player.body.velocity.x = 0;
             player.animations.stop();
-            game.time.events.add(500, function() {
+            game.time.events.add(1000, function() {
                 game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
@@ -202,7 +208,7 @@ var level2A = {
         game.camera.deadzone = new Phaser.Rectangle((1024-200)/2, 200+(768-450)/2, 200, 250);
 
         // Collisions
-        game.physics.arcade.collide([player, fruits], [ground]);
+        game.physics.arcade.collide([player, fruits], [ground, blocco]);
         sassi.setAll('body.immovable', true); game.physics.arcade.collide(sassi, player);
         sassi.setAll('body.immovable', false); game.physics.arcade.collide(sassi, ground);
 
@@ -281,7 +287,12 @@ var level2A = {
 
         // Lava
         game.physics.arcade.overlap(player, lava, gameOver, null, this);
-        if (player.x > 65*32 && lavaTrigger==0) {lavaAlza.start(); lavaTrigger++}
+        if (player.x > 65*32 && lavaTrigger==0) {
+            lavaAlza.start();
+            lavaTrigger++;
+            blocco.alpha = 1;
+            blocco.body.offset.y = 0;
+        }
 
         // Vola
         if (vola.isDown) {player.body.gravity.y = 0};

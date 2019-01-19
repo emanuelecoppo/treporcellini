@@ -50,29 +50,28 @@ var level1B = {
 
         // Trees
         trees = game.add.group();
-        tree1 = trees.create( 19*16, 0, 'brown');
-        tree2 = trees.create(129*16, 0, 'brown');
-        //tree3 = trees.create(185*16, 0, 'brown');
-        tree4 = trees.create(297*16, 0, 'brown');
-        tree5 = trees.create(385*16, 0, 'brown');
+        tree1 = trees.create( 19*16, 71*16, 'tree');
+        tree2 = trees.create(129*16, 71*16, 'tree');
+        //tree3 = trees.create(185*16, 71*16, 'tree');
+        tree4 = trees.create(297*16, 71*16, 'tree');
+        tree5 = trees.create(385*16, 71*16, 'tree');
         trees.setAll('anchor.x', .5);
-        trees.setAll('scale.x', 6*16);
-        trees.setAll('scale.y', game.world.height);
+        trees.setAll('anchor.y', 1);
 
         // Rami
         rami = game.add.group();
         rami.enableBody = true;
-        rami.create(tree1.right+50, 50*16, 'brown');
-        rami.create(tree2.left -50, 57*16, 'brown').cade = true;
-        rami.create(tree2.right+50, 46*16, 'brown');
-        rami.create(tree4.right+50, 47*16, 'brown');
-        rami.create(tree5.left -50, 46*16, 'brown');
-        rami.create(tree5.right+50, 58*16, 'brown').cade = true;
+        game.world.sendToBack(rami); game.world.sendToBack(parallax2); game.world.sendToBack(parallax1); game.world.sendToBack(parallax0);
+        rami.create(tree1.right-4, 50*16, 'ramo');
+        rami.create(tree2.left +4, 57*16, 'ramoSX').cade=true;
+        rami.create(tree2.right-4, 46*16, 'ramo');
+        rami.create(tree4.right-4, 47*16, 'ramo');
+        rami.create(tree5.left +4, 46*16, 'ramoSX');
+        rami.create(tree5.right-4, 58*16, 'ramo').cade=true;
 
         rami.children.forEach( function(ramo) {
             ramo.posY = ramo.body.y //memorizza Y iniziale
             ramo.anchor.x = .5;
-            ramo.scale.setTo(100,16);
             ramo.body.immovable = true;
             ramo.body.maxVelocity.y = 800;
         })
@@ -84,10 +83,10 @@ var level1B = {
 
         fruits = game.add.group()
         fruits.enableBody = true;
-        fruits.create(tree2.right+40, 600, 'fruit');
+        fruits.create(tree2.right-20, 600, 'fruit');
         fruits.create(174*16, 1100, 'fruit'); //buco
         fruits.create(247*16, 800, 'fruit'); //tronco caduto
-        fruits.create(tree5.left-60, 600, 'fruit');
+        fruits.create(tree5.left-20, 600, 'fruit');
 
         cespugli.children.forEach( function(cespuglio) {
             cespuglio.anchor.setTo(.5,1);
@@ -222,12 +221,12 @@ var level1B = {
     update: function() {
         // States
         function gameOver() {
+            game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
             cursors.left.isDown = false;
-            player.body.velocity.x = 0;
             player.animations.stop();
-            game.time.events.add(500, function() {
+            game.time.events.add(1000, function() {
                 game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
@@ -336,12 +335,13 @@ var level1B = {
         rami.children.forEach( function(ramo) {
             if (ramo.body.touching.up && ramo.cade==true) {
                 game.time.events.add(200, cadeRamo, this);
-                function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
+                function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800; ramo.angle += 1.5*Math.random()}}
             }
-            if (ramo.y > game.world.height + 3000) {
+            if (ramo.y > game.world.height+3000) {
                 ramo.body.gravity.y = 0;
                 ramo.body.velocity.y = 0;
                 ramo.body.y = ramo.posY;
+                ramo.angle = 0;
             }
         })
 

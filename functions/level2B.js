@@ -92,6 +92,7 @@ var level2B = {
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
+        player.frame = 12;
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
@@ -116,7 +117,6 @@ var level2B = {
 
         arma.bullets.forEach( function(bomb) {
             bomb.anchor.setTo(.5);
-            bomb.scale.setTo(.05);
             bomb.body.drag.x = 150;
             bomb.body.bounce.x = .5;
         })
@@ -217,12 +217,12 @@ var level2B = {
         // States
         function gameOver() {
             music.fadeOut(500-100);
+            game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
             cursors.left.isDown = false;
-            player.body.velocity.x = 0;
             player.animations.stop();
-            game.time.events.add(500, function() {
+            game.time.events.add(1000, function() {
                 game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
@@ -312,8 +312,8 @@ var level2B = {
         // Weapon
         game.physics.arcade.overlap(soffio, arma.bullets, soffiaBomb, null, this)
         function soffiaBomb(soffio, bomb) {
-            if (facing=='left') {bomb.body.velocity.x -= 7}
-            else if (facing=='right') {bomb.body.velocity.x += 7}
+            if (facing=='left') {bomb.body.velocity.x -= 6}
+            else if (facing=='right') {bomb.body.velocity.x += 6}
         }
 
         // Explosion

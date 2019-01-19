@@ -37,13 +37,18 @@ var loadingState = {
         game.load.image('giorno0', 'background/giorno0.png');
         game.load.image('giorno1', 'background/giorno1.png');
         game.load.image('giorno2', 'background/giorno2.png');
+        game.load.image('palude0', 'background/palude0.png');
+        game.load.image('palude1', 'background/palude1.png');
+        game.load.image('palude2', 'background/palude2.png');
         game.load.image('grotta-bg', 'background/grotta-bg.png');
         game.load.image('intro', 'background/intro.png');
         game.load.image('waterfall', 'background/waterfall.png');
+        game.load.spritesheet('cresta', 'background/cresta.png', 1139, 62);
         game.load.image('fortezza-bg', 'background/fortezza-bg.png');
         game.load.image('cascata-bg', 'background/cascata-bg.png');
         game.load.image('boss-bg', 'background/boss-bg.png');
         game.load.image('tree', 'background/tree.png');
+        game.load.image('shrek', 'background/shrek.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 64, 90);
         game.load.spritesheet('mamma', 'characters/mamma.png', 61.5, 100);
@@ -62,6 +67,8 @@ var loadingState = {
         game.load.image('stalattite', 'objects/stalattite.png');
         game.load.image('rametto', 'objects/rametto.png');
         game.load.image('ramo', 'objects/ramo.png');
+        game.load.image('ramoSX', 'objects/ramoSX.png');
+        game.load.image('tronco-cascata', 'objects/tronco-cascata.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
         game.load.image('tronco-cavo', 'objects/tronco-cavo.png');
         game.load.image('tronco-cavo-sopra', 'objects/tronco-cavo-sopra.png');

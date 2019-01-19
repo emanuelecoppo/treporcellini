@@ -56,21 +56,25 @@ var level1D = {
 
         // Trees
         trees = game.add.group();
-        tree1 = trees.create(492*16, 0, 'brown');
+        tree1 = trees.create(492*16, 47*16, 'tree');
         trees.setAll('anchor.x', .5);
-        trees.setAll('scale.x', 6*16);
-        trees.setAll('scale.y', game.world.height);
+        trees.setAll('anchor.y', 1);
 
         // Waterfall
         waterfall = game.add.tileSprite(240*16, 48*16, 216*16, 100*16, 'waterfall');
+        waterfall2 = game.add.tileSprite(240*16, 48*16, 216*16, 100*16, 'waterfall');
+        waterfall2.alpha = .2; waterfall2.tilePosition.x = 90;
+        cresta = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta.animations.add('schiuma', [0,1], 5, true); cresta.animations.play('schiuma');
+        cresta2 = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta2.animations.add('schiuma2', [1,0], 6, true); cresta2.animations.play('schiuma2'); cresta2.tilePosition.x = 10; cresta2.alpha=.5
+        cresta3 = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta3.animations.add('schiuma3', [1,0], 4, true); cresta3.animations.play('schiuma3'); cresta3.tilePosition.x = 18; cresta3.alpha=.5
 
         // Tronchi
         tronchi = game.add.group();
         tronchi.enableBody = true;
-        game.time.events.add(   0, function() { game.time.events.loop(4000, function() {tronchi.create(302*16,waterfall.y,'brown')}, this) }, this);
-        game.time.events.add(2000, function() { game.time.events.loop(4000, function() {tronchi.create(339*16,waterfall.y,'brown')}, this) }, this);
-        game.time.events.add(   0, function() { game.time.events.loop(3000, function() {tronchi.create(395*16,waterfall.y,'brown')}, this) }, this);
-        game.time.events.add(2000, function() { game.time.events.loop(3000, function() {tronchi.create(411*16,waterfall.y,'brown')}, this) }, this);
+        game.time.events.add(   0, function() { game.time.events.loop(4000, function() {tronchi.create(302*16,waterfall.y,'tronco-cascata')}, this) }, this);
+        game.time.events.add(2000, function() { game.time.events.loop(4000, function() {tronchi.create(339*16,waterfall.y,'tronco-cascata')}, this) }, this);
+        game.time.events.add(   0, function() { game.time.events.loop(3000, function() {tronchi.create(395*16,waterfall.y,'tronco-cascata')}, this) }, this);
+        game.time.events.add(2000, function() { game.time.events.loop(3000, function() {tronchi.create(411*16,waterfall.y,'tronco-cascata')}, this) }, this);
 
         // Fruits
         cespugli = game.add.group();
@@ -117,7 +121,7 @@ var level1D = {
         // Sassi
         sassi = game.add.group();
         sassi.enableBody = true;
-        sassi.create(42*16, 65*16, 'sasso');
+        sassi.create(42*16, 70*16, 'sasso');
 
         sassi.children.forEach( function(sasso) {
             sasso.anchor.setTo(.5,1);
@@ -145,7 +149,7 @@ var level1D = {
         // Maiali
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(205*16, 67*16, 'maiale-torcia');
+        maiale1 = maiali.create(205*16, 67*16, 'maiale-lanciafiamme');
         game.time.events.loop(2000, function(){maiale1.scale.x*=-1}, this);
         maiale4 = maiali.create(game.world.width-1500, 47*16, 'maiale-lanciafiamme');
         maiale3 = maiali.create(game.world.width-1400, 47*16, 'maiale-lanciafiamme');
@@ -240,12 +244,12 @@ var level1D = {
     update: function() {
         // States
         function gameOver() {
+            game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
             cursors.left.isDown = false;
-            player.body.velocity.x = 0;
             player.animations.stop();
-            game.time.events.add(500, function() {
+            game.time.events.add(1000, function() {
                 game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
@@ -272,6 +276,7 @@ var level1D = {
 
         // Parallax
         waterfall.tilePosition.y += 2;
+        waterfall2.tilePosition.y += 3;
 
         // Checkpoints
         game.physics.arcade.overlap(player, check, checkpoint, null, this);
@@ -354,8 +359,7 @@ var level1D = {
 
         // Tronchi
         tronchi.children.forEach( function(tronco) {
-            tronco.anchor.setTo(.5,.5);
-            tronco.scale.setTo(100, 20);
+            tronco.anchor.setTo(.5);
             tronco.body.immovable = true;
             tronco.body.acceleration.y = 50;
             tronco.body.maxVelocity.y = 180;

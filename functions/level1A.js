@@ -61,26 +61,26 @@ var level1A = {
 
         // Trees
         trees = game.add.group();
-        tree1 = trees.create(329*16, 0, 'brown');
-        tree2 = trees.create(430*16, 0, 'brown');
+        tree1 = trees.create(329*16, 82*16, 'tree');
+        tree2 = trees.create(430*16, 82*16, 'tree');
         trees.setAll('anchor.x', .5);
-        trees.setAll('scale.x', 6*16);
-        trees.setAll('scale.y', game.world.height);
+        trees.setAll('anchor.y', 1);
 
         // Rami
         rami = game.add.group();
         rami.enableBody = true;
-        rami.create(tree1.left -50, 50*16, 'brown');
-        rami.create(tree2.left -50, 70*16, 'brown').cade = true;
-        rami.create(tree2.right+50, 60*16, 'brown');
+        game.world.sendToBack(rami); game.world.sendToBack(parallax2); game.world.sendToBack(parallax1); game.world.sendToBack(parallax0);
+        rami.create(tree1.left +4, 50*16, 'ramoSX');
+        rami.create(tree2.left +4, 70*16, 'ramoSX').cade = true;
+        rami.create(tree2.right-4, 60*16, 'ramo');
 
         rami.children.forEach( function(ramo) {
             ramo.posY = ramo.body.y //memorizza Y iniziale
             ramo.anchor.x = .5;
-            ramo.scale.setTo(100,16);
             ramo.body.immovable = true;
             ramo.body.maxVelocity.y = 800;
         })
+
 
         // Water
         water = game.add.tileSprite(0, game.world.height-15, 3500, 15, 'water');
@@ -91,8 +91,7 @@ var level1A = {
 
         // Cartello
         cartello = game.add.sprite(500, 2000, 'cartello');
-        cartello.anchor.setTo(.5);
-        cartello.scale.setTo(.2);
+        cartello.anchor.setTo(0,1);
         game.physics.arcade.enable(cartello);
         hint = cartello.addChild(game.add.text (0, -200, "Prova a spostare questo ostacolo,\npremi S per soffiare.", styleC));
         hint.alpha = 0; hint.anchor.x=.5;
@@ -107,7 +106,7 @@ var level1A = {
         fruits.create(274*16, 500, 'fruit'); //dopo grotta
         fruits.create(382*16, 1000, 'fruit'); //metà tronco
         fruits.create(402*16, 1000, 'fruit'); //fine tronco
-        fruits.create(tree2.right+40, 900, 'fruit');
+        fruits.create(tree2.right-20, 900, 'fruit');
 
         cespugli.children.forEach( function(cespuglio) {
             cespuglio.anchor.setTo(.5,1);
@@ -120,8 +119,9 @@ var level1A = {
         })
 
         // Rametto
-        rametto = game.add.sprite(455*16, 80*16, 'rametto');
+        rametto = game.add.sprite(455*16, 81*16, 'rametto');
         rametto.anchor.x = .5;
+        rametto.scale.setTo(.8);
 
         // Tronco Stealth (1)
         troncoS = game.add.sprite(350*16-2, 75*16-4, 'tronco-cavo');
@@ -155,9 +155,9 @@ var level1A = {
         // Safe Area
         safe = game.add.group();
         safe.enableBody = true;
-        safe.add(game.add.graphics(350*16+15, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 18*16-30, 6*16));
-        safe.add(game.add.graphics(373*16+15, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 20*16-30, 6*16));
-        safe.add(game.add.graphics(398*16+15, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 12*16-30, 6*16));
+        safe.add(game.add.graphics(350*16+5, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 18*16-10, 6*16));
+        safe.add(game.add.graphics(373*16+5, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 20*16-10, 6*16));
+        safe.add(game.add.graphics(398*16+5, troncoS.y).lineStyle(1,0xffffff,0).drawRect(0, 0, 12*16-10, 6*16));
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
@@ -316,7 +316,7 @@ var level1A = {
             cursors.right.isDown = false;
             cursors.left.isDown = false;
             player.animations.stop();
-            game.time.events.add(1500, function() {
+            game.time.events.add(1000, function() {
                 game.camera.fade(0x000000,100); game.camera.onFadeComplete.add(function(){game.state.start('gameOver')});
             })
         }
@@ -429,12 +429,13 @@ var level1A = {
         rami.children.forEach( function(ramo) {
             if (ramo.body.touching.up && ramo.cade==true) {
                 game.time.events.add(200, cadeRamo, this);
-                function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800}}
+                function cadeRamo() {if (ramo.body.touching.up) {ramo.body.gravity.y = 800; ramo.angle += 1.5*Math.random()}}
             }
-            if (ramo.y > game.world.height + 3000) {
+            if (ramo.y > game.world.height+3000) {
                 ramo.body.gravity.y = 0;
                 ramo.body.velocity.y = 0;
                 ramo.body.y = ramo.posY;
+                ramo.angle = 0;
             }
         })
 
