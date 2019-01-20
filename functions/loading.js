@@ -48,6 +48,7 @@ var loadingState = {
         game.load.image('cascata-bg', 'background/cascata-bg.png');
         game.load.image('boss-bg', 'background/boss-bg.png');
         game.load.image('tree', 'background/tree.png');
+        game.load.image('tree-notte', 'background/tree-notte.png');
         game.load.image('shrek', 'background/shrek.png');
         // Characters
         game.load.spritesheet('lupo', 'characters/lupo.png', 64, 90);
@@ -63,17 +64,19 @@ var loadingState = {
         game.load.image('fruit', 'objects/fruit.png');
         game.load.image('sasso', 'objects/sasso.png');
         game.load.image('zattera', 'objects/zattera.png');
-        game.load.image('brown', 'objects/brown.png');
+        game.load.image('ponte', 'objects/ponte.png');
         game.load.image('stalattite', 'objects/stalattite.png');
-        game.load.image('rametto', 'objects/rametto.png');
         game.load.image('ramo', 'objects/ramo.png');
+        game.load.image('ramo-notte', 'objects/ramo-notte.png');
         game.load.image('ramoSX', 'objects/ramoSX.png');
+        game.load.image('ramoSX-notte', 'objects/ramoSX-notte.png');
         game.load.image('tronco-cascata', 'objects/tronco-cascata.png');
         game.load.image('cespuglio', 'objects/cespuglio.png');
         game.load.image('tronco-cavo', 'objects/tronco-cavo.png');
         game.load.image('tronco-cavo-sopra', 'objects/tronco-cavo-sopra.png');
         game.load.image('bomb', 'objects/bomba.png');
         game.load.image('cartello', 'objects/cartello.png');
+        game.load.image('cartelloB', 'objects/cartelloB.png');
         game.load.image('flame', 'objects/flame.png');
         game.load.image('fango', 'objects/fango.png');
         game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
@@ -92,7 +95,10 @@ var loadingState = {
         game.load.image('level1A', 'tilemaps/level1A.png');
         game.load.image('level1B', 'tilemaps/level1B.png');
         game.load.image('level1C', 'tilemaps/level1C.png');
+        game.load.image('level1D', 'tilemaps/level1D.png');
+        game.load.image('level1D-segreto', 'tilemaps/level1D-segreto.png');
         game.load.image('level2A', 'tilemaps/level2A.png');
+        game.load.image('level2B', 'tilemaps/level2B.png');
         // Img
         game.load.image('render1', 'img/render1.png');
         game.load.image('render2', 'img/render2.png');
@@ -120,7 +126,10 @@ var loadingState = {
         game.load.audio('marcia', 'music/marcia.wav');
         // SFX
         game.load.audio('explosionSFX', 'sfx/explosion.wav');
-
+        game.load.audio('morso', 'sfx/morso.wav');
+        game.load.audio('morte', 'sfx/morte.wav');
+        game.load.audio('ramoSFX', 'sfx/ramo.wav');
+        game.load.audio('passi', 'sfx/passi.wav');
     },
 
     create: function() {

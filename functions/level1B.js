@@ -5,6 +5,12 @@ var level1B = {
         playerX = 482;
         playerY = 1095;
 
+        // Sound
+        morso = game.add.audio('morso', .1);
+        morso.allowMultiple = true;
+        morteSFX = game.add.audio('morte');
+        ramoSFX = game.add.audio('ramoSFX');
+
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -50,11 +56,11 @@ var level1B = {
 
         // Trees
         trees = game.add.group();
-        tree1 = trees.create( 19*16, 71*16, 'tree');
-        tree2 = trees.create(129*16, 71*16, 'tree');
-        //tree3 = trees.create(185*16, 71*16, 'tree');
-        tree4 = trees.create(297*16, 71*16, 'tree');
-        tree5 = trees.create(385*16, 71*16, 'tree');
+        tree1 = trees.create( 19*16, 71*16, 'tree-notte');
+        tree2 = trees.create(129*16, 71*16, 'tree-notte');
+        //tree3 = trees.create(185*16, 71*16, 'tree-notte');
+        tree4 = trees.create(297*16, 71*16, 'tree-notte');
+        tree5 = trees.create(385*16, 71*16, 'tree-notte');
         trees.setAll('anchor.x', .5);
         trees.setAll('anchor.y', 1);
 
@@ -62,12 +68,12 @@ var level1B = {
         rami = game.add.group();
         rami.enableBody = true;
         game.world.sendToBack(rami); game.world.sendToBack(parallax2); game.world.sendToBack(parallax1); game.world.sendToBack(parallax0);
-        rami.create(tree1.right-4, 50*16, 'ramo');
-        rami.create(tree2.left +4, 57*16, 'ramoSX').cade=true;
-        rami.create(tree2.right-4, 46*16, 'ramo');
-        rami.create(tree4.right-4, 47*16, 'ramo');
-        rami.create(tree5.left +4, 46*16, 'ramoSX');
-        rami.create(tree5.right-4, 58*16, 'ramo').cade=true;
+        rami.create(tree1.right-4, 50*16, 'ramo-notte');
+        rami.create(tree2.left +4, 57*16, 'ramoSX-notte').cade=true;
+        rami.create(tree2.right-4, 46*16, 'ramo-notte');
+        rami.create(tree4.right-4, 47*16, 'ramo-notte');
+        rami.create(tree5.left +4, 46*16, 'ramoSX-notte');
+        rami.create(tree5.right-4, 58*16, 'ramo-notte').cade=true;
 
         rami.children.forEach( function(ramo) {
             ramo.posY = ramo.body.y //memorizza Y iniziale
@@ -75,6 +81,13 @@ var level1B = {
             ramo.body.immovable = true;
             ramo.body.maxVelocity.y = 800;
         })
+
+        // Cartello
+        cartelli = game.add.group();
+        cartelli.enableBody = true;
+        cartelli.create(377*16, 69*16, 'cartello');
+        cartelli.setAll('anchor.x', .5);
+        cartelli.setAll('anchor.y', 1);
 
         // Fruits
         cespugli = game.add.group();
@@ -105,6 +118,7 @@ var level1B = {
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
+        player.frame = 12;
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
@@ -153,8 +167,7 @@ var level1B = {
         })
 
         // Ponte
-        ponte = game.add.sprite(319*16, 69*16, 'brown');
-        ponte.scale.setTo(46*16, 70);
+        ponte = game.add.sprite(319*16, 69*16, 'ponte');
         game.physics.arcade.enable(ponte);
         ponte.body.immovable = true;
 
@@ -221,6 +234,7 @@ var level1B = {
     update: function() {
         // States
         function gameOver() {
+            morteSFX.play('', 0, .5, false, false);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
@@ -319,6 +333,7 @@ var level1B = {
         game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
         function eatFruit(player, fruit) {
             if (!fruit.body.gravity.y==0) {
+                morso.play();
                 fruit.kill();
                 if (fame.width > 225) {fame.width = 250}
                 else {fame.width += 25}

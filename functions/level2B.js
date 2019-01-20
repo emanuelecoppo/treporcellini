@@ -5,15 +5,18 @@ var level2B = {
         playerX = 5*32;
         playerY = 0;
         crollo = 0;
-        sfxTrigger = 0;
         game.input.keyboard.stop();
 
         // Sound
         music = game.add.audio('bossMusic').play();
         music.fadeIn(2000);
         music.loopFull();
-        explosionSFX = game.add.audio('explosionSFX', 0.2);
+        explosionSFX = game.add.audio('explosionSFX', .2);
         explosionSFX.allowMultiple = true;
+        sfxTrigger = 0;
+        morso = game.add.audio('morso', .1);
+        morso.allowMultiple = true;
+        morteSFX = game.add.audio('morte');
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -126,6 +129,8 @@ var level2B = {
         mappa.addTilesetImage('castle', 'castle');
         mappa.setCollisionBetween(1, 6);
         ground = mappa.createLayer('ground');
+        ground.alpha = 0;
+        game.add.sprite(0,0,'level2B');
 
         // Explosions
         explosions = game.add.group();
@@ -133,7 +138,7 @@ var level2B = {
         // Dialogo
         if (dialogoBoss==0) {
             text1 = boss.addChild(  game.add.text(-40,-530, "Oh oh... Ma guarda chi si vede.\nAvete perso la mammina?", styleC));
-            text2 = player.addChild(game.add.text(-90, -40, "Chi è?!\nNon vedo!", styleR));
+            text2 = player.addChild(game.add.text(-90, -40, "Chi è?\nNon vedo!", styleR));
             text3 = player.addChild(game.add.text(  0,-120, "È un grosso guaio!\nAnzi, grasso.", styleC));
             text4 = boss.addChild(  game.add.text(-40,-530, "COME OSI??!!\nMORITE SPORCHI LUPI!", styleC));
             text1.alpha=0; text1.anchor.x= 1; text1.lineSpacing=interlinea;
@@ -216,6 +221,7 @@ var level2B = {
     update: function() {
         // States
         function gameOver() {
+            morteSFX.play('', 0, .5, false, false);
             music.fadeOut(500-100);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
@@ -303,6 +309,7 @@ var level2B = {
         game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
         function eatFruit(player, fruit) {
             if (!fruit.body.gravity.y==0) {
+                morso.play();
                 fruit.kill();
                 if (fame.width > 225) {fame.width = 250}
                 else {fame.width += 25}

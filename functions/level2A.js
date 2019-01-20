@@ -9,6 +9,9 @@ var level2A = {
         music = game.add.audio('fortezzaMusic').play();
         music.fadeIn(5000);
         music.loopFull();
+        morso = game.add.audio('morso', .1);
+        morso.allowMultiple = true;
+        morteSFX = game.add.audio('morte');
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -57,6 +60,7 @@ var level2A = {
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
+        player.frame = 12;
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
@@ -189,6 +193,7 @@ var level2A = {
     update: function() {
         // States
         function gameOver() {
+            morteSFX.play('', 0, .5, false, false);
             music.fadeOut(500-100);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
@@ -272,6 +277,7 @@ var level2A = {
         game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
         function eatFruit(player, fruit) {
             if (!fruit.body.gravity.y==0) {
+                morso.play();
                 fruit.kill();
                 if (fame.width > 225) {fame.width = 250}
                 else {fame.width += 25}

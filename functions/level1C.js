@@ -5,6 +5,12 @@ var level1C = {
         if (check1C==true) {playerX = 243*16; playerY = 1220;}
         else {playerX = 310; playerY = 1200;}
 
+        // Sound
+        morso = game.add.audio('morso', .1);
+        morso.allowMultiple = true;
+        morteSFX = game.add.audio('morte');
+        ramoSFX = game.add.audio('ramoSFX');
+
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -106,6 +112,13 @@ var level1C = {
             ramo.body.maxVelocity.y = 800;
         })
 
+        // Cartello
+        cartelli = game.add.group();
+        cartelli.enableBody = true;
+        cartelli.create(9590, 78*16, 'cartello');
+        cartelli.setAll('anchor.x', .5);
+        cartelli.setAll('anchor.y', 1);
+
         // Fruits
         cespugli = game.add.group();
         cespugli.create( 10*16, 78*16, 'cespuglio');
@@ -113,7 +126,7 @@ var level1C = {
         cespugli.create(256*16, 79*16, 'cespuglio');
         cespugli.create(432*16, 77*16, 'cespuglio');
         cespugli.create(530*16, 78*16, 'cespuglio');
-        cespugli.create(game.world.width-250, 78*16, 'cespuglio');
+        cespugli.create(game.world.width-300, 78*16, 'cespuglio');
 
         fruits = game.add.group()
         fruits.enableBody = true;
@@ -146,6 +159,7 @@ var level1C = {
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
+        player.frame = 12;
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
@@ -301,6 +315,7 @@ var level1C = {
     update: function() {
         // States
         function gameOver() {
+            morteSFX.play('', 0, .5, false, false);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
@@ -401,6 +416,7 @@ var level1C = {
         game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
         function eatFruit(player, fruit) {
             if (!fruit.body.gravity.y==0) {
+                morso.play();
                 fruit.kill();
                 if (fame.width > 225) {fame.width = 250}
                 else {fame.width += 25}

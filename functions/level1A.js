@@ -2,10 +2,16 @@ var level1A = {
 
     create: function() {
         currentLevel = 'level1A';
-        if (check1A==true) {playerX = 304*16; playerY = 79*16;}
-        else {playerX = 75; playerY = 1720;}
+        if (check1A==true) {playerX = 304*16; playerY = 79*16}
+        else {playerX = 75; playerY = 1720}
         fuga = 0;
-        dialogo = 0;
+
+        // Sound
+        morso = game.add.audio('morso', .1);
+        ramoSFX = game.add.audio('ramoSFX');
+        morso.allowMultiple = true;
+        morteSFX = game.add.audio('morte');
+        // passi = game.add.audio('passi');
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -61,8 +67,8 @@ var level1A = {
 
         // Trees
         trees = game.add.group();
-        tree1 = trees.create(329*16, 82*16, 'tree');
-        tree2 = trees.create(430*16, 82*16, 'tree');
+        tree1 = trees.create(329*16, 82*16, 'tree-notte');
+        tree2 = trees.create(430*16, 82*16, 'tree-notte');
         trees.setAll('anchor.x', .5);
         trees.setAll('anchor.y', 1);
 
@@ -70,9 +76,9 @@ var level1A = {
         rami = game.add.group();
         rami.enableBody = true;
         game.world.sendToBack(rami); game.world.sendToBack(parallax2); game.world.sendToBack(parallax1); game.world.sendToBack(parallax0);
-        rami.create(tree1.left +4, 50*16, 'ramoSX');
-        rami.create(tree2.left +4, 70*16, 'ramoSX').cade = true;
-        rami.create(tree2.right-4, 60*16, 'ramo');
+        rami.create(tree1.left +4, 50*16, 'ramoSX-notte').cade = true;
+        rami.create(tree2.left +4, 70*16, 'ramoSX-notte').cade = true;
+        rami.create(tree2.right-4, 60*16, 'ramo-notte');
 
         rami.children.forEach( function(ramo) {
             ramo.posY = ramo.body.y //memorizza Y iniziale
@@ -90,12 +96,21 @@ var level1A = {
         water.animations.play('waves', 8, true);
 
         // Cartello
-        cartello = game.add.sprite(500, 2000, 'cartello');
-        cartello.anchor.setTo(0,1);
-        game.physics.arcade.enable(cartello);
-        hint = cartello.addChild(game.add.text (0, -200, "Prova a spostare questo ostacolo,\npremi S per soffiare.", styleC));
-        hint.alpha = 0; hint.anchor.x=.5;
-        hint.setScaleMinMax(1, 1);
+        cartelli = game.add.group();
+        cartelli.enableBody = true;
+        cartello1 = cartelli.create(46*16, 125*16, 'cartelloB');
+        cartello2 = cartelli.create(103*16, 118*16, 'cartelloB');
+        cartello3 = cartelli.create(233*16, 115*16, 'cartelloB');
+        cartelli.setAll('anchor.x', .5);
+        cartelli.setAll('anchor.y', 1);
+
+        hints = game.add.group();
+        hints.add(game.add.text(cartello1.x,cartello1.y-180, "Salta premendo la\nbarra spaziatrice.", styleC));
+        hints.add(game.add.text(cartello2.x,cartello2.y-180, "Se hai fame mangia questa mela.\nTieni d'occhio la barra della salute!", styleC));
+        hints.add(game.add.text(cartello3.x,cartello3.y-180, "Sposta questo masso,\npremi E per soffiare.", styleC));
+        hints.setAll('anchor.x', .5);
+        hints.setAll('lineSpacing', interlinea);
+        hints.alpha = 0;
 
         // Fruits
         cespugli = game.add.group();
@@ -103,6 +118,7 @@ var level1A = {
 
         fruits = game.add.group()
         fruits.enableBody = true;
+        fruits.create(cartello2.x+50, 116*16, 'fruit'); //grotta
         fruits.create(274*16, 500, 'fruit'); //dopo grotta
         fruits.create(382*16, 1000, 'fruit'); //metà tronco
         fruits.create(402*16, 1000, 'fruit'); //fine tronco
@@ -119,7 +135,7 @@ var level1A = {
         })
 
         // Rametto
-        rametto = game.add.sprite(455*16, 81*16, 'rametto');
+        rametto = game.add.sprite(455*16, 81*16, 'ramoSX-notte');
         rametto.anchor.x = .5;
         rametto.scale.setTo(.8);
 
@@ -166,6 +182,7 @@ var level1A = {
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
+        player.frame = 12;
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
@@ -238,16 +255,6 @@ var level1A = {
         ground.alpha = 0;
         game.add.sprite(0,game.world.height,'level1A').anchor.setTo(0,1);
 
-        // Dialogo
-        text1 = game.add.text(-150, -40, "Perché la mamma\nnon è ancora arrivata?", styleL);
-        text2 = game.add.text(   0,-120, "Non ti preoccupare, vedrai\nche ci raggiungerà.", styleC);
-        // player.children.forEach(function(text) {text.alpha=0; text.anchor.x=.5})
-        text1.anchor.x=.5; text1.alpha=0; text2.anchor.x=.5; text2.alpha=0;
-        textA = game.add.tween(text1).to( {alpha: 1}, 250).yoyo(true, 3000).delay(1000);
-        textB = game.add.tween(text2).to( {alpha: 1}, 250).yoyo(true, 3000);
-        // textB.onComplete.add(function() {game.input.keyboard.start()});
-        textA.chain(textB);
-
         // Fame
         barra = game.add.graphics(25, 25);
         barra.lineStyle(2, 0xffffff, .8);
@@ -311,6 +318,7 @@ var level1A = {
     update: function() {
         // States
         function gameOver() {
+            morteSFX.play('', 0, .5, false, false);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
@@ -367,6 +375,8 @@ var level1A = {
             if (facing=='left') {player.frame = 11}
             else if (facing=='right') {player.frame = 12}
         }
+        // if ((cursors.left.isDown||cursors.right.isDown) && (player.body.touching.down||player.body.onFloor())) {passi.play('', 0, .5, true, false)}
+        //else {passi.stop()}
 
         // Jump
         spacebar.onDown.add(jumpFunction);
@@ -395,6 +405,7 @@ var level1A = {
         game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
         function eatFruit(player, fruit) {
             if (!fruit.body.gravity.y==0) {
+                morso.play();
                 fruit.kill();
                 if (fame.width > 225) {fame.width = 250}
                 else {fame.width += 25}
@@ -441,6 +452,7 @@ var level1A = {
 
         // Inizio Fuga
         if (player.x >= rametto.x && fuga==0) {
+            ramoSFX.play();
             game.input.keyboard.stop();
             cursors.right.isDown = false;
             cursors.left.isDown = false;
@@ -452,23 +464,9 @@ var level1A = {
             fuga ++;
         }
 
-        // Dialogo
-        text1.x=player.x-150; text1.y=player.y-40;
-        text2.x=player.x; text2.y=player.y-120;
-        if (player.x>=1725 && player.x<=1825 && dialogo==0) {
-            //game.input.keyboard.stop();
-            //cursors.right.isDown = false;
-            //cursors.left.isDown = false;
-            //player.body.velocity.x = 0;
-            //player.animations.stop();
-            //player.frame = 11;
-            textA.start();
-            dialogo ++;
-        }
-
         // Cartello
-        if (game.physics.arcade.overlap(player, cartello)) {game.add.tween(hint).to( {alpha: 1}, 50).start()}
-        else {game.add.tween(hint).to( {alpha: 0}, 50).start()}
+        if (game.physics.arcade.overlap(player, cartelli)) {game.add.tween(hints).to( {alpha: 1}, 50).start()}
+        else {game.add.tween(hints).to( {alpha: 0}, 50).start()}
 
         // Vola
         if (vola.isDown) {player.body.gravity.y = 0};

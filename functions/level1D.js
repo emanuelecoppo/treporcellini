@@ -6,6 +6,12 @@ var level1D = {
         else {playerX = 200; playerY = 1618;}
         cattura = 0;
 
+        // Sound
+        morso = game.add.audio('morso', .1);
+        morso.allowMultiple = true;
+        morteSFX = game.add.audio('morte');
+        ramoSFX = game.add.audio('ramoSFX');
+
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -60,13 +66,20 @@ var level1D = {
         trees.setAll('anchor.x', .5);
         trees.setAll('anchor.y', 1);
 
+        // Cartello
+        cartelli = game.add.group();
+        cartelli.enableBody = true;
+        cartelli.create(472*16, 47*16, 'cartello');
+        cartelli.setAll('anchor.x', .5);
+        cartelli.setAll('anchor.y', 1);
+
         // Waterfall
         waterfall = game.add.tileSprite(240*16, 48*16, 216*16, 100*16, 'waterfall');
         waterfall2 = game.add.tileSprite(240*16, 48*16, 216*16, 100*16, 'waterfall');
         waterfall2.alpha = .2; waterfall2.tilePosition.x = 90;
-        cresta = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta.animations.add('schiuma', [0,1], 5, true); cresta.animations.play('schiuma');
-        cresta2 = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta2.animations.add('schiuma2', [1,0], 6, true); cresta2.animations.play('schiuma2'); cresta2.tilePosition.x = 10; cresta2.alpha=.5
-        cresta3 = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta3.animations.add('schiuma3', [1,0], 4, true); cresta3.animations.play('schiuma3'); cresta3.tilePosition.x = 18; cresta3.alpha=.5
+        cresta = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta.animations.add('schiuma', [0,1,2,3], 5, true); cresta.animations.play('schiuma');
+        cresta2 = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta2.animations.add('schiuma2', [2,3,0,1], 6, true); cresta2.animations.play('schiuma2'); cresta2.tilePosition.x = 20; cresta2.alpha=.5;
+        cresta3 = game.add.tileSprite(waterfall.x, waterfall.y-30, waterfall.width, 62, 'cresta'); cresta3.animations.add('schiuma3', [1,2,3,0], 4, true); cresta3.animations.play('schiuma3'); cresta3.tilePosition.x = 30; cresta3.alpha=.3;
 
         // Tronchi
         tronchi = game.add.group();
@@ -110,6 +123,7 @@ var level1D = {
         player.body.setSize(pW,pH,pX,pY);
         player.animations.add('left', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
         player.animations.add('right', [12,13,14,15,16,17,18,19,20,21,22,23], 20, true);
+        player.frame = 12;
 
         // Soffio
         soffio = player.addChild(game.make.sprite(0, 32, 'soffio'));
@@ -132,10 +146,7 @@ var level1D = {
         })
 
         // Segreti
-        segreto = game.add.graphics(454*16, 61*16);
-        segreto.beginFill(0x21572f, 1);
-        segreto.drawRect(0, 0, 33*16, 15*16);
-        segreto.endFill();
+        segreto = game.add.sprite(0,0,'level1D-segreto');
 
         // Slopes
         mappa = game.add.tilemap('level1D');
@@ -145,6 +156,8 @@ var level1D = {
         game.slopes.convertTilemapLayer(ground, 'arcadeslopes');
         game.slopes.enable([player, fruits, sassi]);
         game.slopes.preferY = true;
+        ground.alpha = 0;
+        game.add.sprite(0,0,'level1D');
 
         // Maiali
         maiali = game.add.group();
@@ -244,6 +257,7 @@ var level1D = {
     update: function() {
         // States
         function gameOver() {
+            morteSFX.play('', 0, .5, false, false);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
@@ -338,6 +352,7 @@ var level1D = {
         game.physics.arcade.overlap(player, fruits, eatFruit, null, this);
         function eatFruit(player, fruit) {
             if (!fruit.body.gravity.y==0) {
+                morso.play();
                 fruit.kill();
                 if (fame.width > 225) {fame.width = 250}
                 else {fame.width += 25}
@@ -370,7 +385,7 @@ var level1D = {
         game.physics.arcade.overlap(player, maiale1, gameOver, null, this);
 
         // Segreto
-        if (player.x > segreto.left && player.y > segreto.top) {segreto.alpha = 0}
+        if (player.x > 7250 && player.y > 1000) {segreto.alpha = 0}
         else {segreto.alpha = 1}
 
         // Cattura
