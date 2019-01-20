@@ -12,8 +12,9 @@ var level1B = {
         morteSFX = game.add.audio('morte');
         ramoSFX = game.add.audio('ramoSFX');
         passi = game.add.audio('passi');
-        forestaNotte = game.add.audio('foresta-notte', 0).loopFu
+        forestaNotte = game.add.audio('foresta-notte', 0).loopFull(); forestaNotte.fadeTo(2000, 3)
         soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
+        maialiSFX = game.add.audio('maialiSFX', .5).loopFull();
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -171,9 +172,12 @@ var level1B = {
         })
 
         // Ponte
-        ponte = game.add.sprite(319*16, 69*16, 'ponte');
-        game.physics.arcade.enable(ponte);
-        ponte.body.immovable = true;
+        ponte = game.add.group();
+        ponte.enableBody = true;
+        ponteSX = ponte.create(320*16, 1080, 'ponteSX');
+        ponteDX = ponte.create(319*16+739, 1080, 'ponteDX'); ponteDX.anchor.x=1;
+        ponte.setAll('body.offset.y', 20);
+        ponte.setAll('body.immovable', true);
 
         // Fame
         barra = game.add.graphics(25, 25);
@@ -252,7 +256,9 @@ var level1B = {
 
         if (maiali.left >= ponte.centerX-100) {
             maiali.children.forEach( function(maiale) {maiale.body.gravity.y = 100+1500*Math.random()});
-            ponte.body.gravity.y = 1500;
+            ponte.setAll('body.gravity.y', 1000);
+            ponteSX.angle += .5;
+            ponteDX.angle -= .5;
         }
 
         // Collisions
@@ -368,7 +374,7 @@ var level1B = {
         if (vola.isDown) {player.body.gravity.y = 0};
 
         // Sound
-        if (ponte.y>game.world.height) {maialiSFX.stop();}
+        if (ponteDX.y>game.world.height) {maialiSFX.stop();}
 
     },
 

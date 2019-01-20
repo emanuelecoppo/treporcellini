@@ -67,6 +67,8 @@ var loadingState = {
         game.load.image('sasso', 'objects/sasso.png');
         game.load.image('zattera', 'objects/zattera.png');
         game.load.image('ponte', 'objects/ponte.png');
+        game.load.image('ponteDX', 'objects/ponteDX.png');
+        game.load.image('ponteSX', 'objects/ponteSX.png');
         game.load.image('stalattite', 'objects/stalattite.png');
         game.load.image('ramo', 'objects/ramo.png');
         game.load.image('ramo-notte', 'objects/ramo-notte.png');
