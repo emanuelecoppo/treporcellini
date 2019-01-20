@@ -2,14 +2,14 @@ var immaginiState = {
 
     create: function() {
         var current = 3;
-        var time = 5650;
+        var time = 5500;
         var delay = 1000;
 
+        game.sound.stopAll();
         music = game.add.audio('immaginiMusic').play();
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
-        game.stage.disableVisibilityChange = true;
         game.world.setBounds(0, 0, 1024, 768);
 
         renderB = game.add.sprite(0, 0, 'render2');

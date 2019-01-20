@@ -7,6 +7,7 @@ var bootState = {
 
     create: function() {
         game.stage.backgroundColor = "#000";
+        game.stage.disableVisibilityChange = true;
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
@@ -26,6 +27,7 @@ var loadingState = {
         game.load.baseURL = 'assets/';
         // Graphics
         game.load.image('pause', 'graphics/pause.png');
+        game.load.image('schermata-pausa', 'graphics/schermata-pausa.png');
         game.load.image('autori', 'graphics/autori.png');
         game.load.image('crediti', 'graphics/crediti.png');
         game.load.image('copertina', 'graphics/copertina.png');
@@ -123,13 +125,22 @@ var loadingState = {
         game.load.audio('bossMusic', 'music/boss.wav');
         game.load.audio('gameoverMusic', 'music/gameover.wav');
         game.load.audio('fortezzaMusic', 'music/fortezza.wav');
-        game.load.audio('marcia', 'music/marcia.wav');
+        // game.load.audio('marcia', 'music/marcia.wav');
+        game.load.audio('menuMusic', 'music/menu.wav');
         // SFX
         game.load.audio('explosionSFX', 'sfx/explosion.wav');
         game.load.audio('morso', 'sfx/morso.wav');
         game.load.audio('morte', 'sfx/morte.wav');
         game.load.audio('ramoSFX', 'sfx/ramo.wav');
         game.load.audio('passi', 'sfx/passi.wav');
+        game.load.audio('grottaSFX', 'sfx/grotta.wav');
+        game.load.audio('cascataSFX', 'sfx/cascata.wav');
+        game.load.audio('lavaSFX', 'sfx/lava.wav');
+        game.load.audio('foresta-giorno', 'sfx/foresta-giorno.wav');
+        game.load.audio('foresta-notte', 'sfx/foresta-notte.wav');
+        game.load.audio('maialiSFX', 'sfx/maiali.wav');
+        game.load.audio('soffioSFX', 'sfx/soffio.wav');
+
     },
 
     create: function() {

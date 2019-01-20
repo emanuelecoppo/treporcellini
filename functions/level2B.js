@@ -5,18 +5,17 @@ var level2B = {
         playerX = 5*32;
         playerY = 0;
         crollo = 0;
+        soffioTrigger = 0;
         game.input.keyboard.stop();
 
         // Sound
-        music = game.add.audio('bossMusic').play();
-        music.fadeIn(2000);
-        music.loopFull();
-        explosionSFX = game.add.audio('explosionSFX', .2);
-        explosionSFX.allowMultiple = true;
-        sfxTrigger = 0;
-        morso = game.add.audio('morso', .1);
-        morso.allowMultiple = true;
+        game.sound.stopAll();
+        music = game.add.audio('bossMusic', 0).loopFull(); music.fadeTo(2000, 1);
+        explosionSFX = game.add.audio('explosionSFX', .2); explosionSFX.allowMultiple = true; sfxTrigger = 0;
+        morso = game.add.audio('morso', .2); morso.allowMultiple = true;
         morteSFX = game.add.audio('morte');
+        passi = game.add.audio('passi');
+        soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -69,8 +68,6 @@ var level2B = {
 
         // Boss
         boss = game.add.sprite(1024, 21*32, 'boss');
-        //boss.animations.add('boss', [0,1,2,3,2,1], 20, true);
-        //boss.animations.play('boss')
         boss.anchor.setTo(1);
         game.physics.arcade.enable(boss);
         boss.body.setSize(240, boss.height, boss.width-240, 0)
@@ -169,28 +166,14 @@ var level2B = {
         fame.fixedToCamera = true;
         fame.width = currentFame;
 
-        // Pause
-        pauseOverlay = game.add.graphics(0, 0);
-        pauseOverlay.beginFill('#000', 1);
-        pauseOverlay.drawRect(0, 0, 1024, 768);
-        pauseOverlay.endFill();
-        pauseOverlay.alpha = .5;
-
-        pauseText = game.add.text(1024/2, 768/2, 'PAUSA', {font: "60px Arial", fill:'#fff'});
-        pauseText.anchor.setTo(.5,.5);
-
-        continua = game.add.text(1024/2, 768-200, 'Continua', {font: "30px Arial", fill:'#fff'});
-        continua.anchor.setTo(.5,.5);
+        // Pausa
+        pausa = game.add.sprite(0,0,'schermata-pausa');
+        pausa.alpha = 0;
+        continua = game.add.graphics(461, 401).beginFill(0xffffff, 0).drawRect(0, 0, 103, 33).endFill();
+        tornaMenu = game.add.graphics(439, 450).beginFill(0xffffff, 0).drawRect(0, 0, 146, 33).endFill();
         continua.events.onInputUp.add(pauseGame);
-
-        tornaMenu = game.add.text(1024/2, 768-150, 'Torna al Menu', {font: "30px Arial", fill:'#fff'});
-        tornaMenu.anchor.setTo(.5,.5);
         tornaMenu.events.onInputUp.add(backMenu);
-
-        pauseScreen = game.add.group();
-        pauseScreen.fixedToCamera = true;
-        pauseScreen.alpha = 0;
-        pauseScreen.add(pauseOverlay); pauseScreen.add(pauseText); pauseScreen.add(continua); pauseScreen.add(tornaMenu);
+        pausa.fixedToCamera = true; continua.fixedToCamera = true; tornaMenu.fixedToCamera = true;
 
         pauseButton = game.add.sprite(1024-25, 25, 'pause');
         pauseButton.anchor.setTo(1,0);
@@ -204,14 +187,14 @@ var level2B = {
 
         function pauseGame() {
             game.paused = (game.paused) ? false : true;
-            pauseScreen.alpha = (pauseScreen.alpha) ? 0 : 1;
+            pausa.alpha = (pausa.alpha) ? 0 : 1;
             continua.inputEnabled = (game.paused) ? true : false;
             tornaMenu.inputEnabled = (game.paused) ? true : false;
             continua.input.useHandCursor = (game.paused) ? true : false;
             tornaMenu.input.useHandCursor = (game.paused) ? true : false;
         }
         function backMenu() {
-            music.fadeOut(500-100);
+            music.fadeOut(500);
             game.paused = false;
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
@@ -222,7 +205,7 @@ var level2B = {
         // States
         function gameOver() {
             morteSFX.play('', 0, .5, false, false);
-            music.fadeOut(500-100);
+            music.fadeOut(1100);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
@@ -274,6 +257,12 @@ var level2B = {
             else if (facing == 'right') {player.frame = 12}
         }
 
+        // Passi
+        if ((cursors.left.isDown||cursors.right.isDown)
+        && (player.body.touching.down||player.body.blocked.down))
+            {passi.play('', 0, .3, true, false)}
+        else {passi.fadeTo(100, 0)}
+
         // Jump
         spacebar.onDown.add(jumpFunction);
         function jumpFunction() {
@@ -288,8 +277,12 @@ var level2B = {
             soffio.animations.play('soffia');
             if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
             else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
+            if (soffioTrigger==0) {soffioTrigger=1; soffioSFX.fadeTo(500, .4)};
         }
-        else {soffio.kill()}
+        else {
+            soffio.kill();
+            if (soffioTrigger==1) {soffioTrigger=0; soffioSFX.fadeTo(500, .001)};
+        }
 
         // Fame
         fame.width -= .025;
@@ -319,8 +312,8 @@ var level2B = {
         // Weapon
         game.physics.arcade.overlap(soffio, arma.bullets, soffiaBomb, null, this)
         function soffiaBomb(soffio, bomb) {
-            if (facing=='left') {bomb.body.velocity.x -= 6}
-            else if (facing=='right') {bomb.body.velocity.x += 6}
+            if (facing=='left') {bomb.body.velocity.x -= 5}
+            else if (facing=='right') {bomb.body.velocity.x += 5}
         }
 
         // Explosion
@@ -366,7 +359,7 @@ var level2B = {
             player.frame = 12;
             playerA = game.add.tween(player).to({x:1054}, 2000).delay(2000).start();
             playerA.onStart.add(function(){player.animations.play('right')});
-            game.time.events.add(4000, function() {game.camera.fade(0xffffff, 2000); music.fadeOut(2000-100)}, this);
+            game.time.events.add(4000, function() {game.camera.fade(0xffffff, 2000); music.fadeOut(2000)}, this);
             game.camera.onFadeComplete.add(function(){game.state.start('finaleState')});
             game.camera.shake(0, 10000, true, Phaser.Camera.SHAKE_HORIZONTAL);
             game.add.tween(game.camera).to({shakeIntensity:0.02}, 500).yoyo(true, 250).loop(true).start();
@@ -386,7 +379,7 @@ var level2B = {
     },
 
     render: function() {
-        game.debug.spriteCoords(player, 10, 762);
+        // game.debug.spriteCoords(player, 10, 762);
         //game.debug.body(boss);
         //game.debug.text('Vite Boss = ' + boss.vite, 10, 90);
         // explosions.children.forEach(function(exp) {game.debug.body(exp, 'rgba(0,255,0,0.1)');})

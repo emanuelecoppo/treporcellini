@@ -7,6 +7,12 @@ var menuState = {
         check2A = false;
         dialogoBoss = 0;
 
+        // Sound
+        game.sound.stopAll();
+        music = game.add.audio('menuMusic', .5).play();
+        music.fadeIn(10000);
+        music.loopFull();
+
         // Controllli
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
@@ -65,7 +71,8 @@ var menuState = {
         // })
 
         function startGame() {
-            game.camera.fade(0x000000, 500);
+            music.fadeOut(1500-100);
+            game.camera.fade(0x000000, 1500);
             game.camera.onFadeComplete.add( function() {game.state.start('immaginiState')} );
         }
     }

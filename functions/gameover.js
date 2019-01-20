@@ -3,6 +3,7 @@ var gameOver = {
     create: function() {
         game.input.keyboard.start();
 
+        game.sound.stopAll();
         music = game.add.audio('gameoverMusic').play();
 
         game.camera.flash('#000', 1000);
