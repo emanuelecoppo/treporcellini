@@ -5,6 +5,7 @@ var level1C = {
         if (check1C==true) {playerX = 243*16; playerY = 1220;}
         else {playerX = 310; playerY = 1200;}
         maialiTrigger = 0;
+        moscheTrigger = 0;
         soffioTrigger = 0;
 
         // Sound
@@ -14,6 +15,7 @@ var level1C = {
         ramoSFX = game.add.audio('ramoSFX');
         forestaGiorno = game.add.audio('foresta-giorno', 0).loopFull(); forestaGiorno.fadeTo(2000, 1.5);
         maialiSFX = game.add.audio('maialiSFX', 0).loopFull();
+        moscheSFX = game.add.audio('moscheSFX', 0).loopFull();
         passi = game.add.audio('passi');
         soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
 
@@ -69,8 +71,12 @@ var level1C = {
         check.anchor.setTo(.5,1);
         check.scale.setTo(.7);
         game.physics.arcade.enable(check);
-        if (check1C==true) {check.frame=1}
-        else {check.frame=0}
+        fiammaCheck = check.addChild(game.make.sprite(0, -check.height, 'fiamma-check'));
+        fiammaCheck.anchor.setTo(.5,1.2);
+        fiammaCheck.animations.add('fiammaCheck', [0,1,2,1], 10, true);
+        fiammaCheck.animations.play('fiammaCheck');
+        if (check1C==true) {fiammaCheck.scale.setTo(1)}
+        else {fiammaCheck.scale.setTo(0)}
 
         // Trees
         trees = game.add.group();
@@ -214,15 +220,18 @@ var level1C = {
         // Mosche
         mosche = game.add.group();
         mosche.enableBody = true;
-        mosche.create(301*16, 1000, 'flies');
-        mosche.create(326*16, 1000, 'flies');
-        mosche.create(384*16, 1000, 'flies');
+        mosche1 = mosche.add(game.make.sprite(301*16, 1000, 'flies'));
+        mosche2 = mosche.add(game.make.sprite(326*16, 1000, 'flies'));
+        mosche3 = mosche.add(game.make.sprite(384*16, 1000, 'flies'));
 
         mosche.children.forEach( function(mosca) {
             mosca.anchor.setTo(.5,1);
-            mosca.scale.setTo(.18,.18);
+            mosca.animations.add('sciame', [0,1,2,3,4,5,6,7,8], 15, true);
+            mosca.animations.play('sciame');
+            mosca.scale.setTo(.7);
+            // mosca.body.setCircle(170);
+            mosca.body.setSize(220,250,60,60);
             game.add.tween(mosca).to( {y: zattera.top}, 1700+250*Math.random(), sin, true, 0, -1, true);
-            game.add.tween(mosca).to( {x: mosca.x+15}, 1000+500*Math.random(), sin, true, 0, -1, true);
         })
 
         // Slopes
@@ -343,7 +352,10 @@ var level1C = {
 
         // Checkpoints
         game.physics.arcade.overlap(player, check, checkpoint, null, this);
-        function checkpoint() {check.frame=1; check1C=true}
+        function checkpoint() {
+            if (check1C==false) {game.add.tween(fiammaCheck.scale).to( {y:1,x:1}, 100, sin).start()}
+            check1C=true;
+        }
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;
@@ -404,7 +416,7 @@ var level1C = {
             soffio.animations.play('soffia');
             if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
             else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
-            if (soffioTrigger==0) {soffioTrigger=1; soffioSFX.fadeTo(500, .4)};
+            if (soffioTrigger==0) {soffioTrigger=1; soffioSFX.fadeTo(500, .2)};
         }
         else {
             soffio.kill();
@@ -479,10 +491,18 @@ var level1C = {
             maialiTrigger=0;
             maialiSFX.fadeTo(1000, .01);
         }
+        if (player.x>=280*16 && player.x<=420*16 && moscheTrigger==0) {
+            moscheTrigger=1;
+            moscheSFX.fadeTo(1000, .5);
+        }
+        else if (player.x<280*16 || player.x>420*16 && moscheTrigger==1) {
+            moscheTrigger=0;
+            moscheSFX.fadeTo(1000, .01);
+        }
     },
 
     render: function() {
         // game.debug.spriteCoords(player, 10, 762);
-        //game.debug.body(maiale1);
+        // game.debug.body(mosche1);game.debug.body(mosche2);game.debug.body(mosche3);
     }
 }

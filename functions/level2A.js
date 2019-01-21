@@ -53,8 +53,12 @@ var level2A = {
         check.anchor.setTo(.5,1);
         check.scale.setTo(.7);
         game.physics.arcade.enable(check);
-        if (check2A==true) {check.frame=1}
-        else {check.frame=0}
+        fiammaCheck = check.addChild(game.make.sprite(0, -check.height, 'fiamma-check'));
+        fiammaCheck.anchor.setTo(.5,1.2);
+        fiammaCheck.animations.add('fiammaCheck', [0,1,2,1], 10, true);
+        fiammaCheck.animations.play('fiammaCheck');
+        if (check2A==true) {fiammaCheck.scale.setTo(1)}
+        else {fiammaCheck.scale.setTo(0)}
 
         // Player
         player = game.add.sprite(playerX, playerY, 'lupo');
@@ -211,7 +215,10 @@ var level2A = {
 
         // Checkpoints
         game.physics.arcade.overlap(player, check, checkpoint, null, this);
-        function checkpoint() {check.frame=1; check2A=true}
+        function checkpoint() {
+            if (check2A==false) {game.add.tween(fiammaCheck.scale).to( {y:1,x:1}, 100, sin).start()}
+            check2A=true;
+        }
 
         // Velocity
         player.body.velocity.x = 0.8 * player.body.velocity.x;
@@ -260,7 +267,7 @@ var level2A = {
             soffio.animations.play('soffia');
             if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
             else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
-            if (soffioTrigger==0) {soffioTrigger=1; soffioSFX.fadeTo(500, .4)};
+            if (soffioTrigger==0) {soffioTrigger=1; soffioSFX.fadeTo(500, .2)};
         }
         else {
             soffio.kill();

@@ -58,9 +58,9 @@ var loadingState = {
         game.load.spritesheet('maiale', 'characters/maiale.png', 75, 120);
         game.load.spritesheet('maiale-torcia', 'characters/maiale-torcia.png', 75, 120);
         game.load.spritesheet('maiale-lanciafiamme', 'characters/maiale-lanciafiamme.png', 119.5, 120);
+        game.load.spritesheet('flies', 'characters/flies.png', 3000/9, 333);
         game.load.spritesheet('soffio', 'characters/soffio.png', 200, 125);
         game.load.image('torcia', 'characters/torcia.png');
-        game.load.image('flies', 'characters/flies.png');
         game.load.image('boss', 'characters/boss.png');
         // Objects
         game.load.image('fruit', 'objects/fruit.png');
@@ -83,7 +83,9 @@ var loadingState = {
         game.load.image('cartelloB', 'objects/cartelloB.png');
         game.load.image('flame', 'objects/flame.png');
         game.load.image('fango', 'objects/fango.png');
-        game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
+        game.load.image('checkpoint', 'objects/checkpoint.png');
+        game.load.spritesheet('fiamma-check', 'objects/fiamma-check.png', 170/3, 85);
+        // game.load.spritesheet('checkpoint', 'objects/checkpoint.png', 100, 134);
         game.load.spritesheet('explosion', 'objects/explosion.png', 2784/13, 150);
         game.load.spritesheet('water', 'objects/water.png', 50, 240);
         game.load.spritesheet('lava', 'objects/lava.png', 50, 56*32);
@@ -142,6 +144,7 @@ var loadingState = {
         game.load.audio('foresta-notte', 'sfx/foresta-notte.wav');
         game.load.audio('maialiSFX', 'sfx/maiali.wav');
         game.load.audio('soffioSFX', 'sfx/soffio.wav');
+        game.load.audio('moscheSFX', 'sfx/mosche.wav');
 
     },
 

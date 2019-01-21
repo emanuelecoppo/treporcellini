@@ -277,7 +277,7 @@ var level2B = {
             soffio.animations.play('soffia');
             if (facing=='left') {soffio.x = 25; soffio.scale.x=-1}
             else if (facing=='right') {soffio.x = -25; soffio.scale.x=1}
-            if (soffioTrigger==0) {soffioTrigger=1; soffioSFX.fadeTo(500, .4)};
+            if (soffioTrigger==0) {soffioTrigger=1; soffioSFX.fadeTo(500, .2)};
         }
         else {
             soffio.kill();
