@@ -17,6 +17,7 @@ var level1D = {
         maialiSFX = game.add.audio('maialiSFX', 0).loopFull();
         passi = game.add.audio('passi');
         soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
+        fiammaSFX = game.add.audio('fiammaSFX', .2); fiammaSFX.allowMultiple = true;
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -190,7 +191,10 @@ var level1D = {
         fiamma.frame = 7;
         fiamma.angle = 90;
         fiamma.animations.add('fuoco', [0,1,2,3,2,3,2,3,2,3,2,3,4,5,6,7], 10);
-        game.time.events.loop(3500, function(){fiamma.animations.play('fuoco')});
+        game.time.events.loop(3500, function(){
+            fiamma.animations.play('fuoco');
+            if (player.x>maiale1.x-800 && player.x<maiale1.x+800 && player.y>maiale1.y-400 && player.y<maiale1.y+400) {fiammaSFX.play()}
+        });
 
         maiale2A = game.add.tween(maiale2).to( {x: 517*16}, 1500).delay(   0);
         maiale3A = game.add.tween(maiale3).to( {x: 470*16}, 1500).delay(1000);

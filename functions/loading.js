@@ -148,6 +148,7 @@ var loadingState = {
         game.load.audio('soffioSFX', 'sfx/soffio.wav');
         game.load.audio('moscheSFX', 'sfx/mosche.wav');
         // game.load.audio('rocciaSFX', 'sfx/roccia.wav');
+        game.load.audio('fiammaSFX', 'sfx/fiamma.wav');
     },
 
     create: function() {

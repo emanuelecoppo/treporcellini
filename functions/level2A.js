@@ -15,6 +15,7 @@ var level2A = {
         morteSFX = game.add.audio('morte');
         passi = game.add.audio('passi');
         soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
+        fiammaSFX = game.add.audio('fiammaSFX', .2); fiammaSFX.allowMultiple = true;
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -108,7 +109,10 @@ var level2A = {
             fiamma.scale.x = 1.2;
             fiamma.frame = 7;
             fiamma.animations.add('fuoco', [0,1,2,3,2,3,2,3,2,3,2,3,4,5,6,7], 10);
-            game.time.events.loop(2500+2000*Math.random(), function(){fiamma.animations.play('fuoco')});
+            game.time.events.loop(2500+2000*Math.random(), function(){
+                fiamma.animations.play('fuoco');
+                if (player.x>fiamma.x-700 && player.x<fiamma.x+700 && player.y>fiamma.y-300 && player.y<fiamma.y+300) {fiammaSFX.play()}
+            });
         })
 
         // Sassi
