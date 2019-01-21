@@ -270,13 +270,13 @@ var level1C = {
         // Fame
         fame = game.add.graphics(50 , 25);
         fame.beginFill(0xfefefe, .3);
-        fame.drawRect(1, 2, 250, 16);
+        fame.drawRect(1, 2, 250, 10);
         fame.endFill();
         fame.fixedToCamera = true;
         fame.width = currentFame;
         barra = game.add.graphics(50, 25);
         barra.lineStyle(3, 0xffffff, .8); //0x44392f
-        barra.drawRoundedRect(0, 0, 252, 20, 100);
+        barra.drawRoundedRect(0, 0, 252, 14, 100);
         barra.fixedToCamera = true;
         mela = game.add.sprite(barra.left-5, barra.centerY-5, 'fruit');
         mela.fixedToCamera=true;
@@ -441,8 +441,8 @@ var level1C = {
             if (!fruit.body.gravity.y==0) {
                 morso.play();
                 fruit.kill();
-                if (fame.width > 225) {fame.width = 250}
-                else {fame.width += 25}
+                if (fame.width > 200) {fame.width = 250}
+                else {fame.width += 50}
             }
         }
 

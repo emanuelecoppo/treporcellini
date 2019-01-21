@@ -9,7 +9,7 @@ var finaleState = {
         game.time.events.add(1000, function(){
             game.add.sprite(0, 0, 'finale');
             game.camera.flash(0xffffff, 1000);
-            music = game.add.audio('finaleMusic').play();
+            music = game.add.audio('finaleMusic', .5).play();
         }, this);
         game.time.events.add(12000, nextState, this)
 
