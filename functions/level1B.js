@@ -5,16 +5,19 @@ var level1B = {
         playerX = 482;
         playerY = 1095;
         soffioTrigger = 0;
+        musicTrigger = 0;
 
         // Sound
         game.sound.stopAll();
+        music = game.add.audio('fugaMusic', 0).loopFull(); music.fadeTo(2000, 1);
         morso = game.add.audio('morso', .2); morso.allowMultiple = true;
         morteSFX = game.add.audio('morte');
         ramoSFX = game.add.audio('ramoSFX');
         passi = game.add.audio('passi');
         forestaNotte = game.add.audio('foresta-notte', 0).loopFull(); forestaNotte.fadeTo(2000, 3)
         soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
-        maialiSFX = game.add.audio('maialiSFX', .4).loopFull();
+        maialiSFX = game.add.audio('maialiSFX', .5).loopFull();
+        game.time.events.add(3000, function() {maialiSFX2 = game.add.audio('maialiSFX', .5).loopFull()});
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -180,16 +183,20 @@ var level1B = {
         ponte.setAll('body.immovable', true);
 
         // Fame
-        barra = game.add.graphics(25, 25);
-        barra.lineStyle(2, 0xffffff, .8);
-        barra.drawRect(0, 0, 250, 20);
-        barra.fixedToCamera = true;
-        fame = game.add.graphics(25, 25);
+        fame = game.add.graphics(50 , 25);
         fame.beginFill(0xfefefe, .3);
-        fame.drawRect(0, 0, 250, 20);
+        fame.drawRect(1, 2, 250, 16);
         fame.endFill();
         fame.fixedToCamera = true;
         fame.width = currentFame;
+        barra = game.add.graphics(50, 25);
+        barra.lineStyle(3, 0xffffff, .8); //0x44392f
+        barra.drawRoundedRect(0, 0, 252, 20, 100);
+        barra.fixedToCamera = true;
+        mela = game.add.sprite(barra.left-5, barra.centerY-5, 'fruit');
+        mela.fixedToCamera=true;
+        mela.anchor.setTo(.5)
+        mela.scale.setTo(1.3);
 
         // Pausa
         pausa = game.add.sprite(0,0,'schermata-pausa');
@@ -219,7 +226,7 @@ var level1B = {
             tornaMenu.input.useHandCursor = (game.paused) ? true : false;
         }
         function backMenu() {
-            forestaNotte.fadeOut(500);
+            forestaNotte.fadeOut(500); music.fadeOut(500);
             game.paused = false;
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
@@ -229,7 +236,7 @@ var level1B = {
     update: function() {
         // States
         function gameOver() {
-            forestaNotte.fadeOut(1100);
+            forestaNotte.fadeOut(1100); music.fadeOut(1100);
             morteSFX.play('', 0, .5, false, false);
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
@@ -241,7 +248,7 @@ var level1B = {
             })
         }
         function nextState() {
-            forestaNotte.fadeOut(500);
+            forestaNotte.fadeOut(500); music.fadeOut(500);
             game.camera.fade(0x000000,500);
             game.camera.onFadeComplete.add(function(){game.state.start('level1C')});}
         if (player.y > game.world.height+200) {gameOver()};
@@ -332,7 +339,7 @@ var level1B = {
         }
 
         // Fame
-        fame.width -= .025;
+        fame.width -= .05;
         currentFame = fame.width;
         if (fame.width <= 0) {gameOver();} //muore
         else if (fame.width <= 50) {fame.tint = 0xff0000;} //rosso
@@ -374,8 +381,12 @@ var level1B = {
         if (vola.isDown) {player.body.gravity.y = 0};
 
         // Sound
-        if (ponteDX.y>game.world.height) {maialiSFX.stop();}
-
+        if (ponteDX.y>game.world.height && musicTrigger==0) {
+            maialiSFX.stop();
+            maialiSFX2.stop();
+            music.fadeOut(2000);
+            musicTrigger=1;
+        }
     },
 
     render: function() {

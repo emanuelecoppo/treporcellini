@@ -212,16 +212,20 @@ var level1D = {
         maiale4B.onStart.add(function() {maiale4.animations.play('walk')});
 
         // Fame
-        barra = game.add.graphics(25, 25);
-        barra.lineStyle(2, 0xffffff, .8);
-        barra.drawRect(0, 0, 250, 20);
-        barra.fixedToCamera = true;
-        fame = game.add.graphics(25, 25);
+        fame = game.add.graphics(50 , 25);
         fame.beginFill(0xfefefe, .3);
-        fame.drawRect(0, 0, 250, 20);
+        fame.drawRect(1, 2, 250, 16);
         fame.endFill();
         fame.fixedToCamera = true;
         fame.width = currentFame;
+        barra = game.add.graphics(50, 25);
+        barra.lineStyle(3, 0xffffff, .8); //0x44392f
+        barra.drawRoundedRect(0, 0, 252, 20, 100);
+        barra.fixedToCamera = true;
+        mela = game.add.sprite(barra.left-5, barra.centerY-5, 'fruit');
+        mela.fixedToCamera=true;
+        mela.anchor.setTo(.5)
+        mela.scale.setTo(1.3);
 
         // Pausa
         pausa = game.add.sprite(0,0,'schermata-pausa');
@@ -363,7 +367,7 @@ var level1D = {
         }
 
         // Fame
-        fame.width -= .025;
+        fame.width -= .05;
         currentFame = fame.width;
         if (fame.width <= 0) {gameOver();} //muore
         else if (fame.width <= 50) {fame.tint = 0xff0000;} //rosso

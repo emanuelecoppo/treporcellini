@@ -16,6 +16,7 @@ var level2B = {
         morteSFX = game.add.audio('morte');
         passi = game.add.audio('passi');
         soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
+        game.time.events.add(2000, function(){maialiSFX = game.add.audio('maialiSFX', .6).loopFull()});
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";
@@ -155,16 +156,20 @@ var level2B = {
         }
 
         // Fame
-        barra = game.add.graphics(25, 25);
-        barra.lineStyle(2, 0xffffff, .8);
-        barra.drawRect(0, 0, 250, 20);
-        barra.fixedToCamera = true;
-        fame = game.add.graphics(25, 25);
+        fame = game.add.graphics(50 , 25);
         fame.beginFill(0xfefefe, .3);
-        fame.drawRect(0, 0, 250, 20);
+        fame.drawRect(1, 2, 250, 16);
         fame.endFill();
         fame.fixedToCamera = true;
         fame.width = currentFame;
+        barra = game.add.graphics(50, 25);
+        barra.lineStyle(3, 0xffffff, .8); //0x44392f
+        barra.drawRoundedRect(0, 0, 252, 20, 100);
+        barra.fixedToCamera = true;
+        mela = game.add.sprite(barra.left-5, barra.centerY-5, 'fruit');
+        mela.fixedToCamera=true;
+        mela.anchor.setTo(.5)
+        mela.scale.setTo(1.3);
 
         // Pausa
         pausa = game.add.sprite(0,0,'schermata-pausa');
@@ -194,7 +199,7 @@ var level2B = {
             tornaMenu.input.useHandCursor = (game.paused) ? true : false;
         }
         function backMenu() {
-            music.fadeOut(500);
+            music.fadeOut(500);; maialiSFX.stop()
             game.paused = false;
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('menuState')} );
@@ -205,7 +210,7 @@ var level2B = {
         // States
         function gameOver() {
             morteSFX.play('', 0, .5, false, false);
-            music.fadeOut(1100);
+            music.fadeOut(1100);; maialiSFX.stop()
             game.physics.arcade.isPaused = true;
             game.input.keyboard.stop();
             cursors.right.isDown = false;
@@ -285,7 +290,7 @@ var level2B = {
         }
 
         // Fame
-        fame.width -= .025;
+        if(!dialogoBoss==0) {fame.width -= .05}
         currentFame = fame.width;
         if (fame.width <= 0) {gameOver();} //muore
         else if (fame.width <= 50) {fame.tint = 0xff0000;} //rosso
@@ -359,7 +364,7 @@ var level2B = {
             player.frame = 12;
             playerA = game.add.tween(player).to({x:1054}, 2000).delay(2000).start();
             playerA.onStart.add(function(){player.animations.play('right')});
-            game.time.events.add(4000, function() {game.camera.fade(0xffffff, 2000); music.fadeOut(2000)}, this);
+            game.time.events.add(4000, function() {game.camera.fade(0xffffff, 2000); music.fadeOut(2000); maialiSFX.stop()}, this);
             game.camera.onFadeComplete.add(function(){game.state.start('finaleState')});
             game.camera.shake(0, 10000, true, Phaser.Camera.SHAKE_HORIZONTAL);
             game.add.tween(game.camera).to({shakeIntensity:0.02}, 500).yoyo(true, 250).loop(true).start();

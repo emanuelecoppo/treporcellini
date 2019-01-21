@@ -131,6 +131,8 @@ var loadingState = {
         game.load.audio('fortezzaMusic', 'music/fortezza.wav');
         // game.load.audio('marcia', 'music/marcia.wav');
         game.load.audio('menuMusic', 'music/menu.wav');
+        game.load.audio('fugaMusic', 'music/fuga.wav');
+        game.load.audio('finaleMusic', 'music/finale.wav');
         // SFX
         game.load.audio('explosionSFX', 'sfx/explosion.wav');
         game.load.audio('morso', 'sfx/morso.wav');

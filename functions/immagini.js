@@ -6,7 +6,8 @@ var immaginiState = {
         var delay = 1000;
 
         game.sound.stopAll();
-        music = game.add.audio('immaginiMusic').play();
+        music = game.add.audio('immaginiMusic');
+        game.time.events.add(2000, function() {music.play()}, this);
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";

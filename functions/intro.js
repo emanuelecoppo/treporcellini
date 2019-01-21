@@ -3,6 +3,7 @@ var intro = {
     create: function() {
         // Sound
         game.sound.stopAll();
+        music = game.add.audio('fortezzaMusic').loopFull();
         maialiSFX = game.add.audio('maialiSFX', .4).loopFull();
         game.time.events.add(3000, function() {maialiSFX2 = game.add.audio('maialiSFX', .4).loopFull()});
 
@@ -70,7 +71,7 @@ var intro = {
         playerA.chain(textA, textB, textC, textD, textE, textF, playerB);
 
         function changeState() {
-            maialiSFX.fadeTo(500, 0); maialiSFX2.fadeTo(500, 0);
+            maialiSFX.fadeTo(500, 0); maialiSFX2.fadeTo(500, 0); music.fadeTo(500, 0);
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('level1A')} );
         }
