@@ -79,10 +79,13 @@ var level2A = {
         // Fruits
         fruits = game.add.group()
         fruits.enableBody = true;
-        fruits.create( 12*32,  67*32, 'fruit'); //cella
-        fruits.create( 13*32,  67*32, 'fruit'); //cella
+        fruits.create( 12*32,  68*32, 'fruit'); //cella
+        fruits.create( 13*32,  68*32, 'fruit'); //cella
         fruits.create( 80*32,  47*32, 'fruit'); //lava
         fruits.create( 63*32,  13*32, 'fruit'); //lava
+        fruits.create( 4150,  590, 'fruit'); //fiamme
+        fruits.create( 3560,  1870, 'fruit'); //fiamme
+        fruits.create( 4220,  1870, 'fruit'); //fiamme
 
         fruits.children.forEach( function(fruit) {
             fruit.body.drag.x = 1000;
@@ -92,20 +95,26 @@ var level2A = {
 
         // Fiamme
         fiamme = game.add.group();
-        fiamme.create(125*32, 40*32, 'flame');
-        fiamme.create(115*32, 40*32, 'flame');
-        fiamme.create(105*32, 40*32, 'flame');
+        fiamme.enableBody = true;
+        fiamma1 = fiamme.create(3490, 10*32, 'fiamma'); fiamma1.scale.y=-1.2;
+        fiamme.create(3930, 10*32, 'fiamma').scale.y=-1.2;
+        fiamme.create(4020, 40*32, 'fiamma').scale.y= 1.2;
+        fiamme.create(3690, 40*32, 'fiamma').scale.y= 1.2;
+        fiamme.create(3425, 40*32, 'fiamma').scale.y= 1.2;
 
         fiamme.children.forEach( function(fiamma) {
+            fiamma.body.setSize(130,270,400,250);
             fiamma.anchor.setTo(.5, 1);
-            fiammaA = game.add.tween(fiamma.scale).to( {y:0, x:0}, 100, sin).delay(1000+1000*Math.random()).start().yoyo(true, 3000+1000*Math.random());
-            fiammaA.chain(fiammaA);
+            fiamma.scale.x = 1.2;
+            fiamma.frame = 7;
+            fiamma.animations.add('fuoco', [0,1,2,3,2,3,2,3,2,3,2,3,4,5,6,7], 10);
+            game.time.events.loop(2500+2000*Math.random(), function(){fiamma.animations.play('fuoco')});
         })
 
         // Sassi
         sassi = game.add.group();
         sassi.enableBody = true;
-        sassi.create(18*32, 68*32, 'sasso').scale.setTo(.75);
+        sassi.create(18*32, 70*32, 'sasso').scale.setTo(.75);
 
         sassi.children.forEach( function(sasso) {
             sasso.anchor.setTo(.5,1);
@@ -312,9 +321,16 @@ var level2A = {
         // Vola
         if (vola.isDown) {player.body.gravity.y = 0};
 
+        // Fiamme
+        game.physics.arcade.overlap(player, fiamme, brucia, null, this);
+        function brucia(player, fiamma) {
+            if (fiamma.frame>=1 && fiamma.frame<=5) {gameOver()}
+        }
     },
 
     render: function() {
-        game.debug.spriteCoords(player, 10, 762);
+        // game.debug.spriteCoords(player, 10, 762);
+        // game.debug.body(fiamma1);
+
     }
 }

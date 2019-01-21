@@ -172,8 +172,8 @@ var level1D = {
         // Maiali
         maiali = game.add.group();
         maiali.enableBody = true;
-        maiale1 = maiali.create(205*16, 67*16, 'maiale-lanciafiamme');
-        game.time.events.loop(2000, function(){maiale1.scale.x*=-1}, this);
+
+        maiale1 = maiali.create(3330, 67*16, 'maiale-lanciafiamme'); maiale1.scale.x = -1;
         maiale4 = maiali.create(game.world.width-1500, 47*16, 'maiale-lanciafiamme');
         maiale3 = maiali.create(game.world.width-1400, 47*16, 'maiale-lanciafiamme');
         maiale2 = maiali.create(game.world.width+ 300, 47*16, 'maiale-lanciafiamme');
@@ -182,8 +182,15 @@ var level1D = {
         maiali.children.forEach( function(maiale) {
             maiale.anchor.setTo(.5,1);
             maiale.animations.add('walk', [0,1,2,3,4,5,6,7,8,9,10,11], 20, true);
-            maiale.body.setSize(250,120,50,0);
+            maiale.body.setSize(310,120,50,0);
         })
+
+        fiamma = maiale1.addChild(game.make.sprite(60,-38,'fiamma'));
+        fiamma.anchor.setTo(.5, 1);
+        fiamma.frame = 7;
+        fiamma.angle = 90;
+        fiamma.animations.add('fuoco', [0,1,2,3,2,3,2,3,2,3,2,3,4,5,6,7], 10);
+        game.time.events.loop(3500, function(){fiamma.animations.play('fuoco')});
 
         maiale2A = game.add.tween(maiale2).to( {x: 517*16}, 1500).delay(   0);
         maiale3A = game.add.tween(maiale3).to( {x: 470*16}, 1500).delay(1000);
@@ -397,7 +404,10 @@ var level1D = {
         })
 
         // Maiali
-        game.physics.arcade.overlap(player, maiale1, gameOver, null, this);
+        game.physics.arcade.overlap(player, maiale1, brucia, null, this);
+        function brucia() {
+            if (fiamma.frame>=1 && fiamma.frame<=5) {gameOver()}
+        }
 
         // Segreto
         if (player.x > 7250 && player.y > 1000) {segreto.alpha = 0}
@@ -414,7 +424,7 @@ var level1D = {
             maiale2.alpha = 1; maiale3.alpha = 1; maiale4.alpha = 1;
             maiale2A.start(); maiale3A.start(); maiale4A.start();
             cattura ++;
-            maialiSFX.fadeTo(1000, .3);
+            maialiSFX.fadeTo(1000, .4);
         }
 
         // Vola
@@ -434,7 +444,7 @@ var level1D = {
 
     render: function() {
         // game.debug.spriteCoords(player, 10, 762);
-        //game.debug.body(maiale1);
+        // game.debug.body(maiale1);
         //game.debug.body(sasso1);
     }
 }

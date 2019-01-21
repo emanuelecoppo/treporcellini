@@ -14,7 +14,7 @@ var level1B = {
         passi = game.add.audio('passi');
         forestaNotte = game.add.audio('foresta-notte', 0).loopFull(); forestaNotte.fadeTo(2000, 3)
         soffioSFX = game.add.audio('soffioSFX', 0).loopFull();
-        maialiSFX = game.add.audio('maialiSFX', .5).loopFull();
+        maialiSFX = game.add.audio('maialiSFX', .4).loopFull();
 
         game.camera.flash('#000', 500);
         game.stage.backgroundColor = "#000";

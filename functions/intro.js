@@ -1,6 +1,11 @@
 var intro = {
 
     create: function() {
+        // Sound
+        game.sound.stopAll();
+        maialiSFX = game.add.audio('maialiSFX', .4).loopFull();
+        game.time.events.add(3000, function() {maialiSFX2 = game.add.audio('maialiSFX', .4).loopFull()});
+
         // Controllli
         enter = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         key0 = game.input.keyboard.addKey(Phaser.Keyboard.ZERO);
@@ -65,6 +70,7 @@ var intro = {
         playerA.chain(textA, textB, textC, textD, textE, textF, playerB);
 
         function changeState() {
+            maialiSFX.fadeTo(500, 0); maialiSFX2.fadeTo(500, 0);
             game.camera.fade(0x000000, 500);
             game.camera.onFadeComplete.add( function() {game.state.start('level1A')} );
         }

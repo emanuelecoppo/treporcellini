@@ -496,7 +496,7 @@ var level1A = {
         }
         if (player.x>=320*16 && maialiTrigger==0) {
             maialiTrigger=1;
-            maialiSFX.fadeTo(1000, .1);
+            maialiSFX.fadeTo(1000, .2);
         }
         else if (player.x<320*16 && maialiTrigger==1) {
             maialiTrigger=0;

@@ -81,7 +81,7 @@ var loadingState = {
         game.load.image('bomb', 'objects/bomba.png');
         game.load.image('cartello', 'objects/cartello.png');
         game.load.image('cartelloB', 'objects/cartelloB.png');
-        game.load.image('flame', 'objects/flame.png');
+        game.load.spritesheet('fiamma', 'objects/fiamma.png', 7575/8, 522);
         game.load.image('fango', 'objects/fango.png');
         game.load.image('checkpoint', 'objects/checkpoint.png');
         game.load.spritesheet('fiamma-check', 'objects/fiamma-check.png', 170/3, 85);
